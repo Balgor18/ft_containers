@@ -78,8 +78,7 @@ template <class T, class Allocator = allocator<T> >
 		// iterator insert(iterator position, const T& x);
 		// void insert(iterator position, size_type n, const T& x);
 		// template <class InputIterator>
-		// void insert(iterator position,
-		// InputIterator first, InputIterator last);
+		// void insert(iterator position, InputIterator first, InputIterator last);
 		// iterator erase(iterator position);
 		// iterator erase(iterator first, iterator last);
 		// void swap(vector<T,Allocator>&);

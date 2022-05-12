@@ -48,6 +48,8 @@ template <class T, class Container = std::vector<T> >
 }
 // https://www.guru99.com/stack-in-cpp-stl.html
 // https://fr.acervolima.com/std-allocator-en-c-avec-des-exemples/#:~:text=allocator%20est%20l%27allocateur%20de,pour%20au%20moins%20n%20%C3%A9l%C3%A9ments
+// https://h-deb.clg.qc.ca/Sujets/Divers--cplusplus/SFINAE.html
+
 #endif
 
 // https://www.lirmm.fr/~ducour/Doc-objets/ISO+IEC+14882-1998.pdf
