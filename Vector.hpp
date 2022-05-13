@@ -2,38 +2,68 @@
 # define VECTOR_HPP
 
 #include <memory>
+#include <iostream>
+#include <algorithm>
+
 // https://www.lirmm.fr/~ducour/Doc-objets/ISO+IEC+14882-1998.pdf
 // https://fr.acervolima.com/std-allocator-en-c-avec-des-exemples/#:~:text=allocator%20est%20l%27allocateur%20de,pour%20au%20moins%20n%20%C3%A9l%C3%A9ments
+// https://h-deb.clg.qc.ca/Sujets/Divers--cplusplus/SFINAE.html
 
-namespace std {
-template <class T, class Allocator = allocator<T> >
+// http://chenweixiang.github.io/docs/The_C++_Programming_Language_4th_Edition_Bjarne_Stroustrup.pdf
+// https://code.woboq.org/gcc/libstdc++-v3/include/bits/stl_iterator.h.html
+namespace ft {
+template <class T, class Allocator = std::allocator<T> >
 	class vector {
+
 		public:
 		// types:
 
-		// typedef typename Allocator::reference reference;
-		// typedef typename Allocator::const_reference const_reference;
+		typedef T									value_type;
+		typedef Allocator							allocator_type;
+		typedef typename Allocator::reference		reference;
+		typedef typename Allocator::const_reference	const_reference;
+		typedef typename Allocator::pointer			pointer;
+		typedef typename Allocator::const_pointer	const_pointer;
+		
 		// typedef implementation defined iterator; // See 23.1
 		// typedef implementation defined const_iterator; // See 23.1
-		// typedef implementation defined size_type; // See 23.1
+		typedef std::size_t							size_type;
 		// typedef implementation defined difference_type;// See 23.1
-		// typedef T value_type;
-		// typedef Allocator allocator_type;
-		// typedef typename Allocator::pointer pointer;
-		// typedef typename Allocator::const_pointer const_pointer
+
 		// typedef std::reverse_iterator<iterator> reverse_iterator;
 		// typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
 		// 23.2.4.1 construct/copy/destroy:
+		private :
+			allocator_type	_alloc;
+			size_type		_size;
+			size_type		_capacity;
+			// probably use 3 ptr (all people use 3 ptr) // the real one get only 3 ptr
 
-		// explicit vector(const Allocator& = Allocator());
-		// explicit vector(size_type n, const T& value = T(),
-		// const Allocator& = Allocator());
+		public :
+		explicit vector(const Allocator& = Allocator()) : _alloc(NULL), _size(0), _capacity(0){
+
+		};
+
+		explicit vector(size_type n, const T& value = T(), const Allocator& alloc= Allocator()) : _alloc(alloc), _size(n), _capacity(n * sizeof(T)){
+			(void)value;
+			for (size_type i = 0; i < n;i++){
+
+			}
+		};
+
 		// template <class InputIterator>
-		// vector(InputIterator first, InputIterator last,
-		// const Allocator& = Allocator());
-		// vector(const vector<T,Allocator>& x);
-		// ~vector();
+		// vector(InputIterator first, InputIterator last, const Allocator& = Allocator()){
+
+		// };
+
+
+		// vector(const vector<T,Allocator>& x){
+
+		// };
+
+		~vector() { };
+
 		// vector<T,Allocator>& operator=(const vector<T,Allocator>& x);
 		// template <class InputIterator>
 		// void assign(InputIterator first, InputIterator last);
@@ -73,7 +103,10 @@ template <class T, class Allocator = allocator<T> >
 		
 		// 23.2.4.3 modifiers:
 
-		// void push_back(const T& x);
+		// void push_back(const T& x) {
+			// if (this->_size / 4 <= this->_capacity)
+			// 	this->_val = Allocator.allocate();
+		// };
 		// void pop_back();
 		// iterator insert(iterator position, const T& x);
 		// void insert(iterator position, size_type n, const T& x);
