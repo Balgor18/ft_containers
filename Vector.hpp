@@ -44,9 +44,7 @@ template <class T, class Allocator = std::allocator<T> >
 			// probably use 3 ptr (all people use 3 ptr) // the real one get only 3 ptr
 
 		public :
-		explicit vector(const Allocator& = Allocator()) : _alloc(NULL), _size(0), _capacity(0){
-
-		};
+		explicit vector(const Allocator& = Allocator()) : _alloc(NULL), _size(0), _capacity(0) { };
 
 		// explicit vector(size_type n, const T& value = T(), const Allocator& alloc= Allocator()) : _alloc(alloc), _size(n), _capacity(n * sizeof(T)){
 		// 	(void)value;
@@ -106,10 +104,9 @@ template <class T, class Allocator = std::allocator<T> >
 
 		// 23.2.4.3 modifiers:
 
-		// void push_back(const T& x) {
-			// if (this->_size / 4 <= this->_capacity)
-			// 	this->_val = Allocator.allocate();
-		// };
+		void push_back(const T& x) {
+			
+		};
 		// void pop_back();
 		// iterator insert(iterator position, const T& x);
 		// void insert(iterator position, size_type n, const T& x);
