@@ -11,6 +11,9 @@
 
 // http://chenweixiang.github.io/docs/The_C++_Programming_Language_4th_Edition_Bjarne_Stroustrup.pdf
 // https://code.woboq.org/gcc/libstdc++-v3/include/bits/stl_iterator.h.html
+
+// http://www.cplusplus.com/reference/iterator/
+
 namespace ft {
 template <class T, class Allocator = std::allocator<T> >
 	class vector {
