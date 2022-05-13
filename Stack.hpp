@@ -1,4 +1,4 @@
- 
+
 #ifndef STACK_HPP
 # define STACK_HPP
 # include <vector>
@@ -54,3 +54,7 @@ template <class T, class Container = std::vector<T> >
 
 // https://www.lirmm.fr/~ducour/Doc-objets/ISO+IEC+14882-1998.pdf
 // page 485
+
+// https://www.youtube.com/watch?v=qvZGUFHWChY&list=PL9xmBV_5YoZNqDI8qfOZgzbqahCUmUEin
+
+// https://www.cs.usfca.edu/~galles/visualization/RedBlack.html

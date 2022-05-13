@@ -24,7 +24,7 @@ template <class T, class Allocator = std::allocator<T> >
 		typedef typename Allocator::const_reference	const_reference;
 		typedef typename Allocator::pointer			pointer;
 		typedef typename Allocator::const_pointer	const_pointer;
-		
+
 		// typedef implementation defined iterator; // See 23.1
 		// typedef implementation defined const_iterator; // See 23.1
 		typedef std::size_t							size_type;
@@ -45,12 +45,12 @@ template <class T, class Allocator = std::allocator<T> >
 
 		};
 
-		explicit vector(size_type n, const T& value = T(), const Allocator& alloc= Allocator()) : _alloc(alloc), _size(n), _capacity(n * sizeof(T)){
-			(void)value;
-			for (size_type i = 0; i < n;i++){
+		// explicit vector(size_type n, const T& value = T(), const Allocator& alloc= Allocator()) : _alloc(alloc), _size(n), _capacity(n * sizeof(T)){
+		// 	(void)value;
+		// 	for (size_type i = 0; i < n;i++){
 
-			}
-		};
+		// 	}
+		// };
 
 		// template <class InputIterator>
 		// vector(InputIterator first, InputIterator last, const Allocator& = Allocator()){
@@ -100,7 +100,7 @@ template <class T, class Allocator = std::allocator<T> >
 		// const_reference front() const;
 		// reference back();
 		// const_reference back() const;
-		
+
 		// 23.2.4.3 modifiers:
 
 		// void push_back(const T& x) {
