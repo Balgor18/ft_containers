@@ -57,12 +57,25 @@
 int	main(void)
 {
 	std::vector<int>	real;
-	ft::vector<int>		mind(5);
+	ft::vector<int>		mind;
 
-	// real.push_back(5);
-	// std::cout << "real.capacity " << real.capacity() << std::endl;
-	// std::cout << "real.size " << real.size() << std::endl;
+	real.push_back(5);
+	mind.push_back(5);
+	std::cout << "real.capacity " << real.capacity() << std::endl;
+	std::cout << "real.size " << real.size() << std::endl;
+	std::cout << "mind.capacity " << mind.capacity() << std::endl;
+	std::cout << "mind.size " << mind.size() << std::endl;
 
+
+	// std::vector<double>		real2;
+	// ft::vector<double>		mind2;
+
+	// real2.push_back(5);
+	// mind2.push_back(5);
+	// std::cout << "real2.capacity " << real2.capacity() << std::endl;
+	// std::cout << "real2.size " << real2.size() << std::endl;
+	// std::cout << "mind2.capacity " << mind2.capacity() << std::endl;
+	// std::cout << "mind2.size " << mind2.size() << std::endl;
 	return (EXIT_SUCCESS);
 }
 // END VECTOR MAIN

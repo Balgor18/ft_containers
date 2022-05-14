@@ -41,81 +41,91 @@ template <class T, class Allocator = std::allocator<T> >
 			allocator_type	_alloc;
 			size_type		_size;
 			size_type		_capacity;
+			pointer	 		_ptr;
 			// probably use 3 ptr (all people use 3 ptr) // the real one get only 3 ptr
 
 		public :
-		explicit vector(const Allocator& = Allocator()) : _alloc(NULL), _size(0), _capacity(0) { };
+			explicit vector(const Allocator& alloc= Allocator()) : _alloc(alloc), _size(0), _capacity(0) { };
 
-		// explicit vector(size_type n, const T& value = T(), const Allocator& alloc= Allocator()) : _alloc(alloc), _size(n), _capacity(n * sizeof(T)){
-		// 	(void)value;
-		// 	for (size_type i = 0; i < n;i++){
+			// explicit vector(size_type n, const T& value = T(), const Allocator& alloc= Allocator()) : _alloc(alloc), _size(n), _capacity(n * sizeof(T)){
+			// 	(void)value;
+			// 	for (size_type i = 0; i < n;i++){
 
-		// 	}
-		// };
+			// 	}
+			// };
 
-		// template <class InputIterator>
-		// vector(InputIterator first, InputIterator last, const Allocator& = Allocator()){
+			// template <class InputIterator>
+			// vector(InputIterator first, InputIterator last, const Allocator& = Allocator()){
 
-		// };
+			// };
 
 
-		// vector(const vector<T,Allocator>& x){
+			// vector(const vector<T,Allocator>& x){
 
-		// };
+			// };
 
-		~vector() { };
+			~vector() { };
 
-		// vector<T,Allocator>& operator=(const vector<T,Allocator>& x);
-		// template <class InputIterator>
-		// void assign(InputIterator first, InputIterator last);
-		// void assign(size_type n, const T& u);
-		// allocator_type get_allocator() const;
+			// vector<T,Allocator>& operator=(const vector<T,Allocator>& x);
+			// template <class InputIterator>
+			// void assign(InputIterator first, InputIterator last);
+			// void assign(size_type n, const T& u);
+			// allocator_type get_allocator() const;
 
-		// iterators:
+			// iterators:
 
-		// iterator begin();
-		// const_iterator begin() const;
-		// iterator end();
-		// const_iterator end() const;
-		// reverse_iterator rbegin();
-		// const_reverse_iterator rbegin() const;
-		// reverse_iterator rend();
-		// const_reverse_iterator rend() const;
+			// iterator begin();
+			// const_iterator begin() const;
+			// iterator end();
+			// const_iterator end() const;
+			// reverse_iterator rbegin();
+			// const_reverse_iterator rbegin() const;
+			// reverse_iterator rend();
+			// const_reverse_iterator rend() const;
 
-		// 23.2.4.2 capacity:
+			// 23.2.4.2 capacity:
 
-		// size_type size() const;
-		// size_type max_size() const;
-		// void resize(size_type sz, T c = T());
-		// size_type capacity() const;
-		// bool empty() const;
-		// void reserve(size_type n);
+			size_type size() const {return _size; };
+			// size_type max_size() const;
+			// void resize(size_type sz, T c = T());
+			size_type capacity() const { return _capacity; };
+			// bool empty() const;
+			// void reserve(size_type n);
 
-		// element access:
+			// element access:
 
-		// reference operator[](size_type n);
-		// const_reference operator[](size_type n) const;
-		// const_reference at(size_type n) const;
-		// reference at(size_type n);
-		// reference front();
-		// const_reference front() const;
-		// reference back();
-		// const_reference back() const;
+			// reference operator[](size_type n);
+			// const_reference operator[](size_type n) const;
+			// const_reference at(size_type n) const;
+			// reference at(size_type n);
+			// reference front();
+			// const_reference front() const;
+			// reference back();
+			// const_reference back() const;
 
-		// 23.2.4.3 modifiers:
+			// 23.2.4.3 modifiers:
 
-		void push_back(const T& x) {
-			
-		};
-		// void pop_back();
-		// iterator insert(iterator position, const T& x);
-		// void insert(iterator position, size_type n, const T& x);
-		// template <class InputIterator>
-		// void insert(iterator position, InputIterator first, InputIterator last);
-		// iterator erase(iterator position);
-		// iterator erase(iterator first, iterator last);
-		// void swap(vector<T,Allocator>&);
-		// void clear();
+			void push_back(const T& x) {
+				std::cerr << "_size " << _size << std::endl;
+				std::cerr << "_capacity " << _capacity << std::endl;
+				// (void)x;
+				if (!_size){
+					_ptr = _alloc.allocate(1);
+					_alloc.construct(_ptr, x);
+					_size++;
+					_capacity = _size * sizeof(T);
+					return ;
+				}
+			};
+			// void pop_back();
+			// iterator insert(iterator position, const T& x);
+			// void insert(iterator position, size_type n, const T& x);
+			// template <class InputIterator>
+			// void insert(iterator position, InputIterator first, InputIterator last);
+			// iterator erase(iterator position);
+			// iterator erase(iterator first, iterator last);
+			// void swap(vector<T,Allocator>&);
+			// void clear();
 	};
 };
 
