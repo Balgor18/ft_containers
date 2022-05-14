@@ -12,7 +12,7 @@
 	template<typename _Iterator>
 	struct iterator_traits
 	{
-		typedef typename _Iterator::iterator_category	iterator_category;
+		typedef typename _Iterator::iterator_category	iterator_category;//if its a random _access
 		typedef typename _Iterator::value_type			value_type; // the type point ex : int
 		typedef typename _Iterator::difference_type		difference_type;// diff space btw two type ex : int for next int is 4 octets
 		typedef typename _Iterator::pointer				pointer;// *

@@ -59,8 +59,52 @@ int	main(void)
 	std::vector<int>	real;
 	ft::vector<int>		mind;
 
+	std::cout << "real.capacity " << real.capacity() << std::endl;
+	std::cout << "real.size " << real.size() << std::endl;
+	std::cout << "mind.capacity " << mind.capacity() << std::endl;
+	std::cout << "mind.size " << mind.size() << std::endl;
+
+	std::cout << "real.max_size " << real.max_size() << std::endl;
+	std::cout << "mind.max_size " << mind.max_size() << std::endl;
+
+	std::cout << "real.empty " << real.empty() << std::endl;
+	std::cout << "mind.empty " << mind.empty() << std::endl;
+
 	real.push_back(5);
 	mind.push_back(5);
+	std::cout << " push 5 " << std::endl;
+	std::cout << "real.capacity " << real.capacity() << std::endl;
+	std::cout << "real.size " << real.size() << std::endl;
+	std::cout << "mind.capacity " << mind.capacity() << std::endl;
+	std::cout << "mind.size " << mind.size() << std::endl;
+
+	real.push_back(6);
+	mind.push_back(6);
+	std::cout << " push 6 " << std::endl;
+	std::cout << "real.capacity " << real.capacity() << std::endl;
+	std::cout << "real.size " << real.size() << std::endl;
+	std::cout << "mind.capacity " << mind.capacity() << std::endl;
+	std::cout << "mind.size " << mind.size() << std::endl;
+
+	real.push_back(7);
+	mind.push_back(7);
+	std::cout << " push 7 " << std::endl;
+	std::cout << "real.capacity " << real.capacity() << std::endl;
+	std::cout << "real.size " << real.size() << std::endl;
+	std::cout << "mind.capacity " << mind.capacity() << std::endl;
+	std::cout << "mind.size " << mind.size() << std::endl;
+
+	real.push_back(8);
+	mind.push_back(8);
+	std::cout << " push 8 " << std::endl;
+	std::cout << "real.capacity " << real.capacity() << std::endl;
+	std::cout << "real.size " << real.size() << std::endl;
+	std::cout << "mind.capacity " << mind.capacity() << std::endl;
+	std::cout << "mind.size " << mind.size() << std::endl;
+
+	real.push_back(9);
+	mind.push_back(9);
+	std::cout << " push 9 " << std::endl;
 	std::cout << "real.capacity " << real.capacity() << std::endl;
 	std::cout << "real.size " << real.size() << std::endl;
 	std::cout << "mind.capacity " << mind.capacity() << std::endl;
