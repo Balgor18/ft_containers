@@ -31,14 +31,14 @@ template <class T, class Allocator = std::allocator<T> >
 		typedef typename Allocator::const_reference	const_reference;
 		typedef typename Allocator::pointer			pointer;
 		typedef typename Allocator::const_pointer	const_pointer;
-		typedef ft::random_access_iterator<T>		iterator; // See 23.1
-		typedef ft::random_access_iterator<const T>	const_iterator; // See 23.1
+		typedef ft::random_access_iterator<T>		iterator;
+		typedef ft::random_access_iterator<const T>	const_iterator;
 
 		typedef ft::reverse_iterator<iterator> reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
 		// 23.2.4.1 construct/copy/destroy:
-		private :
+		private :// Attribute
 			allocator_type	_alloc;
 			size_type		_size;
 			size_type		_capacity;
@@ -72,7 +72,7 @@ template <class T, class Allocator = std::allocator<T> >
 			};
 
 			~vector() {
-				// use clear
+				clear();
 				_alloc.deallocate(_ptr, _capacity);
 			};
 
