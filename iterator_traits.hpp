@@ -9,6 +9,7 @@
    *  argument.  Specialized versions for pointers and pointers-to-const
    *  provide tighter, more correct semantics.
   */
+namespace ft {
 	template<typename _Iterator>
 	struct iterator_traits
 	{
@@ -40,5 +41,5 @@
 		typedef const _T*					pointer;
 		typedef const _T&					reference;
 	};
-
+};
 #endif

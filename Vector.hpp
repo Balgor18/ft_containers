@@ -4,8 +4,8 @@
 # include <memory>
 # include <iostream>
 # include <algorithm>
-# include "iterator_traits.hpp"
-# include "reverse_iterator.hpp"
+// # include "iterator_traits.hpp"
+// # include "reverse_iterator.hpp"
 
 // https://www.lirmm.fr/~ducour/Doc-objets/ISO+IEC+14882-1998.pdf
 // https://fr.acervolima.com/std-allocator-en-c-avec-des-exemples/#:~:text=allocator%20est%20l%27allocateur%20de,pour%20au%20moins%20n%20%C3%A9l%C3%A9ments
@@ -31,11 +31,11 @@ template <class T, class Allocator = std::allocator<T> >
 		typedef typename Allocator::const_reference	const_reference;
 		typedef typename Allocator::pointer			pointer;
 		typedef typename Allocator::const_pointer	const_pointer;
-		typedef ft::random_access_iterator<T>		iterator;
-		typedef ft::random_access_iterator<const T>	const_iterator;
+		// typedef ft::random_access_iterator<T>		iterator;
+		// typedef ft::random_access_iterator<const T>	const_iterator;
 
-		typedef ft::reverse_iterator<iterator> reverse_iterator;
-		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
+		// typedef ft::reverse_iterator<iterator> reverse_iterator;
+		// typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
 		// 23.2.4.1 construct/copy/destroy:
 		private :// Attribute
@@ -77,21 +77,22 @@ template <class T, class Allocator = std::allocator<T> >
 			};
 
 			// vector<T,Allocator>& operator=(const vector<T,Allocator>& x);
+
 			// template <class InputIterator>
 			// void assign(InputIterator first, InputIterator last);
 			// void assign(size_type n, const T& u);
 
-			allocator_type get_allocator() const { return this->_alloc};
+			allocator_type get_allocator() const { return (this->_alloc); };
 
 			// iterators:
-			iterator begin(void) {return (_ptr); };
-			const_iterator begin(void) const { return (_ptr); };
-			iterator end(void) { return (_ptr + size) };
-			const_iterator end(void) const { return (_ptr + size) };
-			reverse_iterator rbegin(void) {return (this->end()); };
-			const_reverse_iterator rbegin(void) const { return (this->end()};
-			reverse_iterator rend(void) { return (this->begin())};
-			const_reverse_iterator rend(void) const {return (this->begin())};
+			// iterator begin(void) {return (_ptr); };
+			// const_iterator begin(void) const { return (_ptr); };
+			// iterator end(void) { return (_ptr + size); };
+			// const_iterator end(void) const { return (_ptr + size); };
+			// reverse_iterator rbegin(void) {return (this->end()); };
+			// const_reverse_iterator rbegin(void) const { return (this->end());};
+			// reverse_iterator rend(void) { return (this->begin());};
+			// const_reverse_iterator rend(void) const {return (this->begin());};
 
 			// 23.2.4.2 capacity:
 
@@ -126,7 +127,6 @@ template <class T, class Allocator = std::allocator<T> >
 				}
 				else if (_size == _capacity) {
 					pointer	tmp;
-
 					tmp = _alloc.allocate(_size * 2);
 					for (size_type i(0); i < _size; i++) {
 						_alloc.construct(tmp + i, *(_ptr + i));
