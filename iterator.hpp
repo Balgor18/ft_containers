@@ -9,7 +9,7 @@ namespace ft{
 	struct bidirectional_iterator_tag: public forward_iterator_tag { };
 	struct random_access_iterator_tag: public bidirectional_iterator_tag { };
 
-	template <class Iterator>
+	template <class _Iterator>
 	struct iterator_traits {
 		typedef typename _Iterator::iterator_category	iterator_category;//if its a random _access
 		typedef typename _Iterator::value_type			value_type; // the type point ex : int
@@ -31,23 +31,34 @@ namespace ft{
 	struct iterator_traits<const T*> {
 		typedef std::ptrdiff_t					difference_type;
 		typedef T								value_type;
-		typedef const T*								pointer;
-		typedef const T&								reference;
+		typedef const T*						pointer;
+		typedef const T&						reference;
 		typedef ft::random_access_iterator_tag	iterator_category;
 	};
 
+	template <class Category, class T, class diff_btw = std::ptrdiff_t, class Pointer = T*, class Reference = T&>
+	struct iterator {
+			typedef T							value_type;
+			typedef diff_btw					difference_type;
+			typedef Pointer						pointer;
+			typedef Reference					reference;
+			typedef Category					iterator_category;
+	};
+};
+
+namespace ft{
 	// class RandomAccessIterator
-	template<typename _Iterator>
+	template<typename T>
 	class random_access_iterator {
-		protected:
-			pointer	current;
 		public:
 			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::value_type			value_type;
-			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::iterator_category			iterator_type;
-			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::difference_type	difference_type;
-			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::reference			reference;
-			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::pointer			pointer;
-
+			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::iterator_category		iterator_type;
+			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::difference_type		difference_type;
+			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::reference				reference;
+			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::pointer				pointer;
+		protected:
+			pointer	current;
+		public :
 			random_access_iterator() : current(0) { return ; };
 
 			explicit random_access_iterator(pointer x) : current(x) { return ; };
@@ -120,8 +131,10 @@ namespace ft{
 // +=
 // -=
 // =
+};
 
 
+namespace ft{
 	// Revese iterator
 	template<typename _Iterator>
 	class reverse_iterator : public ft::iterator<typename iterator_traits<_Iterator>::iterator_category,

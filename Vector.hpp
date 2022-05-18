@@ -4,7 +4,8 @@
 # include <memory>
 # include <iostream>
 # include <algorithm>
-# include "iterator_traits.hpp"
+// # include "iterator_traits.hpp"
+# include "iterator.hpp"
 // # include "reverse_iterator.hpp"
 
 // https://www.lirmm.fr/~ducour/Doc-objets/ISO+IEC+14882-1998.pdf
@@ -32,10 +33,10 @@ template <class T, class Allocator = std::allocator<T> >
 		typedef typename Allocator::pointer			pointer;
 		typedef typename Allocator::const_pointer	const_pointer;
 		
-		// typedef ft::random_access_iterator<T>		iterator;
-		// typedef ft::random_access_iterator<const T>	const_iterator;
-		// typedef ft::reverse_iterator<iterator> reverse_iterator;
-		// typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
+		typedef ft::random_access_iterator<T>		iterator;
+		typedef ft::random_access_iterator<const T>	const_iterator;
+		typedef ft::reverse_iterator<iterator> reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
 		// 23.2.4.1 construct/copy/destroy:
 		private :// Attribute
@@ -84,14 +85,15 @@ template <class T, class Allocator = std::allocator<T> >
 			allocator_type get_allocator() const { return (this->_alloc); };
 
 			// iterators:
+
 			iterator begin(void) {return (_ptr); };
 			const_iterator begin(void) const { return (_ptr); };
-			iterator end(void) { return (_ptr + size); };
-			const_iterator end(void) const { return (_ptr + size); };
-			// reverse_iterator rbegin(void) {return (this->end()); };
-			// const_reverse_iterator rbegin(void) const { return (this->end());};
-			// reverse_iterator rend(void) { return (this->begin());};
-			// const_reverse_iterator rend(void) const {return (this->begin());};
+			iterator end(void) { return (_ptr + _size); };
+			const_iterator end(void) const { return (_ptr + _size); };
+			reverse_iterator rbegin(void) {return (this->end()); };
+			const_reverse_iterator rbegin(void) const { return (this->end());};
+			reverse_iterator rend(void) { return (this->begin());};
+			const_reverse_iterator rend(void) const {return (this->begin());};
 
 			// 23.2.4.2 capacity:
 
