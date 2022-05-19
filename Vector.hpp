@@ -4,8 +4,8 @@
 # include <memory>
 # include <iostream>
 # include <algorithm>
-// # include "iterator_traits.hpp"
 # include "iterator.hpp"
+// # include "iterator_traits.hpp"
 // # include "reverse_iterator.hpp"
 
 // https://www.lirmm.fr/~ducour/Doc-objets/ISO+IEC+14882-1998.pdf
@@ -35,8 +35,8 @@ template <class T, class Allocator = std::allocator<T> >
 		
 		typedef ft::random_access_iterator<T>		iterator;
 		typedef ft::random_access_iterator<const T>	const_iterator;
-		typedef ft::reverse_iterator<iterator> reverse_iterator;
-		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
+		// typedef ft::reverse_iterator<iterator> reverse_iterator;
+		// typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
 		// 23.2.4.1 construct/copy/destroy:
 		private :// Attribute

@@ -11,11 +11,11 @@ namespace ft{
 
 	template <class _Iterator>
 	struct iterator_traits {
-		typedef typename _Iterator::iterator_category	iterator_category;//if its a random _access
-		typedef typename _Iterator::value_type			value_type; // the type point ex : int
-		typedef typename _Iterator::difference_type		difference_type;// diff space btw two type ex : int for next int is 4 octets
-		typedef typename _Iterator::pointer				pointer;// *
-		typedef typename _Iterator::reference			reference;// &
+		typedef typename Iterator::iterator_category	iterator_category;//if its a random _access
+		typedef typename Iterator::value_type			value_type; // the type point ex : int
+		typedef typename Iterator::difference_type		difference_type;// diff space btw two type ex : int for next int is 4 octets
+		typedef typename Iterator::pointer				pointer;// *
+		typedef typename Iterator::reference			reference;// &
 	};
 
 	template <class T>
@@ -284,7 +284,9 @@ namespace ft{
 			 *
 			 *  The underlying iterator must be a Random Access Iterator.
 			 */
-			reference operator[](difference_type __n) const { return *(*this + __n); };
+			reference operator[](difference_type __n) const {
+				return *(*this + __n);
+			};
 	};
 };
 #endif
