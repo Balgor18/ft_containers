@@ -47,7 +47,9 @@ template <class T, class Allocator = std::allocator<T> >
 			// probably use 3 ptr (all people use 3 ptr) // the real one get only 3 ptr
 
 		public :
-			explicit vector(const Allocator& alloc= Allocator()) : _alloc(alloc), _size(0), _capacity(0) { };
+			explicit vector(const Allocator& alloc= Allocator()) : _alloc(alloc), _size(0), _capacity(0) {
+
+			};
 
 			explicit vector(size_type n, const T& value = T(), const Allocator& alloc= Allocator()) : _alloc(alloc), _size(n), _capacity(n){
 				_ptr = _alloc.allocate(n);
@@ -56,10 +58,10 @@ template <class T, class Allocator = std::allocator<T> >
 				}
 			};
 
-			// template <class InputIterator>
-			// vector(InputIterator first, InputIterator last, const Allocator& = Allocator()){
-
-			// };
+			template <class InputIterator>
+			vector(InputIterator first, InputIterator last, const Allocator& alloc= Allocator()) : _alloc(alloc), _size(0), _capacity(0), _ptr(NULL){
+				assign(first, last);
+			};
 
 			vector(const vector<T,Allocator>& x) : _alloc(x._alloc){
 				_ptr = _alloc.allocate(x._capacity);
@@ -76,31 +78,71 @@ template <class T, class Allocator = std::allocator<T> >
 				_alloc.deallocate(_ptr, _capacity);
 			};
 
-			// vector<T,Allocator>& operator=(const vector<T,Allocator>& x);
+			vector<T,Allocator>& operator=(const vector<T,Allocator>& rhs) {
+				if (this != &rhs){
+					assign(rhs.begin, rhs.end());
+				}
+				return (*this);
+			};
 
 			// template <class InputIterator>
-			// void assign(InputIterator first, InputIterator last);
-			// void assign(size_type n, const T& u);
+			void assign(InputIterator first, InputIterator last) {
+				erase(this->begin(), this->end());
+				insert(begin(), first, last);
+			};
+			void assign(size_type n, const T& u) {
+				erase(this->begin(), this->end());
+				insert(this->begin(), n, u)
+			};
 
-			allocator_type get_allocator() const { return (this->_alloc); };
+			allocator_type get_allocator() const {
+				return (this->_alloc);
+			};
 
 			// iterators:
 
-			iterator begin(void) {return (_ptr); };
-			const_iterator begin(void) const { return (_ptr); };
-			iterator end(void) { return (_ptr + _size); };
-			const_iterator end(void) const { return (_ptr + _size); };
-			reverse_iterator rbegin(void) {return (this->end()); };
-			const_reverse_iterator rbegin(void) const { return (this->end());};
-			reverse_iterator rend(void) { return (this->begin());};
-			const_reverse_iterator rend(void) const {return (this->begin());};
+			iterator begin(void) {
+				return (_ptr);
+			};
+			const_iterator begin(void) const {
+				return (_ptr);
+			};
+
+			iterator end(void) {
+				return (_ptr + _size);
+			};
+			const_iterator end(void) const {
+				return (_ptr + _size);
+			};
+
+			reverse_iterator rbegin(void) {
+				return (this->end());
+			};
+			const_reverse_iterator rbegin(void) const {
+				return (this->end());
+			};
+
+			reverse_iterator rend(void) {
+				return (this->begin());
+			};
+			const_reverse_iterator rend(void) const {
+				return (this->begin());
+			};
 
 			// 23.2.4.2 capacity:
 
-			size_type size(void) const {return _size; };
-			size_type max_size() const { return _alloc.max_size(); };
-			size_type capacity(void) const { return _capacity; };
-			bool empty() const { return _size == 0; };
+			size_type size(void) const {
+				return (_size);
+			};
+			size_type max_size() const {
+				return (_alloc.max_size());
+			};
+			size_type capacity(void) const {
+				return (_capacity);
+			};
+			bool empty() const {
+				return (_size == 0);
+			};
 			
 			// void resize(size_type sz, T c = T());
 			// void reserve(size_type n);
@@ -115,6 +157,22 @@ template <class T, class Allocator = std::allocator<T> >
 			// const_reference front() const;
 			// reference back();
 			// const_reference back() const;
+
+			reference front() {
+				return *this->begin();
+			};
+
+			const_reference front() const {
+				return *this->begin();
+			};
+
+			reference back() {
+				return *--this->end();
+			};
+
+			const_reference back() const {
+				return *--this->end();
+			};
 
 			// 23.2.4.3 modifiers:
 
