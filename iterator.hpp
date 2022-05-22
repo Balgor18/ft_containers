@@ -9,7 +9,7 @@ namespace ft{
 	struct bidirectional_iterator_tag: public forward_iterator_tag { };
 	struct random_access_iterator_tag: public bidirectional_iterator_tag { };
 
-	template <class _Iterator>
+	template <class Iterator>
 	struct iterator_traits {
 		typedef typename Iterator::iterator_category	iterator_category;//if its a random _access
 		typedef typename Iterator::value_type			value_type; // the type point ex : int

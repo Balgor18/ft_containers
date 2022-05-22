@@ -5,8 +5,6 @@
 # include <iostream>
 # include <algorithm>
 # include "iterator.hpp"
-// # include "iterator_traits.hpp"
-// # include "reverse_iterator.hpp"
 
 // https://www.lirmm.fr/~ducour/Doc-objets/ISO+IEC+14882-1998.pdf
 // https://fr.acervolima.com/std-allocator-en-c-avec-des-exemples/#:~:text=allocator%20est%20l%27allocateur%20de,pour%20au%20moins%20n%20%C3%A9l%C3%A9ments
@@ -35,8 +33,8 @@ template <class T, class Allocator = std::allocator<T> >
 		
 		typedef ft::random_access_iterator<T>		iterator;
 		typedef ft::random_access_iterator<const T>	const_iterator;
-		// typedef ft::reverse_iterator<iterator> reverse_iterator;
-		// typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
+		typedef ft::reverse_iterator<iterator> reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
 		// 23.2.4.1 construct/copy/destroy:
 		private :// Attribute
@@ -47,7 +45,7 @@ template <class T, class Allocator = std::allocator<T> >
 			// probably use 3 ptr (all people use 3 ptr) // the real one get only 3 ptr
 
 		public :
-			explicit vector(const Allocator& alloc= Allocator()) : _alloc(alloc), _size(0), _capacity(0) {
+			explicit vector(const Allocator& alloc= Allocator()) : _alloc(alloc), _size(0), _capacity(0), _ptr(NULL) {
 
 			};
 
@@ -66,9 +64,7 @@ template <class T, class Allocator = std::allocator<T> >
 			vector(const vector<T,Allocator>& x) : _alloc(x._alloc){
 				_ptr = _alloc.allocate(x._capacity);
 				for (size_type i = 0; i < x._size; i++)
-				{
 					_alloc.construct(_ptr + i, *(x._ptr + i));
-				}
 				_size = x._size;
 				_capacity = x._capacity;
 			};
@@ -85,14 +81,14 @@ template <class T, class Allocator = std::allocator<T> >
 				return (*this);
 			};
 
-			// template <class InputIterator>
+			template <class InputIterator>
 			void assign(InputIterator first, InputIterator last) {
 				erase(this->begin(), this->end());
 				insert(begin(), first, last);
 			};
 			void assign(size_type n, const T& u) {
 				erase(this->begin(), this->end());
-				insert(this->begin(), n, u)
+				insert(this->begin(), n, u);
 			};
 
 			allocator_type get_allocator() const {
@@ -144,17 +140,26 @@ template <class T, class Allocator = std::allocator<T> >
 				return (_size == 0);
 			};
 			
-			// void resize(size_type sz, T c = T());
-			// void reserve(size_type n);
+			void resize(size_type sz, T c = T()){
+				// https://www.cplusplus.com/reference/vector/vector/resize/
+			};
+			// void reserve(size_type n){
+				// https://www.cplusplus.com/reference/vector/vector/reserve/
+			// };
 
 			// element access:
 
-			// reference operator[](size_type n);
+			// reference operator[](size_type n){
+			// 	https://www.cplusplus.com/reference/vector/vector/operator[]/
+			// };
 			// const_reference operator[](size_type n) const;
+
 			// const_reference at(size_type n) const;
 			// reference at(size_type n);
+
 			// reference front();
 			// const_reference front() const;
+
 			// reference back();
 			// const_reference back() const;
 
