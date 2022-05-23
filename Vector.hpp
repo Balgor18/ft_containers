@@ -98,31 +98,31 @@ template <class T, class Allocator = std::allocator<T> >
 			// iterators:
 
 			iterator begin(void) {
-				return (_ptr);
+				return (iterator(_ptr));
 			};
 			const_iterator begin(void) const {
-				return (_ptr);
+				return (const_iterator(_ptr));
 			};
 
 			iterator end(void) {
-				return (_ptr + _size);
+				return (iterator(_ptr + _size));
 			};
 			const_iterator end(void) const {
-				return (_ptr + _size);
+				return const_iterator((_ptr + _size));
 			};
 
 			reverse_iterator rbegin(void) {
-				return (this->end());
+				return (reverse_iterator(this->end()));
 			};
 			const_reverse_iterator rbegin(void) const {
-				return (this->end());
+				return (const_reverse_iterator(this->end()));
 			};
 
 			reverse_iterator rend(void) {
-				return (this->begin());
+				return (reverse_iterator(this->begin()));
 			};
 			const_reverse_iterator rend(void) const {
-				return (this->begin());
+				return (const_reverse_iterator(this->begin()));
 			};
 
 			// 23.2.4.2 capacity:
@@ -139,13 +139,19 @@ template <class T, class Allocator = std::allocator<T> >
 			bool empty() const {
 				return (_size == 0);
 			};
-			
-			void resize(size_type sz, T c = T()){
-				// https://www.cplusplus.com/reference/vector/vector/resize/
-			};
-			// void reserve(size_type n){
-				// https://www.cplusplus.com/reference/vector/vector/reserve/
+
+			// void resize(size_type n, T c = T()){
+			// 	if (n < _size)
+			// 		erase(begin() + n, end());
+			// 	else if (n > _size){
+			// 		insert(begin(), n - end(), c);
 			// };
+
+			void reserve(size_type n){
+				// https://www.cplusplus.com/reference/vector/vector/reserve/
+
+
+			};
 
 			// element access:
 

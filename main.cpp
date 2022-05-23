@@ -4,7 +4,7 @@
 #include "Vector.hpp"
 #include <iostream>
 #include <algorithm>
-
+#include "iterator.hpp"
 // STACK MAIN
 
 // int	main(void)
@@ -59,56 +59,128 @@ int	main(void)
 	std::vector<int>	real;
 	ft::vector<int>		mind;
 
+	// std::cout << "real.capacity " << real.capacity() << std::endl;
+	// std::cout << "real.size " << real.size() << std::endl;
+	// std::cout << "mind.capacity " << mind.capacity() << std::endl;
+	// std::cout << "mind.size " << mind.size() << std::endl;
+
+	// std::cout << "real.max_size " << real.max_size() << std::endl;
+	// std::cout << "mind.max_size " << mind.max_size() << std::endl;
+
+	// std::cout << "real.empty " << real.empty() << std::endl;
+	// std::cout << "mind.empty " << mind.empty() << std::endl;
+
+	// real.push_back(5);
+	// real.push_back(5);
+	// real.push_back(5);
+	// real.push_back(5);
+	// real.push_back(5);
+	// std::cout << "real.capacity " << real.capacity() << std::endl;
+	// std::cout << "real.size " << real.size() << std::endl;
+	// std::cout << "mind.capacity " << mind.capacity() << std::endl;
+	// std::cout << "mind.size " << mind.size() << std::endl;
+
+	// std::cout << " resize " << std::endl;
+	// real.resize(2);
+	// std::cout << "real.capacity " << real.capacity() << std::endl;
+	// std::cout << "real.size " << real.size() << std::endl;
+
+
+	// mind.push_back(5);
+	// mind.push_back(5);
+	// mind.push_back(5);
+	// mind.push_back(5);
+	// mind.push_back(5);
+	// std::cout << "mind.capacity " << mind.capacity() << std::endl;
+	// std::cout << "mind.size " << mind.size() << std::endl;
+	// std::cout << "mind.capacity " << mind.capacity() << std::endl;
+	// std::cout << "mind.size " << mind.size() << std::endl;
+
+	// std::cout << " resize " << std::endl;
+	// mind.resize(2);
+	// std::cout << "mind.capacity " << mind.capacity() << std::endl;
+	// std::cout << "mind.size " << mind.size() << std::endl;
+
+	// real.push_back(5);
+	// real.push_back(5);
+
+	// real.push_back(5);
+	// std::cout << "real.capacity " << real.capacity() << std::endl;
+	// std::cout << "real.size " << real.size() << std::endl;
+	// std::cout << " resize " << std::endl;
+	// real.resize(5, 100);
+	// std::cout << "real.capacity " << real.capacity() << std::endl;
+	// std::cout << "real.size " << real.size() << std::endl;
+
+	// for (std::vector<int>::iterator itv = real.begin(); itv < real.end(); itv++){
+	// 	std::cout << "val = " << *itv << std::endl;
+	// }
+
+
+	// mind.push_back(5);
+	// std::cout << " resize " << std::endl;
+	// mind.resize(5, 100);
+	// std::cout << "mind.capacity " << mind.capacity() << std::endl;
+	// std::cout << "mind.size " << mind.size() << std::endl;
+
+	// mind.begin();
+	// for (ft::vector<int>::iterator itv = mind.begin(); itv < mind.end(); itv++){
+	// 	std::cout << "val = " << *itv << std::endl;
+	// }
+
+
+
+	real.reserve(5);
 	std::cout << "real.capacity " << real.capacity() << std::endl;
 	std::cout << "real.size " << real.size() << std::endl;
-	std::cout << "mind.capacity " << mind.capacity() << std::endl;
-	std::cout << "mind.size " << mind.size() << std::endl;
 
-	std::cout << "real.max_size " << real.max_size() << std::endl;
-	std::cout << "mind.max_size " << mind.max_size() << std::endl;
+	// mind.push_back(5);
+	// std::cout << "mind.capacity " << mind.capacity() << std::endl;
+	// std::cout << "mind.size " << mind.size() << std::endl;
 
-	std::cout << "real.empty " << real.empty() << std::endl;
-	std::cout << "mind.empty " << mind.empty() << std::endl;
+	// real.resize(20);
+	// std::cout << "real.capacity " << real.capacity() << std::endl;
+	// std::cout << "real.size " << real.size() << std::endl;
 
-	real.push_back(5);
-	mind.push_back(5);
-	std::cout << " push 5 " << std::endl;
-	std::cout << "real.capacity " << real.capacity() << std::endl;
-	std::cout << "real.size " << real.size() << std::endl;
-	std::cout << "mind.capacity " << mind.capacity() << std::endl;
-	std::cout << "mind.size " << mind.size() << std::endl;
+	// real.push_back(5);
+	// mind.push_back(5);
+	// std::cout << " push 5 " << std::endl;
+	// std::cout << "real.capacity " << real.capacity() << std::endl;
+	// std::cout << "real.size " << real.size() << std::endl;
+	// std::cout << "mind.capacity " << mind.capacity() << std::endl;
+	// std::cout << "mind.size " << mind.size() << std::endl;
 
-	real.push_back(6);
-	mind.push_back(6);
-	std::cout << " push 6 " << std::endl;
-	std::cout << "real.capacity " << real.capacity() << std::endl;
-	std::cout << "real.size " << real.size() << std::endl;
-	std::cout << "mind.capacity " << mind.capacity() << std::endl;
-	std::cout << "mind.size " << mind.size() << std::endl;
+	// real.push_back(6);
+	// mind.push_back(6);
+	// std::cout << " push 6 " << std::endl;
+	// std::cout << "real.capacity " << real.capacity() << std::endl;
+	// std::cout << "real.size " << real.size() << std::endl;
+	// std::cout << "mind.capacity " << mind.capacity() << std::endl;
+	// std::cout << "mind.size " << mind.size() << std::endl;
 
-	real.push_back(7);
-	mind.push_back(7);
-	std::cout << " push 7 " << std::endl;
-	std::cout << "real.capacity " << real.capacity() << std::endl;
-	std::cout << "real.size " << real.size() << std::endl;
-	std::cout << "mind.capacity " << mind.capacity() << std::endl;
-	std::cout << "mind.size " << mind.size() << std::endl;
+	// real.push_back(7);
+	// mind.push_back(7);
+	// std::cout << " push 7 " << std::endl;
+	// std::cout << "real.capacity " << real.capacity() << std::endl;
+	// std::cout << "real.size " << real.size() << std::endl;
+	// std::cout << "mind.capacity " << mind.capacity() << std::endl;
+	// std::cout << "mind.size " << mind.size() << std::endl;
 
-	real.push_back(8);
-	mind.push_back(8);
-	std::cout << " push 8 " << std::endl;
-	std::cout << "real.capacity " << real.capacity() << std::endl;
-	std::cout << "real.size " << real.size() << std::endl;
-	std::cout << "mind.capacity " << mind.capacity() << std::endl;
-	std::cout << "mind.size " << mind.size() << std::endl;
+	// real.push_back(8);
+	// mind.push_back(8);
+	// std::cout << " push 8 " << std::endl;
+	// std::cout << "real.capacity " << real.capacity() << std::endl;
+	// std::cout << "real.size " << real.size() << std::endl;
+	// std::cout << "mind.capacity " << mind.capacity() << std::endl;
+	// std::cout << "mind.size " << mind.size() << std::endl;
 
-	real.push_back(9);
-	mind.push_back(9);
-	std::cout << " push 9 " << std::endl;
-	std::cout << "real.capacity " << real.capacity() << std::endl;
-	std::cout << "real.size " << real.size() << std::endl;
-	std::cout << "mind.capacity " << mind.capacity() << std::endl;
-	std::cout << "mind.size " << mind.size() << std::endl;
+	// real.push_back(9);
+	// mind.push_back(9);
+	// std::cout << " push 9 " << std::endl;
+	// std::cout << "real.capacity " << real.capacity() << std::endl;
+	// std::cout << "real.size " << real.size() << std::endl;
+	// std::cout << "mind.capacity " << mind.capacity() << std::endl;
+	// std::cout << "mind.size " << mind.size() << std::endl;
 
 
 	// std::vector<double>		real2;

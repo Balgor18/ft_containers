@@ -59,18 +59,30 @@ namespace ft{
 		protected:
 			pointer	current;
 		public :
-			random_access_iterator() : current(0) { return ; };
+			random_access_iterator() : current(0) {
+				return ;
+			};
 
-			explicit random_access_iterator(pointer x) : current(x) { return ; };
+			explicit random_access_iterator(pointer x) : current(x) {
+				return ;
+			};
 
 			template <class U>
-			random_access_iterator(const random_access_iterator<U> &u) : current(u.base()) { return ;};
+			random_access_iterator(const random_access_iterator<U> &u) : current(u.base()) {
+				return ;
+			};
 
-			pointer base() const { return current; };
+			pointer base() const {
+				return current;
+			};
 
-			reference operator*() const { return *current; };
+			reference operator*() const {
+				return *current;
+			};
 
-			pointer operator->() const { return &(operator*()); };
+			pointer operator->() const {
+				return &(operator*());
+			};
 
 			template <class U>
 			random_access_iterator& operator=(const random_access_iterator<U> &u) {
@@ -124,13 +136,76 @@ namespace ft{
 				return *(current + n);
 			};
 	};
-// <
-// >
-// <=
-// >=
-// +=
-// -=
-// =
+
+	template<class T1, class T2>
+	bool	operator<(const random_access_iterator<T1>& lrs, const random_access_iterator<T2>& rhs){
+		return (lrs.base() < rhs.base());
+	}
+
+	template<class T>
+	bool	operator<(const random_access_iterator<T>& lrs, const random_access_iterator<T>& rhs){
+		return (lrs.base() < rhs.base());
+	}
+
+	template<class T1, class T2>
+	bool	operator>(const random_access_iterator<T1>& lrs, const random_access_iterator<T2>& rhs){
+		return (!(lrs < rhs));
+	}
+
+	template<class T>
+	bool	operator>(const random_access_iterator<T>& lrs, const random_access_iterator<T>& rhs){
+		return (!(lrs < rhs));
+	}
+
+	template<class T1, class T2>
+	bool	operator<=(const random_access_iterator<T1>& lrs, const random_access_iterator<T2>& rhs){
+		return (lrs.base <= rhs.base());
+	}
+
+	template<class T>
+	bool	operator<=(const random_access_iterator<T>& lrs, const random_access_iterator<T>& rhs){
+		return (lrs.base <= rhs.base());
+	}
+
+	template<class T1, class T2>
+	bool	operator>=(const random_access_iterator<T1>& lrs, const random_access_iterator<T2>& rhs){
+		return (lrs.base >= rhs.base());
+	}
+
+	template<class T>
+	bool	operator>=(const random_access_iterator<T>& lrs, const random_access_iterator<T>& rhs){
+		return (lrs.base >= rhs.base());
+	}
+
+	template<class T1, class T2>
+	bool	operator+=(const random_access_iterator<T1>& lrs, const random_access_iterator<T2>& rhs){
+		return (lrs.base += rhs.base());
+	}
+
+	template<class T>
+	bool	operator+=(const random_access_iterator<T>& lrs, const random_access_iterator<T>& rhs){
+		return (lrs.base += rhs.base());
+	}
+
+	template<class T1, class T2>
+	bool	operator-=(const random_access_iterator<T1>& lrs, const random_access_iterator<T2>& rhs){
+		return (lrs.base -= rhs.base());
+	}
+
+	template<class T>
+	bool	operator-=(const random_access_iterator<T>& lrs, const random_access_iterator<T>& rhs){
+		return (lrs.base -= rhs.base());
+	}
+
+	template<class T1, class T2>
+	bool	operator==(const random_access_iterator<T1>& lrs, const random_access_iterator<T2>& rhs){
+		return (lrs.base == rhs.base());
+	}
+
+	template<class T>
+	bool	operator==(const random_access_iterator<T>& lrs, const random_access_iterator<T>& rhs){
+		return (lrs.base == rhs.base());
+	}
 };
 
 
@@ -288,5 +363,6 @@ namespace ft{
 				return *(*this + __n);
 			};
 	};
+
 };
 #endif
