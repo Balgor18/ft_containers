@@ -149,10 +149,20 @@ template <class T, class Allocator = std::allocator<T> >
 
 			void reserve(size_type n){
 				// https://www.cplusplus.com/reference/vector/vector/reserve/
-
-
+				if (n <= capacity())
+					return;
+				else {
+					pointer	tmp = _alloc.allocate(n);
+					for (size_type i = 0; i < _size; i++) {
+						_alloc.construct(tmp + i, *(_ptr + i));
+						_alloc.destroy(_ptr + i);
+					}
+					_alloc.deallocate(_ptr, _capacity);
+					_capacity = n;
+					_ptr = tmp;
+				}
 			};
-
+		
 			// element access:
 
 			// reference operator[](size_type n){
@@ -212,12 +222,28 @@ template <class T, class Allocator = std::allocator<T> >
 				_size++;
 			};
 
-			// void pop_back();
+			void pop_back(void){
+				_alloc.destroy(&this->back());
+				_size--;
+			};
+
 			// iterator insert(iterator position, const T& x);
 			// void insert(iterator position, size_type n, const T& x);
 			// template <class InputIterator>
 			// void insert(iterator position, InputIterator first, InputIterator last);
-			// iterator erase(iterator position);
+
+			iterator erase(iterator position){
+				size_type	distance = position - it;
+				size_type	i = distance;
+				iterator	it = this->begin();
+				while (it + distance != this->end() - 1) {
+					i++;
+					_pointer[i - 1] = _pointer[i];
+					it++;	
+				}
+				this->pop_back();
+				return (this->begin() + distance);
+			};
 			// iterator erase(iterator first, iterator last);
 			// void swap(vector<T,Allocator>&);
 
