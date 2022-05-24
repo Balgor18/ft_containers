@@ -8,7 +8,7 @@
 
 // https://www.lirmm.fr/~ducour/Doc-objets/ISO+IEC+14882-1998.pdf
 // https://fr.acervolima.com/std-allocator-en-c-avec-des-exemples/#:~:text=allocator%20est%20l%27allocateur%20de,pour%20au%20moins%20n%20%C3%A9l%C3%A9ments
-// https://h-deb.clg.qc.ca/Sujets/Divers--cplusplus/SFINAE.html
+// https://h-deb.clg.qc.ca/Sujeimage.pngts/Divers--cplusplus/SFINAE.html
 
 // http://chenweixiang.github.io/docs/The_C++_Programming_Language_4th_Edition_Bjarne_Stroustrup.pdf
 // https://code.woboq.org/gcc/libstdc++-v3/include/bits/stl_iterator.h.html
@@ -140,12 +140,12 @@ template <class T, class Allocator = std::allocator<T> >
 				return (_size == 0);
 			};
 
-			// void resize(size_type n, T c = T()){
-			// 	if (n < _size)
-			// 		erase(begin() + n, end());
-			// 	else if (n > _size){
-			// 		insert(begin(), n - end(), c);
-			// };
+			void resize(size_type n, T c = T()){
+				if (n < _size)
+					erase(begin() + n, end());
+				else if (n > _size){
+					insert(begin(), n - end(), c);
+			};
 
 			void reserve(size_type n){
 				// https://www.cplusplus.com/reference/vector/vector/reserve/
@@ -165,34 +165,36 @@ template <class T, class Allocator = std::allocator<T> >
 		
 			// element access:
 
-			// reference operator[](size_type n){
-			// 	https://www.cplusplus.com/reference/vector/vector/operator[]/
-			// };
-			// const_reference operator[](size_type n) const;
+			reference operator[]( size_type n ) {
+				// 	https://www.cplusplus.com/reference/vector/vector/operator[]/
+				return *(this->begin() + n);
+			};
 
-			// const_reference at(size_type n) const;
-			// reference at(size_type n);
+			const_reference operator[]( size_type n ) const {
+				return *(this->begin() + n);
+			};
 
-			// reference front();
-			// const_reference front() const;
-
-			// reference back();
-			// const_reference back() const;
+			const_reference at(size_type n) const{
+				return *(_ptr + n);
+			};
+			reference at(size_type n){
+				return *(_ptr + n);
+			};
 
 			reference front() {
-				return *this->begin();
+				return *(this->begin());
 			};
 
 			const_reference front() const {
-				return *this->begin();
+				return *(this->begin());
 			};
 
 			reference back() {
-				return *--this->end();
+				return *(--this->end());
 			};
 
 			const_reference back() const {
-				return *--this->end();
+				return *(--this->end());
 			};
 
 			// 23.2.4.3 modifiers:
@@ -227,13 +229,45 @@ template <class T, class Allocator = std::allocator<T> >
 				_size--;
 			};
 
-			// iterator insert(iterator position, const T& x);
-			// void insert(iterator position, size_type n, const T& x);
-			// template <class InputIterator>
-			// void insert(iterator position, InputIterator first, InputIterator last);
+			iterator insert(iterator pos, const T& x){
+				size_type distance = pos - this->begin();
+				if (_capacity == _size && _capacity != 0) {
+					reserve(2 * _capacity);
+				}
+				else if (!_capacity)
+					reserve(1);
+				for (size_type j = _size; j > distance; j--) {
+					_alloc.construct(_pointer + j, _pointer[j - 1]);
+				}
+				_alloc.construct(_pointer + distance, x);
+				_size++;
+				return this->begin() + distance;
+			};
 
-			iterator erase(iterator position){
-				size_type	distance = position - it;
+			void insert(iterator pos, size_type n, const T& x){
+				difference_type dist = pos - this->begin();
+				
+				if (n == 0)
+					return ;
+				if (_capacity < _size + n && _size * 2 >= _size + n) 
+						reserve(2 * _size);
+				else
+					reserve(_size + n);
+				for (difference_type i = _size - 1; i >= dist; i--) {
+					_alloc.construct(_ptr + n + i, _ptr[i]);
+					_alloc.destroy(_ptr + i);
+				}
+				_size += n;
+				for (size_type j = 0; j < n; j++) {
+					_alloc.construct(_ptr + j + dist, x);
+				}
+			};
+
+			// template <class InputIterator>
+			// void insert(iterator pos, InputIterator first, InputIterator last);
+
+			iterator erase(iterator pos){
+				size_type	distance = pos - it;
 				size_type	i = distance;
 				iterator	it = this->begin();
 				while (it + distance != this->end() - 1) {
@@ -245,13 +279,16 @@ template <class T, class Allocator = std::allocator<T> >
 				return (this->begin() + distance);
 			};
 			// iterator erase(iterator first, iterator last);
-			// void swap(vector<T,Allocator>&);
+			
+			void swap(vector<T,Allocator> &x) {
+				std::swap(_size, x._size);
+				std::swap(_capacity, x._capacity);
+				std::swap(_ptr, x._ptr);
+			};
 
 			void clear(void) {
 				for (size_type i = 0; i < _size; i++)
-				{
 					_alloc.destroy(_ptr + i);
-				}
 				_size = 0;
 			};
 	};
