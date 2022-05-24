@@ -75,9 +75,8 @@ template <class T, class Allocator = std::allocator<T> >
 			};
 
 			vector<T,Allocator>& operator=(const vector<T,Allocator>& rhs) {
-				if (this != &rhs){
+				if (this != &rhs)
 					assign(rhs.begin, rhs.end());
-				}
 				return (*this);
 			};
 
@@ -86,6 +85,7 @@ template <class T, class Allocator = std::allocator<T> >
 				erase(this->begin(), this->end());
 				insert(begin(), first, last);
 			};
+
 			void assign(size_type n, const T& u) {
 				erase(this->begin(), this->end());
 				insert(this->begin(), n, u);
@@ -143,7 +143,7 @@ template <class T, class Allocator = std::allocator<T> >
 			void resize(size_type n, T c = T()){
 				if (n < _size)
 					erase(begin() + n, end());
-				else if (n > _size){
+				else if (n > _size)
 					insert(begin(), n - end(), c);
 			};
 
@@ -230,18 +230,18 @@ template <class T, class Allocator = std::allocator<T> >
 			};
 
 			iterator insert(iterator pos, const T& x){
-				size_type distance = pos - this->begin();
+				size_type dist = pos - this->begin();
 				if (_capacity == _size && _capacity != 0) {
 					reserve(2 * _capacity);
 				}
 				else if (!_capacity)
 					reserve(1);
-				for (size_type j = _size; j > distance; j--) {
-					_alloc.construct(_pointer + j, _pointer[j - 1]);
+				for (size_type j = _size; j > dist; j--) {
+					_alloc.construct(_ptr + j, _ptr[j - 1]);
 				}
-				_alloc.construct(_pointer + distance, x);
+				_alloc.construct(_ptr + dist, x);
 				_size++;
-				return this->begin() + distance;
+				return this->begin() + dist;
 			};
 
 			void insert(iterator pos, size_type n, const T& x){
@@ -267,12 +267,12 @@ template <class T, class Allocator = std::allocator<T> >
 			// void insert(iterator pos, InputIterator first, InputIterator last);
 
 			iterator erase(iterator pos){
+				iterator	it = this->begin();
 				size_type	distance = pos - it;
 				size_type	i = distance;
-				iterator	it = this->begin();
 				while (it + distance != this->end() - 1) {
 					i++;
-					_pointer[i - 1] = _pointer[i];
+					_ptr[i - 1] = _ptr[i];
 					it++;	
 				}
 				this->pop_back();
