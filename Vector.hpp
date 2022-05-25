@@ -5,15 +5,7 @@
 # include <iostream>
 # include <algorithm>
 # include "iterator.hpp"
-
-// https://www.lirmm.fr/~ducour/Doc-objets/ISO+IEC+14882-1998.pdf
-// https://fr.acervolima.com/std-allocator-en-c-avec-des-exemples/#:~:text=allocator%20est%20l%27allocateur%20de,pour%20au%20moins%20n%20%C3%A9l%C3%A9ments
-// https://h-deb.clg.qc.ca/Sujeimage.pngts/Divers--cplusplus/SFINAE.html
-
-// http://chenweixiang.github.io/docs/The_C++_Programming_Language_4th_Edition_Bjarne_Stroustrup.pdf
-// https://code.woboq.org/gcc/libstdc++-v3/include/bits/stl_iterator.h.html
-
-// http://www.cplusplus.com/reference/iterator/
+# include "enable_if.hpp"
 
 namespace ft {
 template <class T, class Allocator = std::allocator<T> >
@@ -22,19 +14,19 @@ template <class T, class Allocator = std::allocator<T> >
 		public:
 		// types:
 
-		typedef T									value_type;
-		typedef Allocator							allocator_type;
-		typedef std::size_t							size_type;
-		typedef std::ptrdiff_t						difference_type;
-		typedef typename Allocator::reference		reference;
-		typedef typename Allocator::const_reference	const_reference;
-		typedef typename Allocator::pointer			pointer;
-		typedef typename Allocator::const_pointer	const_pointer;
+		typedef T										value_type;
+		typedef Allocator								allocator_type;
+		typedef std::size_t								size_type;
+		typedef std::ptrdiff_t							difference_type;
+		typedef typename Allocator::reference			reference;
+		typedef typename Allocator::const_reference		const_reference;
+		typedef typename Allocator::pointer				pointer;
+		typedef typename Allocator::const_pointer		const_pointer;
 		
-		typedef ft::random_access_iterator<T>		iterator;
-		typedef ft::random_access_iterator<const T>	const_iterator;
-		typedef ft::reverse_iterator<iterator> reverse_iterator;
-		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
+		typedef ft::random_access_iterator<T>			iterator;
+		typedef ft::random_access_iterator<const T>		const_iterator;
+		typedef ft::reverse_iterator<iterator>			reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 
 		// 23.2.4.1 construct/copy/destroy:
 		private :// Attribute
@@ -295,4 +287,4 @@ template <class T, class Allocator = std::allocator<T> >
 };
 
 #endif
-// https://www.guru99.com/cpp-vector-stl.html
+
