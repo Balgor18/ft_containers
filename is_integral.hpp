@@ -2,7 +2,7 @@
 #define IS_INTEGRAL_HPP
 
 # include <iostream>
-# include <type_traits>
+// # include <type_traits>
 
 namespace ft{
 

@@ -7,6 +7,7 @@
 # include "iterator.hpp"
 # include "enable_if.hpp"
 # include "is_integral.hpp"
+# include "lexicographical_compare.hpp"
 
 namespace ft {
 template <class T, class Allocator = std::allocator<T> >
@@ -49,7 +50,7 @@ template <class T, class Allocator = std::allocator<T> >
 			};
 
 			template <class InputIterator>
-			vector(InputIterator first, InputIterator last, const Allocator& alloc= Allocator(), typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0) : _alloc(alloc), _size(0), _capacity(0), _ptr(NULL){
+			vector(InputIterator first, InputIterator last, const Allocator& alloc= Allocator(), typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL) : _alloc(alloc), _size(0), _capacity(0), _ptr(NULL){
 				assign(first, last);
 			};
 
@@ -72,15 +73,16 @@ template <class T, class Allocator = std::allocator<T> >
 				return (*this);
 			};
 
-			template <class InputIterator>
-			void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0) {
-				erase(this->begin(), this->end());
-				insert(begin(), first, last);
-			};
-
 			void assign(size_type n, const T& u) {
 				erase(this->begin(), this->end());
 				insert(this->begin(), n, u);
+			};
+
+			template <class InputIterator>
+			void assign(InputIterator first, InputIterator last,
+					typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL) {
+				erase(this->begin(), this->end());
+				insert(begin(), first, last);
 			};
 
 			allocator_type get_allocator() const {
@@ -220,13 +222,13 @@ template <class T, class Allocator = std::allocator<T> >
 			};
 
 			iterator insert(iterator pos, const T& x){
-				size_type dist = pos - this->begin();
+				difference_type dist = pos - this->begin();
 				if (_capacity == _size && _capacity != 0) {
 					reserve(2 * _capacity);
 				}
 				else if (!_capacity)
 					reserve(1);
-				for (size_type j = _size; j > dist; j--) {
+				for (difference_type j = _size; j > dist; j--) {
 					_alloc.construct(_ptr + j, _ptr[j - 1]);
 				}
 				_alloc.construct(_ptr + dist, x);
@@ -313,7 +315,45 @@ template <class T, class Allocator = std::allocator<T> >
 					_alloc.destroy(_ptr + i);
 				_size = 0;
 			};
+
 	};
+
+	template <class T, class Allocator>
+	bool operator==(const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs) {
+		if (lhs.size() != rhs.size())
+			return false;
+		for (size_t j = 0; j < lhs.size(); j++) {
+			if (lhs.at(j) != rhs.at(j))
+				return false;
+		}
+		return true;
+	};
+
+	template <class T, class Allocator>
+	bool operator< (const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs) {
+		return lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+	};
+
+	template <class T, class Allocator>
+	bool operator!=(const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs) {
+		return (!(lhs == rhs));
+	};
+
+	template <class T, class Allocator>
+	bool operator> (const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs) {
+		return (rhs < lhs);
+	};
+
+	template <class T, class Allocator>
+	bool operator>=(const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs) {
+		return (lhs < rhs);
+	};
+
+	template <class T, class Allocator>
+	bool operator<=(const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs) {
+		return (!(rhs < lhs));
+	};
+
 };
 
 #endif
