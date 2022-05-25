@@ -6,6 +6,7 @@
 # include <algorithm>
 # include "iterator.hpp"
 # include "enable_if.hpp"
+# include "is_integral.hpp"
 
 namespace ft {
 template <class T, class Allocator = std::allocator<T> >
@@ -48,7 +49,7 @@ template <class T, class Allocator = std::allocator<T> >
 			};
 
 			template <class InputIterator>
-			vector(InputIterator first, InputIterator last, const Allocator& alloc= Allocator()) : _alloc(alloc), _size(0), _capacity(0), _ptr(NULL){
+			vector(InputIterator first, InputIterator last, const Allocator& alloc= Allocator(), typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0) : _alloc(alloc), _size(0), _capacity(0), _ptr(NULL){
 				assign(first, last);
 			};
 
@@ -72,7 +73,7 @@ template <class T, class Allocator = std::allocator<T> >
 			};
 
 			template <class InputIterator>
-			void assign(InputIterator first, InputIterator last) {
+			void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0) {
 				erase(this->begin(), this->end());
 				insert(begin(), first, last);
 			};
@@ -252,22 +253,54 @@ template <class T, class Allocator = std::allocator<T> >
 				}
 			};
 
-			// template <class InputIterator>
-			// void insert(iterator pos, InputIterator first, InputIterator last);
+			template <class InputIterator>
+			void insert(iterator pos, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0){
+				difference_type dist = pos - this->begin();
+				size_type it_dist = 0;
+				size_type last_size = this->_size;
+				InputIterator it = first;
+
+				while (it != last) {
+					it_dist++;
+					it++;
+				}
+				if (this->_capacity < this->_size + it_dist && this->_size * 2 > this->_size + it_dist)
+					reserve(2 * this->_size);
+				else
+					reserve(this->_size + it_dist);
+				for (difference_type i = last_size - 1; i >= dist ; i--) {
+					this->_alloc.construct(&_ptr[it_dist + i], _ptr[i]);
+					this->_alloc.destroy(_ptr + i);
+				}
+				for (size_type j = 0; first != last; j++){
+					this->_alloc.construct(&_ptr[j + dist], *first++);
+					_size++;
+				}
+			};
+
 
 			iterator erase(iterator pos){
 				iterator	it = this->begin();
-				size_type	distance = pos - it;
-				size_type	i = distance;
-				while (it + distance != this->end() - 1) {
+				size_type	dist = pos - it;
+				size_type	i = dist;
+				while (it + dist != this->end() - 1) {
 					i++;
 					_ptr[i - 1] = _ptr[i];
 					it++;	
 				}
 				this->pop_back();
-				return (this->begin() + distance);
+				return (this->begin() + dist);
 			};
-			// iterator erase(iterator first, iterator last);
+
+			iterator erase(iterator first, iterator last){
+				iterator	iterato = this->begin();
+				size_type	i = 0;
+				for (;iterato != first; iterato++)
+					i++;
+				for (;first != last;first++)
+					erase(iterato);
+				return (this->begin() + i);
+			};
 			
 			void swap(vector<T,Allocator> &x) {
 				std::swap(_size, x._size);
