@@ -34,7 +34,6 @@ template <class T, class Allocator = std::allocator<T> >
 			size_type		_size;
 			size_type		_capacity;
 			pointer	 		_ptr;
-			// probably use 3 ptr (all people use 3 ptr) // the real one get only 3 ptr
 
 		public :
 			explicit vector(const Allocator& alloc= Allocator()) : _alloc(alloc), _size(0), _capacity(0), _ptr(NULL) {
@@ -140,7 +139,6 @@ template <class T, class Allocator = std::allocator<T> >
 			};
 
 			void reserve(size_type n){
-				// https://www.cplusplus.com/reference/vector/vector/reserve/
 				if (n <= capacity())
 					return;
 				else {
@@ -158,7 +156,6 @@ template <class T, class Allocator = std::allocator<T> >
 			// element access:
 
 			reference operator[]( size_type n ) {
-				// 	https://www.cplusplus.com/reference/vector/vector/operator[]/
 				return *(this->begin() + n);
 			};
 
