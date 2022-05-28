@@ -5,7 +5,7 @@ OBJS	=	$(SRCS:%.cpp=%.o)
 DEPS	=	$(OBJS:%.o=%.d)
 
 CXX		=	clang++
-CXXFLAGS	=	-Wall -Wextra -Werror -MMD -MP
+CXXFLAGS	=	-Wall -Wextra -Werror -MMD -MP -Wshadow
 
 
 all		:	$(NAME)

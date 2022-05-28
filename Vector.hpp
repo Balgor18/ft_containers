@@ -50,7 +50,7 @@ template <class T, class Allocator = std::allocator<T> >
 			};
 
 			template <class InputIterator>
-			vector(InputIterator first, InputIterator last, const Allocator& alloc= Allocator(), typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL) : _alloc(alloc), _size(0), _capacity(0), _ptr(NULL){
+			vector(InputIterator first, InputIterator last, const Allocator& alloc= Allocator(), typename ft::enable_if<!ft::is_integral<InputIterator>::val, InputIterator>::type* = NULL): _alloc(alloc), _size(0), _capacity(0), _ptr(NULL){
 				assign(first, last);
 			};
 
@@ -69,7 +69,7 @@ template <class T, class Allocator = std::allocator<T> >
 
 			vector<T,Allocator>& operator=(const vector<T,Allocator>& rhs) {
 				if (this != &rhs)
-					assign(rhs.begin, rhs.end());
+					assign(rhs.begin(), rhs.end());
 				return (*this);
 			};
 
@@ -80,7 +80,7 @@ template <class T, class Allocator = std::allocator<T> >
 
 			template <class InputIterator>
 			void assign(InputIterator first, InputIterator last,
-					typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL) {
+					typename ft::enable_if<!ft::is_integral<InputIterator>::val, InputIterator>::type* = NULL) {
 				erase(this->begin(), this->end());
 				insert(begin(), first, last);
 			};
@@ -202,12 +202,13 @@ template <class T, class Allocator = std::allocator<T> >
 				else if (_size == _capacity) {
 					pointer	tmp;
 					tmp = _alloc.allocate(_size * 2);
-					for (size_type i(0); i < _size; i++) {
+					for (size_type i = 0; i < _size; i++) {
 						_alloc.construct(tmp + i, *(_ptr + i));
 						_alloc.destroy(_ptr + i);
 					}
 					_alloc.deallocate(_ptr, _capacity);
 					_capacity = (_size * 2);
+					_alloc.construct(tmp + _size, x);
 					_size++;
 					_ptr = tmp;
 					return ;
@@ -256,7 +257,7 @@ template <class T, class Allocator = std::allocator<T> >
 			};
 
 			template <class InputIterator>
-			void insert(iterator pos, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0){
+			void insert(iterator pos, InputIterator first, InputIterator last){//, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0){
 				difference_type dist = pos - this->begin();
 				size_type it_dist = 0;
 				size_type last_size = this->_size;
@@ -275,11 +276,11 @@ template <class T, class Allocator = std::allocator<T> >
 					this->_alloc.destroy(_ptr + i);
 				}
 				for (size_type j = 0; first != last; j++){
-					this->_alloc.construct(&_ptr[j + dist], *first++);
+					this->_alloc.construct(&_ptr[j + dist], *first);
+					first++;
 					_size++;
 				}
 			};
-
 
 			iterator erase(iterator pos){
 				iterator	it = this->begin();
@@ -311,11 +312,21 @@ template <class T, class Allocator = std::allocator<T> >
 			};
 
 			void clear(void) {
+				if (_capacity == 0)
+					return ;
 				for (size_type i = 0; i < _size; i++)
 					_alloc.destroy(_ptr + i);
+				_alloc.deallocate(_ptr, _capacity);
+				_ptr = NULL;
+				_capacity = 0;
 				_size = 0;
 			};
 
+	};
+
+	template< class T, class Alloc >
+	void swap( ft::vector<T,Alloc>& lhs, ft	::vector<T,Alloc>& rhs ) {
+		lhs.swap(rhs);
 	};
 
 	template <class T, class Allocator>

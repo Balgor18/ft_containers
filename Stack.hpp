@@ -40,23 +40,23 @@ template <class T, class Container = std::vector<T> >
 				c.pop_back();
 			}
 
-			template <class Tt, class Containerr>
-			friend bool operator== (const stack<Tt,Containerr>& lhs, const stack<Tt,Containerr>& rhs);
+			template <class _T, class _Container>
+			friend bool operator== (const stack<_T,_Container>& lhs, const stack<_T,_Container>& rhs);
 
-			template <class Tt, class Containerr>
-			friend bool operator!= (const stack<Tt,Containerr>& lhs, const stack<Tt,Containerr>& rhs);
+			template <class _T, class _Container>
+			friend bool operator!= (const stack<_T,_Container>& lhs, const stack<_T,_Container>& rhs);
 
-			template <class Tt, class Containerr>
-			friend bool operator<= (const stack<Tt,Containerr>& lhs, const stack<Tt,Containerr>& rhs);
+			template <class _T, class _Container>
+			friend bool operator<= (const stack<_T,_Container>& lhs, const stack<_T,_Container>& rhs);
 
-			template <class Tt, class Containerr>
-			friend bool operator>= (const stack<Tt,Containerr>& lhs, const stack<Tt,Containerr>& rhs);
+			template <class _T, class _Container>
+			friend bool operator>= (const stack<_T,_Container>& lhs, const stack<_T,_Container>& rhs);
 
-			template <class Tt, class Containerr>
-			friend bool operator< (const stack<Tt,Containerr>& lhs, const stack<Tt,Containerr>& rhs);
+			template <class _T, class _Container>
+			friend bool operator< (const stack<_T,_Container>& lhs, const stack<_T,_Container>& rhs);
 
-			template <class Tt, class Containerr>
-			friend bool operator> (const stack<Tt,Containerr>& lhs, const stack<Tt,Containerr>& rhs);
+			template <class _T, class _Container>
+			friend bool operator> (const stack<_T,_Container>& lhs, const stack<_T,_Container>& rhs);
 	};
 
 	template <class T, class Container>
