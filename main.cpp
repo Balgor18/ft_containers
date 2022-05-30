@@ -210,7 +210,35 @@
 // 	return 0;
 // }
 
+int main(void)
+{
+		ft::vector<int>			test(3, 3);
 
+	std::cout << "self assignation test\n";
+	ft::vector<ft::vector<int> >	self_assign;
+	ft::vector<ft::vector<int> >	*ptr = &self_assign;
+	ft::vector<ft::vector<int> >	*ptr2 = &self_assign;
+
+	self_assign.assign(4, test);
+	*ptr = *ptr2;
+
+	std::cout << std::boolalpha << (*ptr == *ptr2) << '\n';
+//	self_assign = self_assign; //compiler doesn't like it!
+
+
+
+	ft::vector<ft::vector<int> > JOHN;
+	ft::vector<ft::vector<int> > BOB(5, test);
+	std::cout << "BOB(5, test(test, 5)) : \n";
+	for (size_t i = 0; i < BOB.size(); i++)
+	{
+		for (size_t j = 0; j < BOB[i].size(); j++)
+			std::cout << BOB[i][j] << ' ';
+		std::cout << '\n';
+	}
+}
+
+/*
 int main()
 {
 	ft::vector<int>			test(3, 3);
@@ -575,6 +603,9 @@ int main()
 	std::cout << std::endl;
 	return (0);
 }
+
+
+*/
 
 // END STACK MAIN
 
