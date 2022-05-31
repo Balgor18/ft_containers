@@ -50,7 +50,7 @@ template <class T, class Allocator = std::allocator<T> >
 			};
 
 			template <class InputIterator>
-			vector(InputIterator first, InputIterator last, const Allocator& alloc= Allocator(), typename ft::enable_if<!ft::is_integral<InputIterator>::val, InputIterator>::type* = NULL): _alloc(alloc), _size(0), _capacity(0), _ptr(NULL){
+			vector(InputIterator first, InputIterator last, const Allocator& alloc= Allocator(), typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0): _alloc(alloc), _size(0), _capacity(0), _ptr(NULL){
 				assign(first, last);
 			};
 
@@ -80,7 +80,7 @@ template <class T, class Allocator = std::allocator<T> >
 
 			template <class InputIterator>
 			void assign(InputIterator first, InputIterator last,
-					typename ft::enable_if<!ft::is_integral<InputIterator>::val, InputIterator>::type* = NULL) {
+					typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0) {
 				erase(this->begin(), this->end());
 				insert(begin(), first, last);
 			};
@@ -138,7 +138,8 @@ template <class T, class Allocator = std::allocator<T> >
 				if (n < _size)
 					erase(begin() + n, end());
 				else if (n > _size)
-					insert(begin(), n - end(), c);
+					insert(begin(), end() - n, c);// Error no matching function for call
+					// insert(begin(), n - end(), c);// Error invalid operand
 			};
 
 			void reserve(size_type n){
@@ -192,7 +193,7 @@ template <class T, class Allocator = std::allocator<T> >
 			// 23.2.4.3 modifiers:
 
 			void push_back(const T& x) {
-				if (!_size) {
+				if (!_size && !_capacity) {
 					_ptr = _alloc.allocate(1);
 					_alloc.construct(_ptr, x);
 					_size++;
@@ -224,6 +225,7 @@ template <class T, class Allocator = std::allocator<T> >
 
 			iterator insert(iterator pos, const T& x){
 				difference_type dist = pos - this->begin();
+
 				if (_capacity == _size && _capacity != 0) {
 					reserve(2 * _capacity);
 				}
@@ -239,7 +241,7 @@ template <class T, class Allocator = std::allocator<T> >
 
 			void insert(iterator pos, size_type n, const T& x){
 				difference_type dist = pos - this->begin();
-				
+
 				if (n == 0)
 					return ;
 				if (_capacity < _size + n && _size * 2 >= _size + n) 
@@ -257,7 +259,8 @@ template <class T, class Allocator = std::allocator<T> >
 			};
 
 			template <class InputIterator>
-			void insert(iterator pos, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::val, InputIterator>::type* = 0){
+			void insert(iterator pos, InputIterator first, InputIterator last,
+				typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0){
 				difference_type dist = pos - this->begin();
 				size_type it_dist = 0;
 				size_type last_size = this->_size;

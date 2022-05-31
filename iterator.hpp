@@ -73,11 +73,11 @@ namespace ft{
 			};
 
 			pointer base() const {
-				return current;
+				return (current);
 			};
 
 			reference operator*() const {
-				return *current;
+				return (*current);
 			};
 
 			pointer operator->() const {
@@ -112,13 +112,21 @@ namespace ft{
 				return tmp;
 			};
 
-			random_access_iterator operator+(const difference_type n) const { return (current + n); };
+			random_access_iterator operator+(const difference_type n) const {
+				return random_access_iterator(current + n);
+			};
 
-			difference_type operator+(const random_access_iterator& n) { return (current + n.current); };
+			difference_type operator+(const random_access_iterator& n) {
+				return (this->current + n.current);
+			};
 
-			random_access_iterator operator-(const difference_type n) const { return (current - n); };
+			random_access_iterator operator-(const difference_type n) const {
+				return random_access_iterator(current - n);
+			};
 
-			difference_type operator-(const random_access_iterator& n) { return (current - n.current); };
+			difference_type operator-(const random_access_iterator& n) {
+				return (this->current - n.current);
+			};
 
 			random_access_iterator& operator+=(difference_type n) {
 				current += n;

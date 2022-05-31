@@ -10,10 +10,10 @@ namespace ft{
 	struct integral_constant {
 		typedef T						value_type;
 		typedef integral_constant<T, v>	type;
-		static const T					val = v;
+		static const T					value = v;
 
 		operator value_type() const {
-			return val;
+			return v;
 		};
 	};
 

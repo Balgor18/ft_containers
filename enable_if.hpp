@@ -2,12 +2,13 @@
 #define ENABLE_IF_HPP
 
 namespace ft{
-	template<bool Cond, class T = void>
+
+	template<bool B, typename T = void>
 	struct enable_if {};
 	
-	template<class T>
-	struct enable_if<true, T> {
-		typedef T type;
+	template<>
+	struct enable_if<true> {
+		typedef int type;
 	};
 }
 
