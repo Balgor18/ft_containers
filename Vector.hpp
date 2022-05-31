@@ -260,6 +260,7 @@ template <class T, class Allocator = std::allocator<T> >
 
 			template <class InputIterator>
 			void insert(iterator pos, InputIterator first, InputIterator last,
+				// typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0){
 				typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0){
 				difference_type dist = pos - this->begin();
 				size_type it_dist = 0;
