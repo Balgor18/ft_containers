@@ -1,6 +1,8 @@
 #ifndef ITERATOR_HPP
 # define ITERATOR_HPP
 
+# include <iterator>
+# include <cstddef>
 namespace ft{
 
 	struct input_iterator_tag { };
@@ -9,9 +11,20 @@ namespace ft{
 	struct bidirectional_iterator_tag: public forward_iterator_tag { };
 	struct random_access_iterator_tag: public bidirectional_iterator_tag { };
 
+	template <class Category, class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T&>
+	struct Iterator {
+		public:
+			typedef Category				iterator_category;
+			typedef T						value_type;
+			typedef Distance				difference_type;
+			typedef Pointer					pointer;
+			typedef	Reference				reference;
+			typedef	const Reference			const_reference;
+	};
+
 	template <class Iterator>
 	struct iterator_traits {
-		typedef typename Iterator::iterator_category	iterator_category;//if its a random _access
+		typedef typename Iterator::Category				iterator_category;//if its a random _access
 		typedef typename Iterator::value_type			value_type; // the type point ex : int
 		typedef typename Iterator::difference_type		difference_type;// diff space btw two type ex : int for next int is 4 octets
 		typedef typename Iterator::pointer				pointer;// *
@@ -36,14 +49,6 @@ namespace ft{
 		typedef ft::random_access_iterator_tag	iterator_category;
 	};
 
-	template <class Category, class T, class diff_btw = std::ptrdiff_t, class Pointer = T*, class Reference = T&>
-	struct iterator {
-			typedef T							value_type;
-			typedef diff_btw					difference_type;
-			typedef Pointer						pointer;
-			typedef Reference					reference;
-			typedef Category					iterator_category;
-	};
 };
 
 namespace ft{
@@ -51,11 +56,11 @@ namespace ft{
 	template<typename T>
 	class random_access_iterator {
 		public:
-			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::value_type			value_type;
-			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::iterator_category		iterator_type;
-			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::difference_type		difference_type;
-			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::reference				reference;
-			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::pointer				pointer;
+			typedef typename ft::Iterator<ft::random_access_iterator_tag, T>::value_type				value_type;
+			typedef typename ft::Iterator<ft::random_access_iterator_tag, T>::iterator_category			iterator_type;
+			typedef typename ft::Iterator<ft::random_access_iterator_tag, T>::difference_type			difference_type;
+			typedef typename ft::Iterator<ft::random_access_iterator_tag, T>::reference					reference;
+			typedef typename ft::Iterator<ft::random_access_iterator_tag, T>::pointer					pointer;
 		protected:
 			pointer	current;
 		public :
@@ -243,19 +248,17 @@ namespace ft{
 namespace ft{
 	// Revese iterator
 	template<typename _Iterator>
-	class reverse_iterator : public ft::iterator<typename iterator_traits<_Iterator>::iterator_category,
-						typename iterator_traits<_Iterator>::value_type,
-						typename iterator_traits<_Iterator>::difference_type,
-						typename iterator_traits<_Iterator>::pointer,
-						typename iterator_traits<_Iterator>::reference> {
+	class reverse_iterator {
 		protected:
-			_Iterator							current;
-			typedef iterator_traits<_Iterator>	__traits_type;
+			_Iterator								current;
+			// typedef iterator_traits<_Iterator>	__traits_type;
 		public:
-			typedef _Iterator										iterator_type;
-			typedef typename __traits_type::difference_type			difference_type;
-			typedef typename __traits_type::pointer					pointer;
-			typedef typename __traits_type::reference				reference;
+			typedef _Iterator 													iterator_type;
+			typedef typename iterator_traits<_Iterator>::iterator_category		iterator_category;
+			typedef typename iterator_traits<_Iterator>::value_type				value_type;
+			typedef typename iterator_traits<_Iterator>::difference_type		difference_type;
+			typedef typename iterator_traits<_Iterator>::pointer				pointer;
+			typedef typename iterator_traits<_Iterator>::reference				reference;
 
 			/**
 			 *  The default constructor value-initializes member @p current.
@@ -394,6 +397,24 @@ namespace ft{
 				return *(*this + __n);
 			};
 	};
+
+	template<typename _Iterator>
+		bool operator==(const reverse_iterator<_Iterator>& __x, const reverse_iterator<_Iterator>& __y) { return __x.base() == __y.base(); }
+
+	template<typename _Iterator>
+		bool operator<(const reverse_iterator<_Iterator>& __x, const reverse_iterator<_Iterator>& __y) { return __y.base() < __x.base(); }
+
+	template<typename _Iterator>
+		bool operator!=(const reverse_iterator<_Iterator>& __x, const reverse_iterator<_Iterator>& __y) { return !(__x == __y); }
+
+	template<typename _Iterator>
+		bool operator>(const reverse_iterator<_Iterator>& __x, const reverse_iterator<_Iterator>& __y) { return __y < __x; }
+
+	template<typename _Iterator>
+		bool operator<=(const reverse_iterator<_Iterator>& __x, const reverse_iterator<_Iterator>& __y) { return !(__y < __x); }
+
+	template<typename _Iterator>
+		bool operator>=(const reverse_iterator<_Iterator>& __x, const reverse_iterator<_Iterator>& __y) { return !(__x < __y); }
 
 };
 #endif

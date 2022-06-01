@@ -6,9 +6,9 @@ namespace ft{
 	template<bool B, typename T = void>
 	struct enable_if {};
 	
-	template<>
-	struct enable_if<true> {
-		typedef int type;
+	template<class T>
+	struct enable_if<true, T> {
+		typedef T type;
 	};
 }
 

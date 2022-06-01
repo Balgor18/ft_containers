@@ -138,8 +138,15 @@ template <class T, class Allocator = std::allocator<T> >
 				if (n < _size)
 					erase(begin() + n, end());
 				else if (n > _size)
-					insert(begin(), end() - n, c);// Error no matching function for call
-					// insert(begin(), n - end(), c);// Error invalid operand
+				{
+					//This dosent Work ?
+					// insert(begin(), end() - n, c);// Error no matching function for call
+
+					//This work ??
+					while (_size < n)
+						push_back(c);
+					
+				}
 			};
 
 			void reserve(size_type n){
@@ -168,9 +175,13 @@ template <class T, class Allocator = std::allocator<T> >
 			};
 
 			const_reference at(size_type n) const{
+				if (n > _size)
+					throw std::out_of_range("Vector at");
 				return *(_ptr + n);
 			};
 			reference at(size_type n){
+				if (n > _size)
+					throw std::out_of_range("Vector at");
 				return *(_ptr + n);
 			};
 
@@ -259,9 +270,7 @@ template <class T, class Allocator = std::allocator<T> >
 			};
 
 			template <class InputIterator>
-			void insert(iterator pos, InputIterator first, InputIterator last,
-				// typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0){
-				typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0){
+			void insert(iterator pos, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0){
 				difference_type dist = pos - this->begin();
 				size_type it_dist = 0;
 				size_type last_size = this->_size;
