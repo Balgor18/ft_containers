@@ -139,17 +139,24 @@ template <class T, class Allocator = std::allocator<T> >
 					erase(begin() + n, end());
 				else if (n > _size)
 				{
+					if (n > _size *2)
+						reserve(n);
+					else
+						reserve(_size *2);
 					//This dosent Work ?
 					// insert(begin(), end() - n, c);// Error no matching function for call
+					// insert(begin(), n - end(), c);// Error no matching function for call
 
 					//This work ??
 					while (_size < n)
 						push_back(c);
-					
+					_size = n;
 				}
 			};
 
 			void reserve(size_type n){
+				if (n > this->max_size())
+					throw std::length_error("vector::reserve");
 				if (n <= capacity())
 					return;
 				else {
