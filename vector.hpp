@@ -55,11 +55,11 @@ template <class T, class Allocator = std::allocator<T> >
 			};
 
 			vector(const vector<T,Allocator>& x) : _alloc(x._alloc){
-				_ptr = _alloc.allocate(x._capacity);
+				_ptr = _alloc.allocate(x._size);
 				for (size_type i = 0; i < x._size; i++)
 					_alloc.construct(_ptr + i, *(x._ptr + i));
 				_size = x._size;
-				_capacity = x._capacity;
+				_capacity = x._size;
 			};
 
 			~vector() {
@@ -372,10 +372,10 @@ template <class T, class Allocator = std::allocator<T> >
 		return (rhs < lhs);
 	};
 
-	template <class T, class Allocator>
-	bool operator>=(const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs) {
-		return (lhs < rhs);
-	};
+	template< class T, class Alloc >
+	bool operator>=( const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs ) {
+		return (!(lhs < rhs));
+	}
 
 	template <class T, class Allocator>
 	bool operator<=(const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs) {

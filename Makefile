@@ -14,7 +14,7 @@ $(NAME)	:	$(OBJS)
 	${CXX} ${CXXFLAGS} -o ${NAME} ${OBJS}
 
 -include ${DEP}
-%.o		:	%.cpp Vector.hpp
+%.o		:	%.cpp vector.hpp
 	${CXX} ${CXXFLAGS} -o $@ -c $<
 
 clean	:
