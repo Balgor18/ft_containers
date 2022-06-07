@@ -26,7 +26,10 @@ vector	:	$(SRCS_VECTOR)
 map	:	$(SRCS_MAP)
 	${CXX} ${CXXFLAGS} -o $@ ${SRCS_MAP}
 
-fclean	:
+clean	:
+	rm -rf *.d
+
+fclean	:	clean
 	rm -rf stack vector map
 
 re		:	fclean all
