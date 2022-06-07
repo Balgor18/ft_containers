@@ -280,11 +280,6 @@ namespace ft{
 			explicit reverse_iterator(iterator_type __x) : current(__x) { };
 
 			/**
-			 *  The copy constructor is normal.
-			 */
-			reverse_iterator(const reverse_iterator& __x) : current(__x.current) { };
-
-			/**
 			 *  A %reverse_iterator across other types can be copied if the
 			 *  underlying %iterator can be converted to the type of @c current.
 			 */
@@ -409,22 +404,70 @@ namespace ft{
 	};
 
 	template<typename _Iterator>
-		bool operator==(const reverse_iterator<_Iterator>& __x, const reverse_iterator<_Iterator>& __y) { return __x.base() == __y.base(); }
+	bool operator==(const reverse_iterator<_Iterator>& __x, const reverse_iterator<_Iterator>& __y) {
+		return __x.base() == __y.base();
+	}
+
+
+	template <class Iterator1, class Iterator2>
+	bool operator==(const ft::reverse_iterator<Iterator1>& __x, const ft::reverse_iterator<Iterator2>& __y) {
+		return (__x.base() == __y.base());
+	}
 
 	template<typename _Iterator>
-		bool operator<(const reverse_iterator<_Iterator>& __x, const reverse_iterator<_Iterator>& __y) { return __y.base() < __x.base(); }
+	bool operator!=(const reverse_iterator<_Iterator>& __x, const reverse_iterator<_Iterator>& __y) {
+		return !(__x == __y);
+	}
+
+	template <class Iterator1, class Iterator2>
+	bool operator!=(const ft::reverse_iterator<Iterator1>& __x, const ft::reverse_iterator<Iterator2>& __y) {
+		return (!(__x == __y));
+	}
 
 	template<typename _Iterator>
-		bool operator!=(const reverse_iterator<_Iterator>& __x, const reverse_iterator<_Iterator>& __y) { return !(__x == __y); }
+	bool operator<(const reverse_iterator<_Iterator>& __x, const reverse_iterator<_Iterator>& __y) {
+		return __y.base() < __x.base();
+	}
+
+	template <class Iterator1, class Iterator2>
+	bool operator<(const ft::reverse_iterator<Iterator1>& __x, const ft::reverse_iterator<Iterator2>& __y) {
+		return (__y.base() < __x.base());
+	}
 
 	template<typename _Iterator>
-		bool operator>(const reverse_iterator<_Iterator>& __x, const reverse_iterator<_Iterator>& __y) { return __y < __x; }
+	bool operator>(const reverse_iterator<_Iterator>& __x, const reverse_iterator<_Iterator>& __y) {
+		return (__y < __x);
+	}
+
+	template <class Iterator1, class Iterator2>
+	bool operator>(const ft::reverse_iterator<Iterator1>& __x, const ft::reverse_iterator<Iterator2>& __y) {
+		return (__y < __x);
+	}
 
 	template<typename _Iterator>
-		bool operator<=(const reverse_iterator<_Iterator>& __x, const reverse_iterator<_Iterator>& __y) { return !(__y < __x); }
+	bool operator<=(const reverse_iterator<_Iterator>& __x, const reverse_iterator<_Iterator>& __y) {
+		return !(__y < __x);
+	}
+
+	template <class Iterator1, class Iterator2>
+	bool operator<=(const ft::reverse_iterator<Iterator1>& __x, const ft::reverse_iterator<Iterator2>& __y) {
+		return !(__y < __x);
+	}
 
 	template<typename _Iterator>
-		bool operator>=(const reverse_iterator<_Iterator>& __x, const reverse_iterator<_Iterator>& __y) { return !(__x < __y); }
+	bool operator>=(const reverse_iterator<_Iterator>& __x, const reverse_iterator<_Iterator>& __y) {
+		return !(__x < __y);
+	}
+
+	template <class Iterator1, class Iterator2>
+	bool operator>=(const ft::reverse_iterator<Iterator1>& __x, const ft::reverse_iterator<Iterator2>& __y) {
+		return (!(__x < __y));
+	}
+
+	template <class Iterator>
+	reverse_iterator<Iterator> operator+(typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator> &rev_it) {
+		return(rev_it + n);
+	}
 
 };
 #endif

@@ -1,26 +1,32 @@
-NAME	=	container
+SRCS_STACK	=	main_stack.cpp
+OBJS_STACK	=	$(SRCS_STACK:%.cpp=%.o)
+DEPS_STACK	=	$(OBJS_STACK:%.o=%.d)
 
-SRCS	=	main.cpp
-OBJS	=	$(SRCS:%.cpp=%.o)
-DEPS	=	$(OBJS:%.o=%.d)
+SRCS_VECTOR	=	main_vector.cpp
+OBJS_VECTOR	=	$(SRCS_VECTOR:%.cpp=%.o)
+DEPS_VECTOR	=	$(OBJS_VECTOR:%.o=%.d)
 
-CXX		=	clang++
-CXXFLAGS	=	-Wall -Wextra -Werror -MMD -MP -Wshadow
+SRCS_MAP	=	main_map.cpp
+OBJS_MAP	=	$(SRCS_MAP:%.cpp=%.o)
+DEPS_MAP	=	$(OBJS_MAP:%.o=%.d)
+
+CXX			=	clang++
+CXXFLAGS	=	-Wall -Wextra -Werror -MMD -MP -Wshadow -g3
 
 
-all		:	$(NAME)
+all		:
+	$(info Need to make with the name of containers ex: stack vector map)
 
-$(NAME)	:	$(OBJS)
-	${CXX} ${CXXFLAGS} -o ${NAME} ${OBJS}
+stack	:	$(SRCS_STACK)
+	${CXX} ${CXXFLAGS} -o $@ ${SRCS_STACK}
 
--include ${DEP}
-%.o		:	%.cpp vector.hpp
-	${CXX} ${CXXFLAGS} -o $@ -c $<
+vector	:	$(SRCS_VECTOR)
+	${CXX} ${CXXFLAGS} -o $@ ${SRCS_VECTOR}
 
-clean	:
-	rm -rf $(OBJS)
+map	:	$(SRCS_MAP)
+	${CXX} ${CXXFLAGS} -o $@ ${SRCS_MAP}
 
-fclean	:	clean
-	rm -rf $(NAME)
+fclean	:
+	rm -rf stack vector map
 
 re		:	fclean all

@@ -143,11 +143,6 @@ template <class T, class Allocator = std::allocator<T> >
 						reserve(n);
 					else
 						reserve(_size *2);
-					//This dosent Work ?
-					// insert(begin(), end() - n, c);// Error no matching function for call
-					// insert(begin(), n - end(), c);// Error no matching function for call
-
-					//This work ??
 					while (_size < n)
 						push_back(c);
 					_size = n;
