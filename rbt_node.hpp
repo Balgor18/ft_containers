@@ -1,69 +1,58 @@
 #ifndef RBT_NODE_HPP
 # define RBT_NODE_HPP
 
-#define BLACK 0
-#define RED 1
+# define BLACK 0
+# define RED 1
 
-template<typename T>
-class Node{
-	// typedef 
-	typedef T	value_type;
+template<typename Key,typename Value>
+struct Pair
+{
+	Key		key;
+	Value	value;
+};
 
-	Node		*root;
-	Node		*parent;
-	Node		*child_left;
-	Node		*child_right;
-	bool		color;
+template<typename Key, typename Value>
+class Node
+{
+	Node				*parent;
+	Node				*child_left;
+	Node				*child_right;
+	Pair<const Key, Value>	pair;
+	bool				color;
 
-	Node(const value_type& value) : value_type(value), root(NULL), parent(NULL), child_left(NULL), child_right(NULL), color(RED) {};
-	Node() : value_type(), root(NULL),parent(NULL), child_left(NULL), child_right(NULL), color(RED) {};
+	// Default constructor
+	Node () : (parent(NULL), child_left(NULL), child_right(NULL), pair(0, 0), color(RED)) {}
+	Node(const Key &key, const Value &value) : (parent(NULL), child_left(NULL), child_right(NULL), pair(key, value), color(RED)) {}
 
-	Node(const Node& cpy) : value_type(cpy.value_type), root(NULL), parent(cpy.parent), child_left(cpy.child_left), child_right(cpy.child_right), color(cpy.color) {};
+	// Copy constructor
+	Node(const Node &cpy) : (parent(cpy.parent), child_left(cpy.child_left), child_right(cpy.child_right), pair(cpy.key, cpy.value), color(cpy.color)){}
 
+	// Destructor
 	virtual ~Node();
 
-
-	void	left_rotation(Node &x)
+	Node	*getParent(void) const
 	{
-		Node &y = x.child_right;
+		return parent;
+	}
 
-		x.child_right = y.child_left;
-		if (y.child_left)
-			y.child_left->parent = y;
-		else if (x == x.parent->child_left)
-			x.parent->child_left = y;
-		else
-			x.parent->child_right = y;
-		y.child_left = x;
-		x.parent = y;
-	};
-
-	void	rightRotate(Node &x)
+	Node	*getChild_left(void) const
 	{
-		Node &y = x.child_left;
-	
-		x.child_left = y.right;
-		if (y.right != TNULL) {
-			y.right->parent = x;
-		}
-		y.parent = x.parent;
-		if (x.parent == nullptr) {
-			root = y;// check the root
-		} else if (x == x.parent->right) {
-			x.parent->right = y;
-		} else {
-			x.parent->child_left = y;
-		}
-		y.right = x;
-		x.parent = y;
-	};
+		return child_left;
+	}
 
-	void	recolor(Node &x)
+	Node *getChild_right(void) const
 	{
-		if (x.color == RED)
-			x.color = BLACK;
-		else
-			x.color = RED;
+		return child_right;
+	}
+
+	Pair<Key, value> getPair(void)const
+	{
+		return pair;
+	}
+
+	boll getColor(void) const
+	{
+		return color;
 	}
 };
 
