@@ -1,6 +1,8 @@
+42TESTERS-CONTAINERS/
 *.d
 *.o
 
 container
 vector
 stack
+a.out
