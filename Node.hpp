@@ -14,13 +14,13 @@ namespace ft
 	template<class T>
 	class Node
 	{
-		Node	*parent;
-		Node	*child_left;
-		Node	*child_right;
-		T		*data;
-		bool	color;
-
 		public :
+			Node	*parent;
+			Node	*child_left;
+			Node	*child_right;
+			T		data;
+			bool	color;
+
 			// Default constructor
 			Node () : parent(NULL), child_left(NULL), child_right(NULL), data(), color(RED) {}
 			Node(const T &data) : parent(NULL), child_left(NULL), child_right(NULL), data(data), color(RED) {}
