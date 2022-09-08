@@ -50,11 +50,6 @@ namespace ft {
 		map(map&& m, const allocator_type& a);
 		map(initializer_list<value_type> il, const key_compare& comp = key_compare());
 		map(initializer_list<value_type> il, const key_compare& comp, const allocator_type& a);
-		template <class InputIterator>
-			map(InputIterator first, InputIterator last, const allocator_type& a)
-				: map(first, last, Compare(), a) {}  // C++14
-		map(initializer_list<value_type> il, const allocator_type& a)
-			: map(il, Compare(), a) {}  // C++14
 	~map();
 
 		map& operator=(const map& m);
@@ -66,20 +61,20 @@ namespace ft {
 		map& operator=(initializer_list<value_type> il);
 
 		// iterators:
-		iterator begin() noexcept;
-		const_iterator begin() const noexcept;
-		iterator end() noexcept;
-		const_iterator end()   const noexcept;
+		iterator begin() ;
+		const_iterator begin() const ;
+		iterator end() ;
+		const_iterator end()   const ;
 
-		reverse_iterator rbegin() noexcept;
-		const_reverse_iterator rbegin() const noexcept;
-		reverse_iterator rend() noexcept;
-		const_reverse_iterator rend()   const noexcept;
+		reverse_iterator rbegin() ;
+		const_reverse_iterator rbegin() const ;
+		reverse_iterator rend() ;
+		const_reverse_iterator rend()   const ;
 
-		const_iterator         cbegin()  const noexcept;
-		const_iterator         cend()    const noexcept;
-		const_reverse_iterator crbegin() const noexcept;
-		const_reverse_iterator crend()   const noexcept;
+		const_iterator         cbegin()  const ;
+		const_iterator         cend()    const ;
+		const_reverse_iterator crbegin() const ;
+		const_reverse_iterator crend()   const ;
 
 		// capacity:
 		bool	empty()	const
@@ -183,33 +178,27 @@ namespace ft {
 	};
 
 	template <class Key, class T, class Compare, class Allocator>
-	bool
-	operator==(const map<Key, T, Compare, Allocator>& x,
+	bool	operator==(const map<Key, T, Compare, Allocator>& x,
 			const map<Key, T, Compare, Allocator>& y);
 
 	template <class Key, class T, class Compare, class Allocator>
-	bool
-	operator< (const map<Key, T, Compare, Allocator>& x,
+	bool	operator< (const map<Key, T, Compare, Allocator>& x,
 			const map<Key, T, Compare, Allocator>& y);
 
 	template <class Key, class T, class Compare, class Allocator>
-	bool
-	operator!=(const map<Key, T, Compare, Allocator>& x,
+	bool	operator!=(const map<Key, T, Compare, Allocator>& x,
 			const map<Key, T, Compare, Allocator>& y);
 
 	template <class Key, class T, class Compare, class Allocator>
-	bool
-	operator> (const map<Key, T, Compare, Allocator>& x,
+	bool	operator> (const map<Key, T, Compare, Allocator>& x,
 			const map<Key, T, Compare, Allocator>& y);
 
 	template <class Key, class T, class Compare, class Allocator>
-	bool
-	operator>=(const map<Key, T, Compare, Allocator>& x,
+	bool	operator>=(const map<Key, T, Compare, Allocator>& x,
 			const map<Key, T, Compare, Allocator>& y);
 
 	template <class Key, class T, class Compare, class Allocator>
-	bool
-	operator<=(const map<Key, T, Compare, Allocator>& x,
+	bool	operator<=(const map<Key, T, Compare, Allocator>& x,
 			const map<Key, T, Compare, Allocator>& y);
 
 	// specialized algorithms:

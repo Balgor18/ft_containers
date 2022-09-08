@@ -6,7 +6,7 @@
 namespace ft {
 
 	// Remove std::less<T>
-	template<class T, class Compare = std::less<T>, class Node = Node<T>, class Allocator = std::allocator<Node> >
+	template<class T, class Compare = std::less<T>, class Node = Node<T>, class Allocator = std::allocator<Node> >// MEMO remode std::less
 	class Red_black_tree
 	{
 		public :
@@ -192,6 +192,10 @@ namespace ft {
 				// tmp = _root;
 			}
 
+			Node	*get_root()const
+			{
+				return _root;
+			}
 	};
 
 };

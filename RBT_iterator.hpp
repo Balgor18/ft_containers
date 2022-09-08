@@ -7,39 +7,115 @@
 
 namespace ft
 {
-	template <class T, class node_type = ft::Node<T>>
+	template <class T>//, class node_type = ft::Node<T>>
 	class RBT_iterator
 	{
-		typedef typename ft::iterator<ft::bidirectional_iterator_tag, T>::value_type			value_type;
-		typedef typename ft::iterator<ft::bidirectional_iterator_tag, T>::iterator_category		iterator_type;
-		typedef typename ft::iterator<ft::bidirectional_iterator_tag, T>::difference_type		difference_type;
-		typedef typename ft::iterator<ft::bidirectional_iterator_tag, T>::reference				reference;
-		typedef typename ft::iterator<ft::bidirectional_iterator_tag, T>:: pointer				pointer;
-		typedef RBT_iterator<T>
+		typedef typename ft::Iterator<ft::bidirectional_iterator_tag, T>::value_type			value_type;
+		typedef typename ft::Iterator<ft::bidirectional_iterator_tag, T>::iterator_category		iterator_type;
+		typedef typename ft::Iterator<ft::bidirectional_iterator_tag, T>::difference_type		difference_type;
+		typedef typename ft::Iterator<ft::bidirectional_iterator_tag, T>::reference				reference;
+		typedef typename ft::Iterator<ft::bidirectional_iterator_tag, T>::pointer				pointer;
+		typedef RBT_iterator<T>											Himself;
+		typedef Node<T>*												node_ptr;
 
-		node_type		*_node;
+		node_ptr	_root;
+		node_ptr	_NIL;
+		node_ptr	_actual_node;
 
-		RBT_iterator&	operator++()
+		// Example https://www.cs.odu.edu/~zeil/cs361/latest/Public/treetraversal/index.html
+		void	Increment()
 		{
-			if (_node )
+			if (_actual_node->child_right != _NIL) {
+				_actual_node = _actual_node->child_right;
+				while (_actual_node->child_left != _NIL) {
+					_actual_node = _actual_node->child_left;
+				}
+			}
+			else{
+				node_ptr	tmp = _actual_node->parent;
 
-			return *this;
+				while (tmp != _NIL && _actual_node == tmp->child_right) {
+					_actual_node = tmp;
+					tmp = tmp->parent;
+				}
+				if (_actual_node->child_left != tmp)
+					_actual_node = tmp;
+				else
+					_actual_node = _NIL;
+			}
 		}
 
-		RBT_iterator	operator++(int) {
+		void Decrement()
+		{
+			if (_actual_node->parent->parent == _actual_node && _actual_node->color == RED)
+				_actual_node = _actual_node->child_right;
+			if (_actual_node->child_left != _NIL) {
+				_actual_node = _actual_node->child_left;
+				while (_actual_node->child_right != _NIL) {
+					_actual_node = _actual_node->child_right;
+				}
+			}
+			else {
+				node_ptr	tmp = _actual_node->parent;
 
-			return tmp;
-		};
+				while (tmp != _NIL && _actual_node == tmp->child_left) {
+					_actual_node = tmp;
+					tmp = tmp->parent;
+				}
+				_actual_node = tmp;
+			}
+		}
 
-		RBT_iterator&	operator--() {
+		public :
+			RBT_iterator(void) : _root(NULL), _NIL(NULL), _actual_node(NULL) {}
 
-			return *this;
-		};
+			RBT_iterator(node_ptr root, node_ptr nil, node_ptr actual) : _root(root), _NIL(nil), _actual_node(actual){}
 
-		RBT_iterator	operator--(int) {
+			//TODO copy constructor
 
-			return tmp;
-		};
+
+			~RBT_iterator() {}
+
+			RBT_iterator&	operator++()
+			{
+				Increment();
+				return *this;
+			}
+
+			RBT_iterator	operator++(int) {
+				Himself tmp(*this);
+
+				Increment();
+				return tmp;
+			}
+
+			RBT_iterator&	operator--() {
+				if (_actual_node == _NIL) {
+					_actual_node = maximum();
+					return *this;
+				}
+				Decrement();
+				return *this;
+			}
+
+			RBT_iterator	operator--(int) {
+				Himself tmp(*this);
+
+					if (_actual_node == _NIL) {
+					_actual_node = maximum();
+					return tmp;
+				}
+				Decrement();
+				return tmp;
+			};
+
+			node_ptr	maximum() {
+				node_ptr	tmp = _root;
+
+				while (tmp->child_right != _NIL)
+					tmp = tmp->child_right;
+				return tmp;
+			};
 	};
 }
 
