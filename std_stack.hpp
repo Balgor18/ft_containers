@@ -148,7 +148,6 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       _Sequence c;
 
     public:
-      // XXX removed old def ctor, added def arg to this one to match 14882
       /**
        *  @brief  Default constructor creates no elements.
        */

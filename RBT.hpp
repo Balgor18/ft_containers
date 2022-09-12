@@ -2,6 +2,8 @@
 # define RBT_HPP
 
 # include "Node.hpp"
+# include "RBT_iterator.hpp"
+# include "iterator.hpp"
 # include <sstream>
 namespace ft {
 
@@ -12,19 +14,20 @@ namespace ft {
 		public :
 			typedef Allocator								allocator_type;
 			typedef std::size_t								size_type;
+			typedef ft::Node<T>*							node_ptr;
 
 			typedef typename Allocator::reference			reference;
 			typedef typename Allocator::const_reference		const_reference;
 			typedef typename Allocator::pointer				pointer;
 			typedef typename Allocator::const_pointer		const_pointer;
 
-			// typedef ft::RBT_iterator<T>						iterator;
-			// typedef ft::const_RBTIterator<T>				const_iterator;
-			// typedef ft::reverse_iterator<iterator> 			reverse_iterator;
+			typedef RBT_iterator<T>						iterator;
+			typedef RBT_iterator<const T>				const_iterator;
+			typedef reverse_iterator<iterator> 			reverse_iterator;
 			// typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 		private :
-			Node			*_NIL;
-			Node			*_root;
+			node_ptr		_NIL;
+			node_ptr		_root;
 			allocator_type	_alloc;
 			size_type		_size;
 			Compare			_cmp;
@@ -47,6 +50,9 @@ namespace ft {
 				_NIL = _alloc.allocate(1);
 				_alloc.construct(_NIL, T());
 				_NIL->set_color(BLACK);
+				_NIL->set_child_left(_NIL);
+				_NIL->set_child_right(_NIL);
+				_NIL->set_parent(_NIL);
 				_root = _NIL;
 				_size = 0;
 			};
@@ -56,6 +62,9 @@ namespace ft {
 				_NIL = _alloc.allocate(1);
 				_alloc.construct(_NIL, T());
 				_NIL->set_color(BLACK);
+				_NIL->set_child_left(_NIL);
+				_NIL->set_child_right(_NIL);
+				_NIL->set_parent(_NIL);
 				_root = _alloc.allocate(1);
 				_alloc.construct(_root, pair);
 				_root->set_color(BLACK);
@@ -81,37 +90,7 @@ namespace ft {
 			}
 
 			// Destructor
-			~Red_black_tree(void)
-			{
-
-			}
-
-			size_type	size(void) const
-			{
-				return _size;
-			}
-
-			// iterator	find(const T& x)
-			bool	find(const T& x)
-			{
-				Node	*tmp = _root;
-
-				if (tmp == _NIL)
-					return false;
-					// return _NIL;
-				while (tmp != _NIL)
-				{
-					if (!_cmp(tmp->data, x) && !_cmp(x, tmp->data))
-						return true;
-						// return tmp;
-					else if (_cmp(x, tmp->data))
-						tmp = tmp->child_left;
-					else
-						tmp = tmp->child_right;
-				}
-				// return _NIL;
-				return false;
-			}
+			~Red_black_tree(void) { }
 
 			void	print(void)
 			{
@@ -130,15 +109,100 @@ namespace ft {
 				}
 			}
 
-			// insert
-			void	insert(T pair)
+			// ================= Iterator =================
+			iterator	begin()
 			{
-				Node	*tmp;
-				Node	*new_elem;
+				node_ptr	tmp = _root;
+				
+				while (tmp != _NIL)
+				{
+					if (tmp->child_left == _NIL)
+						break ;
+					tmp = tmp->child_left;
+				}
+				return iterator(_root, _NIL, tmp);
+			}
+
+			const_iterator	begin() const
+			{
+				node_ptr	tmp = _root;
+				
+				while (tmp != _NIL)
+				{
+					if (tmp->child_left == _NIL)
+						break ;
+					tmp = tmp->child_left;
+				}
+				return const_iterator(_root, _NIL, tmp);
+			}
+
+			iterator	end()
+			{
+				node_ptr	tmp = _root;
+				
+				while (tmp != _NIL)
+				{
+					if (tmp->child_right == _NIL)
+						break ;
+					tmp = tmp->child_right;
+				}
+				return iterator(_root, _NIL, tmp);
+			}
+
+			const_iterator	end() const
+			{
+				node_ptr	tmp = _root;
+				
+				while (tmp != _NIL)
+				{
+					if (tmp->child_right == _NIL)
+						break ;
+					tmp = tmp->child_right;
+				}
+				return const_iterator(_root, _NIL, tmp);
+			}
+
+			// FIX When reverse_iterator is code 
+			reverse_iterator	rebgin()
+			{
+				return reverse_iterator(end());
+			}
+
+			// FIX When reverse_iterator is code 
+			reverse_iterator	rend()
+			{
+				return reverse_iterator(begin());
+			}
+
+			// ================= Capacity =================
+			bool	empty() const
+			{
+				if (_size == 0)
+					return true;
+				return false;
+			}
+
+			size_type	size(void) const { return _size; }
+
+			size_type	max_size() const { return _alloc.max_size(); }
+
+			// ================= Modifiers =================
+			void	clear()
+			{
+				// TODO clear algo
+				_size = 0;
+			}
+
+			// node_ptr	insert(const T& pair) // TODO Modif this
+			void	insert(const T& pair)
+			{
+				// TODO Modif this
+				node_ptr	tmp;
+				node_ptr	new_elem;
 
 				new_elem = _alloc.allocate(1);
 				_alloc.construct(new_elem, pair);
-				// new_elem->set_data(pair);
+				new_elem->set_parent(_NIL);
 				new_elem->set_child_left(_NIL);
 				new_elem->set_child_right(_NIL);
 				_size++;
@@ -182,21 +246,245 @@ namespace ft {
 						}
 					}
 				}
+				// TODO Modif this
 			}
 
-			// delete
-			void	erase(T pair)// MEMO Check the enter value
+			// iterator	insert(interator hint, const T& val)
+			// {
+				// TODO
+			// }
+
+			// template<typename input_iterator>
+			// void	insert(input_iterator first, input_iterator last)
+			// {
+				// TODO
+			// }
+
+			void	swap(Red_black_tree &other)
 			{
-				// Node	*tmp;
-
-				// tmp = _root;
+				std::swap(_root, other._root);
+				std::swap(_NIL, other._NIL);
+				std::swap(_size, other._size);
+				std::swap(_cmp, other._cmp);;
 			}
 
-			Node	*get_root()const
+			// void	insert(T pair)
+			// {
+			// 	node_ptr	tmp;
+			// 	node_ptr	new_elem;
+			// 	new_elem = _alloc.allocate(1);
+			// 	_alloc.construct(new_elem, pair);
+			// 	new_elem->set_parent(_NIL);
+			// 	new_elem->set_child_left(_NIL);
+			// 	new_elem->set_child_right(_NIL);
+			// 	_size++;
+			// 	if (_root == _NIL)
+			// 	{
+			// 	§	new_elem->set_color(BLACK);
+			// 		_root = new_elem;
+			// 		return ;
+			// 	}
+			// 	new_elem->set_color(RED);
+			// 	tmp = _root;
+			// 	while (tmp != _NIL)
+			// 	{
+			// 		if (tmp->data < new_elem->data)// Go vers la droite
+			// 		{
+			// 			if (tmp->child_right != _NIL)
+			// 			{
+			// 				tmp = tmp->child_right;
+			// 				continue;
+			// 			}
+			// 			else
+			// 			{
+			// 				tmp->child_right = new_elem;
+			// 				new_elem->set_parent(tmp);// MEMO if break move this line 
+			// 				return ;// MEMO probably need break
+			// 			}
+			// 		}
+			// 		if (tmp->data > new_elem->data)// Go vers la gauche
+			// 		{
+			// 			if (tmp->child_left != _NIL)
+			// 			{
+			// 				tmp = tmp->child_left;
+			// 				continue;
+			// 			}
+			// 			else
+			// 			{
+			// 				tmp->child_left = new_elem;
+			// 				new_elem->set_parent(tmp);// MEMO if break move this line 
+			// 				return ;// MEMO probably need break
+			// 			}
+			// 		}
+			// 	}
+			// }
+
+			iterator	erase(iterator pos)
 			{
-				return _root;
+				// TODO
 			}
+
+			iterator	erase(iterator first, iterator last)
+			{
+				// TODO
+			}
+
+			// size_type	erase(const Key& key)
+			// {
+			// 	// TODO
+			// }
+
+			size_type	count(const T &x) const
+			{
+				if (find(x) == end())
+					return 0;
+				return 1;
+			}
+
+			iterator	find(const T& x)
+			{
+				node_ptr	tmp = _root;
+
+				if (tmp == _NIL)
+					return end();
+				while (tmp != _NIL)
+				{
+					if (!_cmp(tmp->data, x) && !_cmp(x, tmp->data))
+						return iterator(tmp);
+					else if (_cmp(x, tmp->data))
+						tmp = tmp->child_left;
+					else
+						tmp = tmp->child_right;
+				}
+				return end();
+			}
+
+			// FIXME When const iterator is code 
+			const_iterator	find(const T& x) const
+			{
+				node_ptr	tmp = _root;
+
+				if (tmp == _NIL)
+					return end();
+				while (tmp != _NIL)
+				{
+					if (!_cmp(tmp->data, x) && !_cmp(x, tmp->data))
+						return const_iterator(tmp);
+					else if (_cmp(x, tmp->data))
+						tmp = tmp->child_left;
+					else
+						tmp = tmp->child_right;
+				}
+				return end();
+			}
+
+			// std::pair<iterator,iterator>	equal_range(const Key& key)
+			// {
+				// TODO
+			// }
+
+			// std::pair<const_iterator,const_iterator> equal_range( const Key& key ) const
+			// {
+				// TODO
+			// }
+
+
+			iterator lower_bound( const T& x )
+			{
+				iterator it = begin();
+				iterator ite = end();
+
+				for (; it != ite; it++)
+				{
+					if (_cmp(*it, x));
+					else
+						break;
+				}
+				return it;
+			}
+
+			
+			// const_iterator lower_bound( const Key& key ) const
+			// {
+			// 	const_iterator it = begin();
+			// 	const_iterator ite = end();
+
+			// 	for (; it != ite; it++)
+			// 	{
+			// 		if (_cmp(*it, x));
+			// 		else
+			// 			break;
+			// 	}
+			// 	return it;
+			// }
+
+			iterator upper_bound( const T& x )
+			{
+				iterator	ite = end();
+				iterator	it = lower_bound(x);
+
+				if (it != ite && !_cmp(x,*it) && !_cmp(*it, x))
+					return (++it);
+				return (it);
+			}
+
+			// const_iterator upper_bound( const Key& key ) const
+			// {
+			// 	const_iterator	ite = end();
+			// 	const_iterator	it = lower_bound(x);
+
+			// 	if (it != ite && !_cmp(x,*it) && !_cmp(*it, x))
+			// 		return (++it);
+			// 	return (it);
+			// }
+
+			// node_ptr	get_root()const
+			// {
+			// 	return _root;
+			// }
+
+			// node_ptr	get_nil()const
+			// {
+			// 	return _NIL;
+			// }
+
+			// ================= Observers =================
+			// key_compare key_comp() const
+			// {
+			// 	// TODO
+			// }
+
+			// value_compare value_comp() const
+			// {
+			// 	// TODO
+			// }
+		
+			// template< class Key, class T, class Compare, class Alloc >
+			// bool operator==( const std::map<Key,T,Compare,Alloc>& lhs,
+			// 				const std::map<Key,T,Compare,Alloc>& rhs );
+
+			// template< class Key, class T, class Compare, class Alloc >
+			// bool operator!=( const std::map<Key,T,Compare,Alloc>& lhs,
+			// 				const std::map<Key,T,Compare,Alloc>& rhs );
+
+			// template< class Key, class T, class Compare, class Alloc >
+			// bool operator<( const std::map<Key,T,Compare,Alloc>& lhs,
+			// 				const std::map<Key,T,Compare,Alloc>& rhs );
+
+			// template< class Key, class T, class Compare, class Alloc >
+			// bool operator<=( const std::map<Key,T,Compare,Alloc>& lhs,
+			// 				const std::map<Key,T,Compare,Alloc>& rhs );
+
+			// template< class Key, class T, class Compare, class Alloc >
+			// bool operator>( const std::map<Key,T,Compare,Alloc>& lhs,
+			// 				const std::map<Key,T,Compare,Alloc>& rhs );
+
+			// template< class Key, class T, class Compare, class Alloc >
+			// bool operator>=( const std::map<Key,T,Compare,Alloc>& lhs,
+			// 				const std::map<Key,T,Compare,Alloc>& rhs );
+
 	};
+
 
 };
 
