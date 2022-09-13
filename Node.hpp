@@ -8,8 +8,7 @@
 # include <algorithm>
 # include <iostream>
 
-namespace ft
-{
+namespace ft {
 
 	template<class T>
 	class Node

@@ -5,6 +5,7 @@
 # include "RBT_iterator.hpp"
 # include "iterator.hpp"
 # include <sstream>
+
 namespace ft {
 
 	// Remove std::less<T>
@@ -14,7 +15,7 @@ namespace ft {
 		public :
 			typedef Allocator								allocator_type;
 			typedef std::size_t								size_type;
-			typedef ft::Node<T>*							node_ptr;
+			typedef ft::Node<T>*								node_ptr;
 
 			typedef typename Allocator::reference			reference;
 			typedef typename Allocator::const_reference		const_reference;
@@ -44,13 +45,14 @@ namespace ft {
 					this->_print(node->child_left, buffer, true, std::string(prefix).append(isTail ? "    " : "│   "));
 			}
 
-			void	_clear(node_ptr *actual)
+			void	_clear(node_ptr actual)
 			{
-				if (actual->child_left)
+				if (actual->child_left != _NIL)
 					_clear(actual->child_left);
-				else if (actual->child_right)
+				else if (actual->child_right != _NIL)
 					_clear(actual->child_right);
-				else
+
+				if (actual != _NIL)
 				{
 					node_ptr	tmp = actual->parent;
 
@@ -58,7 +60,8 @@ namespace ft {
 						tmp->child_right = _NIL;
 					else
 						tmp->child_left = _NIL;
-					_alloc.deallocate(actual);
+					_alloc.destroy(actual);
+					_alloc.deallocate(actual, 1);
 				}
 			}
 		public :
@@ -107,7 +110,12 @@ namespace ft {
 			}
 
 			// Destructor
-			~Red_black_tree(void) { }
+			~Red_black_tree(void)
+			{
+				clear();
+				_alloc.destroy(_NIL);
+				_alloc.deallocate(_NIL, 1);
+			}
 
 			void	print(void)
 			{
@@ -218,8 +226,9 @@ namespace ft {
 			// ================= Modifiers =================
 			void	clear()
 			{
-				// TODO clear algo
+				// DO clear algo
 				_clear(_root);
+				_root = _NIL;
 				_size = 0;
 			}
 

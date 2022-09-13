@@ -15,16 +15,8 @@ int	main()
 	test1.insert(5);
 	test1.print();
 
-	ft::Red_black_tree<int>::const_iterator	test_iterator = test1.begin();
-	std::cout << "test_iterator " << *test_iterator << std::endl;
-	test_iterator++;
-	std::cout << "test_iterator " << *test_iterator << std::endl;
-	test_iterator++;
-	std::cout << "test_iterator " << *test_iterator << std::endl;
-	test_iterator++;
-	std::cout << "test_iterator " << *test_iterator << std::endl;
-
 	test1.find(5);
+	// test1.clear();
 	// test.insert(2);
 	// test.insert(3);
 	// test.insert(5);
