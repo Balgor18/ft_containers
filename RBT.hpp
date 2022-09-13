@@ -15,17 +15,18 @@ namespace ft {
 		public :
 			typedef Allocator								allocator_type;
 			typedef std::size_t								size_type;
-			typedef ft::Node<T>*								node_ptr;
+			typedef ft::Node<T>*							node_ptr;
 
 			typedef typename Allocator::reference			reference;
 			typedef typename Allocator::const_reference		const_reference;
 			typedef typename Allocator::pointer				pointer;
 			typedef typename Allocator::const_pointer		const_pointer;
 
-			typedef RBT_iterator<T>						iterator;
-			typedef RBT_iterator<const T>				const_iterator;
-			typedef reverse_iterator<iterator> 			reverse_iterator;
-			// typedef reverse_iterator<const_iterator>	const_reverse_iterator;
+			typedef ft::RBT_iterator<T>							iterator;
+			typedef ft::RBT_iterator<const T>					const_iterator;
+			typedef ft::reverse_iterator<iterator>				reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
+
 		private :
 			node_ptr		_NIL;
 			node_ptr		_root;
@@ -187,29 +188,25 @@ namespace ft {
 				return const_iterator(_root, _NIL, tmp);
 			}
 
-			// FIX When reverse_iterator is code 
-			reverse_iterator	rebgin()
+			reverse_iterator	rbegin()
 			{
 				return reverse_iterator(end());
 			}
 
-			// FIXME When const reverse iterator work
-			// const_reverse_iterator rbegin() const
-			// {
-			// 	return const_reverse_iterator(end());
-			// }
+			const_reverse_iterator rbegin() const
+			{
+				return const_reverse_iterator(end());
+			}
 
-			// FIX When reverse_iterator is code 
 			reverse_iterator	rend()
 			{
 				return reverse_iterator(begin());
 			}
 
-			// FIXME When const reverse iterator work
-			// const_reverse_iterator rend() const
-			// {
-			// 	return const_reverse_iterator(begin());
-			// }
+			const_reverse_iterator rend() const
+			{
+				return const_reverse_iterator(begin());
+			}
 
 			// ================= Capacity =================
 			bool	empty() const
@@ -226,7 +223,6 @@ namespace ft {
 			// ================= Modifiers =================
 			void	clear()
 			{
-				// DO clear algo
 				_clear(_root);
 				_root = _NIL;
 				_size = 0;
@@ -307,57 +303,6 @@ namespace ft {
 				std::swap(_cmp, other._cmp);;
 			}
 
-			// void	insert(T pair)
-			// {
-			// 	node_ptr	tmp;
-			// 	node_ptr	new_elem;
-			// 	new_elem = _alloc.allocate(1);
-			// 	_alloc.construct(new_elem, pair);
-			// 	new_elem->set_parent(_NIL);
-			// 	new_elem->set_child_left(_NIL);
-			// 	new_elem->set_child_right(_NIL);
-			// 	_size++;
-			// 	if (_root == _NIL)
-			// 	{
-			// 	§	new_elem->set_color(BLACK);
-			// 		_root = new_elem;
-			// 		return ;
-			// 	}
-			// 	new_elem->set_color(RED);
-			// 	tmp = _root;
-			// 	while (tmp != _NIL)
-			// 	{
-			// 		if (tmp->data < new_elem->data)// Go vers la droite
-			// 		{
-			// 			if (tmp->child_right != _NIL)
-			// 			{
-			// 				tmp = tmp->child_right;
-			// 				continue;
-			// 			}
-			// 			else
-			// 			{
-			// 				tmp->child_right = new_elem;
-			// 				new_elem->set_parent(tmp);// MEMO if break move this line 
-			// 				return ;// MEMO probably need break
-			// 			}
-			// 		}
-			// 		if (tmp->data > new_elem->data)// Go vers la gauche
-			// 		{
-			// 			if (tmp->child_left != _NIL)
-			// 			{
-			// 				tmp = tmp->child_left;
-			// 				continue;
-			// 			}
-			// 			else
-			// 			{
-			// 				tmp->child_left = new_elem;
-			// 				new_elem->set_parent(tmp);// MEMO if break move this line 
-			// 				return ;// MEMO probably need break
-			// 			}
-			// 		}
-			// 	}
-			// }
-
 			iterator	erase(iterator pos)
 			{
 				// TODO
@@ -398,7 +343,6 @@ namespace ft {
 				return end();
 			}
 
-			// FIX When const iterator is code 
 			const_iterator	find(const T& x) const
 			{
 				node_ptr	tmp = _root;
@@ -477,6 +421,8 @@ namespace ft {
 			// 	return (it);
 			// }
 
+
+			// MEMO Think i need to remove
 			// node_ptr	get_root()const
 			// {
 			// 	return _root;
@@ -498,6 +444,7 @@ namespace ft {
 			// 	// TODO
 			// }
 		
+			// TODO
 			// template< class Key, class T, class Compare, class Alloc >
 			// bool operator==( const std::map<Key,T,Compare,Alloc>& lhs,
 			// 				const std::map<Key,T,Compare,Alloc>& rhs );
