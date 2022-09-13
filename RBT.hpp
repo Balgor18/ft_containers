@@ -24,7 +24,7 @@ namespace ft {
 			typedef RBT_iterator<T>						iterator;
 			typedef RBT_iterator<const T>				const_iterator;
 			typedef reverse_iterator<iterator> 			reverse_iterator;
-			// typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
+			// typedef reverse_iterator<const_iterator>	const_reverse_iterator;
 		private :
 			node_ptr		_NIL;
 			node_ptr		_root;
@@ -44,6 +44,23 @@ namespace ft {
 					this->_print(node->child_left, buffer, true, std::string(prefix).append(isTail ? "    " : "│   "));
 			}
 
+			void	_clear(node_ptr *actual)
+			{
+				if (actual->child_left)
+					_clear(actual->child_left);
+				else if (actual->child_right)
+					_clear(actual->child_right);
+				else
+				{
+					node_ptr	tmp = actual->parent;
+
+					if (tmp->child_right == actual)
+						tmp->child_right = _NIL;
+					else
+						tmp->child_left = _NIL;
+					_alloc.deallocate(actual);
+				}
+			}
 		public :
 			Red_black_tree(const Allocator& alloc= Allocator(), const Compare& cmp = Compare()) : _alloc(alloc), _cmp(cmp)
 			{
@@ -168,11 +185,23 @@ namespace ft {
 				return reverse_iterator(end());
 			}
 
+			// FIXME When const reverse iterator work
+			// const_reverse_iterator rbegin() const
+			// {
+			// 	return const_reverse_iterator(end());
+			// }
+
 			// FIX When reverse_iterator is code 
 			reverse_iterator	rend()
 			{
 				return reverse_iterator(begin());
 			}
+
+			// FIXME When const reverse iterator work
+			// const_reverse_iterator rend() const
+			// {
+			// 	return const_reverse_iterator(begin());
+			// }
 
 			// ================= Capacity =================
 			bool	empty() const
@@ -190,6 +219,7 @@ namespace ft {
 			void	clear()
 			{
 				// TODO clear algo
+				_clear(_root);
 				_size = 0;
 			}
 
@@ -350,7 +380,7 @@ namespace ft {
 				while (tmp != _NIL)
 				{
 					if (!_cmp(tmp->data, x) && !_cmp(x, tmp->data))
-						return iterator(tmp);
+						return iterator(_root, _NIL, tmp);
 					else if (_cmp(x, tmp->data))
 						tmp = tmp->child_left;
 					else
@@ -359,7 +389,7 @@ namespace ft {
 				return end();
 			}
 
-			// FIXME When const iterator is code 
+			// FIX When const iterator is code 
 			const_iterator	find(const T& x) const
 			{
 				node_ptr	tmp = _root;
@@ -369,7 +399,7 @@ namespace ft {
 				while (tmp != _NIL)
 				{
 					if (!_cmp(tmp->data, x) && !_cmp(x, tmp->data))
-						return const_iterator(tmp);
+						return const_iterator(_root, _NIL, tmp);
 					else if (_cmp(x, tmp->data))
 						tmp = tmp->child_left;
 					else
