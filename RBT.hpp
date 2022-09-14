@@ -284,16 +284,20 @@ namespace ft {
 				// TODO Modif this
 			}
 
-			// iterator	insert(interator hint, const T& val)
+			// iterator	insert(iterator hint, const T& val)
 			// {
-				// TODO
+				// TODO verif if work
+			// 	return iterator(rbt.insert(val), rbt.getNil(), rbt.getRoot());
 			// }
 
-			// template<typename input_iterator>
-			// void	insert(input_iterator first, input_iterator last)
-			// {
-				// TODO
-			// }
+			// TODO verif if work
+			template<typename input_iterator>
+			void	insert(input_iterator first, input_iterator last)
+			{
+				for (; first != last; first++) {
+					insert(*first);
+				}
+			}
 
 			void	swap(Red_black_tree &other)
 			{
