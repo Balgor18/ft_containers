@@ -138,28 +138,6 @@ namespace ft {
 
 		value_compare  value_comp()    const;
 
-		// map operations:
-		iterator find(const key_type& k)
-		{
-			// Node	*tmp;
-
-			// tmp = _root;
-			// while (tmp != _NIL)
-			// {
-			// 	std::cout << "key_comp " << key_comp(to_find, tmp->data) << std::endl;
-			// 	if (to_find < tmp->data)// MEMO Si plus petit alors go cote gauche
-			// 	{
-					
-			// 	}
-			// 	else
-			// 	{
-
-			// 	}
-			// }
-			// return _NIL;
-		}
-
-
 
 
 		const_iterator find(const key_type& k) const;
