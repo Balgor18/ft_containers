@@ -261,8 +261,7 @@ namespace ft {
 						else
 						{
 							tmp->child_right = new_elem;
-							new_elem->set_parent(tmp);// MEMO if break move this line 
-							return ;// MEMO probably need break
+							break ;
 						}
 					}
 
@@ -276,19 +275,19 @@ namespace ft {
 						else
 						{
 							tmp->child_left = new_elem;
-							new_elem->set_parent(tmp);// MEMO if break move this line 
-							return ;// MEMO probably need break
+							break ;
 						}
 					}
 				}
-				// TODO Modif this
+				new_elem->set_parent(tmp);
+				// TODO Balance RBT here (Probably)
 			}
 
-			// iterator	insert(iterator hint, const T& val)
-			// {
+			iterator	insert(iterator hint, const T& val)
+			{
 				// TODO verif if work
-			// 	return iterator(rbt.insert(val), rbt.getNil(), rbt.getRoot());
-			// }
+				return iterator(insert(val), _NIL, _root);
+			}
 
 			// TODO verif if work
 			template<typename input_iterator>
