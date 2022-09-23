@@ -131,6 +131,12 @@ namespace ft
 			pointer operator->() { return &(_actual_node->data); };
 
 			const pointer operator->() const { return &(_actual_node->data); };
+
+			node_ptr	get_node() const { return _actual_node; };
+
+			node_ptr	get_nil() const { return _NIL; };
+
+			node_ptr	get_root() const { return _root; };
 	};
 }
 

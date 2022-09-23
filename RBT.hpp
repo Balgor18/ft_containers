@@ -15,6 +15,7 @@ namespace ft {
 		public :
 			typedef Allocator								allocator_type;
 			typedef std::size_t								size_type;
+			typedef Compare									key_compare;
 			typedef ft::Node<T>*							node_ptr;
 
 			typedef typename Allocator::reference			reference;
@@ -65,6 +66,33 @@ namespace ft {
 					_alloc.deallocate(actual, 1);
 				}
 			}
+
+			void	_invert(Node *lhs, Node *rhs) {
+				if (lhs->parent == _NIL)
+					_root = rhs;
+				else if (lhs == lhs->parent->child_left)
+					lhs->parent->child_left = rhs;
+				else
+					lhs->parent->child_right =rhs;
+				rhs->parent = lhs->parent;
+			}
+
+			node_ptr	max(node_ptr x) {
+				node_ptr node = x;
+
+				while (node->child_right != _NIL)
+					node = node->child_right;
+				return node;
+			}
+
+			node_ptr	min(node_ptr x) {
+				node_ptr node = x;
+
+				while (node->child_left != _NIL)
+					node = node->child_left;
+				return node;
+			}
+
 		public :
 			Red_black_tree(const Allocator& alloc= Allocator(), const Compare& cmp = Compare()) : _alloc(alloc), _cmp(cmp)
 			{
@@ -228,8 +256,7 @@ namespace ft {
 				_size = 0;
 			}
 
-			// node_ptr	insert(const T& pair) // TODO Modif this
-			void	insert(const T& pair)
+			T	insert(const T& pair)
 			{
 				// TODO Modif this
 				node_ptr	tmp;
@@ -245,7 +272,7 @@ namespace ft {
 				{
 					new_elem->set_color(BLACK);
 					_root = new_elem;
-					return ;
+					return _root->data;
 				}
 				new_elem->set_color(RED);
 				tmp = _root;
@@ -281,15 +308,14 @@ namespace ft {
 				}
 				new_elem->set_parent(tmp);
 				// TODO Balance RBT here (Probably)
+				return new_elem->data;
 			}
 
 			iterator	insert(iterator hint, const T& val)
 			{
-				// TODO verif if work
 				return iterator(insert(val), _NIL, _root);
 			}
 
-			// TODO verif if work
 			template<typename input_iterator>
 			void	insert(input_iterator first, input_iterator last)
 			{
@@ -306,20 +332,100 @@ namespace ft {
 				std::swap(_cmp, other._cmp);;
 			}
 
-			iterator	erase(iterator pos)
+			void	erase(iterator pos)
 			{
-				// TODO
+				node_ptr	color_node = pos.get_node();; 
+				node_ptr	param_node = pos.get_node();
+				node_ptr	left;
+				node_ptr	right;
+				if (param_node == _NIL) {
+					return ;
+				}
+				if (param_node->child_left == _NIL) {
+					right = param_node->child_right;
+					_invert(param_node, param_node->child_right);
+				}
+				else if (param_node->child_right == _NIL) {
+					left = param_node->child_left;
+					_invert(param_node, param_node->child_left);
+				}
+				else {
+					left = min(param_node->child_right);
+					color_node = left;
+					right = left->child_right;
+					if (left->parent == param_node) {
+						left->parent = left;
+					}
+					else {
+						_invert(left, left->child_right);
+						left->child_right = param_node->child_right;
+						left->child_right->parent = left;
+					}
+					_invert(param_node, left);
+					left->child_left = param_node->child_left;
+					left->child_left->parent = left;
+					left->color = param_node->color;
+				}
+				// if (original_node.get_color() == black)
+				// 	_deleteFixup(x);
+				_alloc.destroy(param_node);
+				_alloc.deallocate(param_node, 1);
+				_size--;
+				return ;
 			}
 
-			iterator	erase(iterator first, iterator last)
+			void	erase(iterator first, iterator last)
 			{
-				// TODO
+				iterator	tmp;
+
+				while (first != last)
+				{
+					tmp = first;
+					first++;
+					erase(tmp);
+				}
 			}
 
-			// size_type	erase(const Key& key)
-			// {
-			// 	// TODO
-			// }
+			size_type	erase(const T& key)
+			{
+				node_ptr	color_node = key.get_node(); 
+				node_ptr	param_node = key.get_node();
+				node_ptr	left;
+				node_ptr	right;
+
+				if (param_node == _NIL) {
+					return 0;
+				}
+				if (param_node->child_left == _NIL) {
+					right = param_node->child_right;
+					_invert(param_node, param_node->child_right);
+				}
+				else if (param_node->child_right == _NIL) {
+					left = param_node->child_left;
+					_invert(param_node, param_node->child_left);
+				}
+				else {
+					left = min(param_node->child_right);
+					color_node = left;
+					right = left->child_right;
+					if (left->parent == param_node) {
+						left->parent = left;
+					}
+					else {
+						_invert(left, left->child_right);
+						left->child_right = param_node->child_right;
+						left->child_right->parent = left;
+					}
+					_invert(param_node, left);
+					left->child_left = param_node->child_left;
+					left->child_left->parent = left;
+					left->color = param_node->color;
+				}
+				_alloc.destroy(param_node);
+				_alloc.deallocate(param_node, 1);
+				_size--;
+				return 1;
+			}
 
 			size_type	count(const T &x) const
 			{
@@ -389,20 +495,19 @@ namespace ft {
 				return it;
 			}
 
-			
-			// const_iterator lower_bound( const Key& key ) const
-			// {
-			// 	const_iterator it = begin();
-			// 	const_iterator ite = end();
+			const_iterator lower_bound( const T& key ) const
+			{
+				const_iterator it = begin();
+				const_iterator ite = end();
 
-			// 	for (; it != ite; it++)
-			// 	{
-			// 		if (_cmp(*it, x));
-			// 		else
-			// 			break;
-			// 	}
-			// 	return it;
-			// }
+				for (; it != ite; it++)
+				{
+					if (_cmp(*it, key));
+					else
+						break;
+				}
+				return it;
+			}
 
 			iterator upper_bound( const T& x )
 			{
@@ -414,33 +519,21 @@ namespace ft {
 				return (it);
 			}
 
-			// const_iterator upper_bound( const Key& key ) const
-			// {
-			// 	const_iterator	ite = end();
-			// 	const_iterator	it = lower_bound(x);
+			const_iterator upper_bound( const T& key ) const
+			{
+				const_iterator	ite = end();
+				const_iterator	it = lower_bound(key);
 
-			// 	if (it != ite && !_cmp(x,*it) && !_cmp(*it, x))
-			// 		return (++it);
-			// 	return (it);
-			// }
-
-
-			// MEMO Think i need to remove
-			// node_ptr	get_root()const
-			// {
-			// 	return _root;
-			// }
-
-			// node_ptr	get_nil()const
-			// {
-			// 	return _NIL;
-			// }
+				if (it != ite && !_cmp(key,*it) && !_cmp(*it, key))
+					return (++it);
+				return (it);
+			}
 
 			// ================= Observers =================
-			// key_compare key_comp() const
-			// {
-			// 	// TODO
-			// }
+			key_compare key_comp() const
+			{
+				return key_compare();
+			}
 
 			// value_compare value_comp() const
 			// {
