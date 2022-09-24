@@ -559,16 +559,18 @@ namespace ft {
 
 	};
 
+	// FIXME error with const
 	template<class T, class Compare, class Node, class Allocator>
-	bool operator==( const Red_black_tree<T, Compare, Node, Allocator>& lhs,
-					const Red_black_tree<T, Compare, Node, Allocator>& rhs )
+	bool operator==(  Red_black_tree<T, Compare, Node, Allocator>& lhs,
+					 Red_black_tree<T, Compare, Node, Allocator>& rhs )
 	{
 		return (lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 	};
 
+	// FIXME error with const
 	template<class T, class Compare, class Node, class Allocator>
-	bool operator!=( const Red_black_tree<T, Compare, Node, Allocator>& lhs,
-					const Red_black_tree<T, Compare, Node, Allocator>& rhs )
+	bool operator!=(  Red_black_tree<T, Compare, Node, Allocator>& lhs,
+					 Red_black_tree<T, Compare, Node, Allocator>& rhs )
 	{
 		return (!(lhs == rhs));
 	};

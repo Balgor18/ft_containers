@@ -137,6 +137,14 @@ namespace ft
 			node_ptr	get_nil() const { return _NIL; };
 
 			node_ptr	get_root() const { return _root; };
+
+			bool operator==( const RBT_iterator& rhs ) {
+				return _actual_node == rhs._actual_node;
+			};
+
+			bool operator!=( const RBT_iterator& rhs ) {
+				return _actual_node != rhs._actual_node;
+			};
 	};
 }
 

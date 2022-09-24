@@ -139,10 +139,10 @@ int	main()
 	else
 		std::cout << "Egaux" << std::endl;
 
-	// if (test10 < test20)
-	// 	std::cout << "test10 plus petit de test20" << std::endl;
-	// else
-	// 	std::cout << "test20 plus petit de test10 ou plus grand" << std::endl;
+	if (test10 < test20)
+		std::cout << "test10 plus petit de test20" << std::endl;
+	else
+		std::cout << "test20 plus petit de test10 ou plus grand" << std::endl;
 
 	// std::set<int>::iterator it;
 
