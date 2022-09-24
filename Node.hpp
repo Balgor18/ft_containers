@@ -27,8 +27,16 @@ namespace ft {
 			// Copy constructor
 			Node(const Node &cpy) : parent(cpy.parent), child_left(cpy.child_left), child_right(cpy.child_right), data(cpy.key, cpy.value), color(cpy.color) {}
 
-			// TODO Overload operator = 
-			
+			// Overload operator = 
+			Node<T>&	operator=(const Node<T>&&rhs)
+			{
+				if (this == &rhs)
+					return (*this);
+				parent = rhs.parent;
+				child_left = rhs.child_left;
+				child_right = rhs.child_right;
+			}
+
 			// Destructor
 			~Node() {};
 

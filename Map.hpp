@@ -154,6 +154,7 @@ namespace ft {
 		pair<iterator,iterator>             equal_range(const key_type& k);
 		pair<const_iterator,const_iterator> equal_range(const key_type& k) const;
 	};
+	// MEMO vik est geniale <333333
 
 	template <class Key, class T, class Compare, class Allocator>
 	bool	operator==(const map<Key, T, Compare, Allocator>& x,

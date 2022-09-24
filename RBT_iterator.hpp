@@ -7,7 +7,7 @@
 
 namespace ft
 {
-	template <class T>//, class node_type = ft::Node<T>>
+	template <class T>
 	class RBT_iterator
 	{
 		typedef typename ft::Iterator<ft::bidirectional_iterator_tag, T>::value_type			value_type;

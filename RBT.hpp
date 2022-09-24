@@ -5,6 +5,8 @@
 # include "RBT_iterator.hpp"
 # include "iterator.hpp"
 # include <sstream>
+# include "lexicographical_compare.hpp"
+# include "pair.hpp"
 
 namespace ft {
 
@@ -27,6 +29,21 @@ namespace ft {
 			typedef ft::RBT_iterator<const T>					const_iterator;
 			typedef ft::reverse_iterator<iterator>				reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
+
+			// template <class Key, class T, class Compare, class Alloc>
+			class value_compare
+			{
+
+				friend class Red_black_tree;
+				protected:
+					Compare comp;
+					value_compare (Compare c) : comp(c) {}  // constructed with map's comparison object
+				public:
+					bool operator() (const T& x, const T& y) const
+					{
+						return comp(x.first, y.first);
+					}
+			};
 
 		private :
 			node_ptr		_NIL;
@@ -258,7 +275,6 @@ namespace ft {
 
 			T	insert(const T& pair)
 			{
-				// TODO Modif this
 				node_ptr	tmp;
 				node_ptr	new_elem;
 
@@ -278,7 +294,7 @@ namespace ft {
 				tmp = _root;
 				while (tmp != _NIL)
 				{
-					if (tmp->data < new_elem->data)// Go vers la droite
+					if (tmp->data < new_elem->data)
 					{
 						if (tmp->child_right != _NIL)
 						{
@@ -292,7 +308,7 @@ namespace ft {
 						}
 					}
 
-					if (tmp->data > new_elem->data)// Go vers la gauche
+					if (tmp->data > new_elem->data)
 					{
 						if (tmp->child_left != _NIL)
 						{
@@ -470,16 +486,17 @@ namespace ft {
 				return end();
 			}
 
-			// std::pair<iterator,iterator>	equal_range(const Key& key)
-			// {
-				// TODO
-			// }
+			// FIXME Check
+			T	equal_range(const T& key)
+			{
+				return ft::make_pair(lower_bound(key), upper_bound(key));
+			}
 
-			// std::pair<const_iterator,const_iterator> equal_range( const Key& key ) const
-			// {
-				// TODO
-			// }
-
+			// FIXME Check
+			T	equal_range( const T& key ) const
+			{
+				return ft::make_pair(lower_bound(key), upper_bound(key));
+			}
 
 			iterator lower_bound( const T& x )
 			{
@@ -535,38 +552,54 @@ namespace ft {
 				return key_compare();
 			}
 
-			// value_compare value_comp() const
-			// {
-			// 	// TODO
-			// }
-		
-			// TODO
-			// template< class Key, class T, class Compare, class Alloc >
-			// bool operator==( const std::map<Key,T,Compare,Alloc>& lhs,
-			// 				const std::map<Key,T,Compare,Alloc>& rhs );
-
-			// template< class Key, class T, class Compare, class Alloc >
-			// bool operator!=( const std::map<Key,T,Compare,Alloc>& lhs,
-			// 				const std::map<Key,T,Compare,Alloc>& rhs );
-
-			// template< class Key, class T, class Compare, class Alloc >
-			// bool operator<( const std::map<Key,T,Compare,Alloc>& lhs,
-			// 				const std::map<Key,T,Compare,Alloc>& rhs );
-
-			// template< class Key, class T, class Compare, class Alloc >
-			// bool operator<=( const std::map<Key,T,Compare,Alloc>& lhs,
-			// 				const std::map<Key,T,Compare,Alloc>& rhs );
-
-			// template< class Key, class T, class Compare, class Alloc >
-			// bool operator>( const std::map<Key,T,Compare,Alloc>& lhs,
-			// 				const std::map<Key,T,Compare,Alloc>& rhs );
-
-			// template< class Key, class T, class Compare, class Alloc >
-			// bool operator>=( const std::map<Key,T,Compare,Alloc>& lhs,
-			// 				const std::map<Key,T,Compare,Alloc>& rhs );
+			value_compare value_comp() const
+			{
+				return value_compare(key_compare());
+			}
 
 	};
 
+	template<class T, class Compare, class Node, class Allocator>
+	bool operator==( const Red_black_tree<T, Compare, Node, Allocator>& lhs,
+					const Red_black_tree<T, Compare, Node, Allocator>& rhs )
+	{
+		return (lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
+	};
+
+	template<class T, class Compare, class Node, class Allocator>
+	bool operator!=( const Red_black_tree<T, Compare, Node, Allocator>& lhs,
+					const Red_black_tree<T, Compare, Node, Allocator>& rhs )
+	{
+		return (!(lhs == rhs));
+	};
+
+	template<class T, class Compare, class Node, class Allocator>
+	bool operator<( Red_black_tree<T, Compare, Node, Allocator>& lhs,
+					Red_black_tree<T, Compare, Node, Allocator>& rhs )
+	{
+		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));// FIXME Modif this
+	};
+
+	template<class T, class Compare, class Node, class Allocator>
+	bool operator<=( const Red_black_tree<T, Compare, Node, Allocator>& lhs,
+					const Red_black_tree<T, Compare, Node, Allocator>& rhs )
+	{
+		return !(lhs < rhs);
+	};
+
+	template<class T, class Compare, class Node, class Allocator>
+	bool operator>( const Red_black_tree<T, Compare, Node, Allocator>& lhs,
+					const Red_black_tree<T, Compare, Node, Allocator>& rhs )
+	{
+		return lhs < rhs;
+	};
+
+	template<class T, class Compare, class Node, class Allocator>
+	bool operator>=( const Red_black_tree<T, Compare, Node, Allocator>& lhs,
+					const Red_black_tree<T, Compare, Node, Allocator>& rhs )
+	{
+		return !(lhs < rhs);
+	};
 
 };
 
