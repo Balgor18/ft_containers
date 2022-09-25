@@ -30,14 +30,13 @@ namespace ft {
 			typedef ft::reverse_iterator<iterator>				reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 
-			// template <class Key, class T, class Compare, class Alloc>
 			class value_compare
 			{
 
 				friend class Red_black_tree;
 				protected:
 					Compare comp;
-					value_compare (Compare c) : comp(c) {}  // constructed with map's comparison object
+					value_compare (Compare c) : comp(c) {}
 				public:
 					bool operator() (const T& x, const T& y) const
 					{
@@ -486,16 +485,14 @@ namespace ft {
 				return end();
 			}
 
-			// FIXME Check
 			T	equal_range(const T& key)
 			{
-				return ft::make_pair(lower_bound(key), upper_bound(key));
+				return ft::make_pair(lower_bound(key), upper_bound(key));// TODO probably modif this
 			}
 
-			// FIXME Check
 			T	equal_range( const T& key ) const
 			{
-				return ft::make_pair(lower_bound(key), upper_bound(key));
+				return ft::make_pair(lower_bound(key), upper_bound(key));// TODO probably modif this
 			}
 
 			iterator lower_bound( const T& x )
