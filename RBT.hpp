@@ -260,9 +260,15 @@ namespace ft {
 				return false;
 			}
 
-			size_type	size(void) const { return _size; }
+			size_type	size(void) const 
+			{
+				return _size;
+			}
 
-			size_type	max_size() const { return _alloc.max_size(); }
+			size_type	max_size() const 
+			{
+				return _alloc.max_size();
+			}
 
 			// ================= Modifiers =================
 			void	clear()
@@ -487,12 +493,14 @@ namespace ft {
 
 			T	equal_range(const T& key)
 			{
-				return ft::make_pair(lower_bound(key), upper_bound(key));// TODO probably modif this
+				// return ft::make_pair(lower_bound(key), upper_bound(key));// FIXME probably modif this
+				return T(lower_bound(key), upper_bound(key));
 			}
 
 			T	equal_range( const T& key ) const
 			{
-				return ft::make_pair(lower_bound(key), upper_bound(key));// TODO probably modif this
+				return T(lower_bound(key), upper_bound(key));
+				// return ft::make_pair(lower_bound(key), upper_bound(key));// FIXME probably modif this
 			}
 
 			iterator lower_bound( const T& x )
@@ -556,25 +564,36 @@ namespace ft {
 
 	};
 
+	// https://stackoverflow.com/questions/70490594/trouble-implementing-const-iterator-in-c
+
 	// FIXME error with const
 	template<class T, class Compare, class Node, class Allocator>
-	bool operator==(  Red_black_tree<T, Compare, Node, Allocator>& lhs,
-					 Red_black_tree<T, Compare, Node, Allocator>& rhs )
+	bool operator==( const Red_black_tree<T, Compare, Node, Allocator>& lhs,
+					const Red_black_tree<T, Compare, Node, Allocator>& rhs )
 	{
-		return (lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
+		// lhs.begin();
+		if (lhs.size() != rhs.size())
+			return false;
+
+		// VERIF content with equal
+
+		// lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());// FIXME Bruh need to change this
+		// equal(lhs.begin())
+		return true;
+		// return (lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 	};
 
 	// FIXME error with const
 	template<class T, class Compare, class Node, class Allocator>
-	bool operator!=(  Red_black_tree<T, Compare, Node, Allocator>& lhs,
-					 Red_black_tree<T, Compare, Node, Allocator>& rhs )
+	bool operator!=( const Red_black_tree<T, Compare, Node, Allocator>& lhs,
+					const Red_black_tree<T, Compare, Node, Allocator>& rhs )
 	{
 		return (!(lhs == rhs));
 	};
 
 	template<class T, class Compare, class Node, class Allocator>
-	bool operator<( Red_black_tree<T, Compare, Node, Allocator>& lhs,
-					Red_black_tree<T, Compare, Node, Allocator>& rhs )
+	bool operator<( const Red_black_tree<T, Compare, Node, Allocator>& lhs,
+					const Red_black_tree<T, Compare, Node, Allocator>& rhs )
 	{
 		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));// FIXME Modif this
 	};

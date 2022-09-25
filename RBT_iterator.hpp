@@ -45,7 +45,7 @@ namespace ft
 				}
 			}
 
-			void Decrement()
+			void	Decrement()
 			{
 				if (_actual_node->parent->parent == _actual_node && _actual_node->color == RED)
 					_actual_node = _actual_node->child_right;
@@ -89,14 +89,16 @@ namespace ft
 				return *this;
 			}
 
-			RBT_iterator	operator++(int) {
+			RBT_iterator	operator++(int)
+			{
 				Himself tmp(*this);
 
 				Increment();
 				return tmp;
 			}
 
-			RBT_iterator&	operator--() {
+			RBT_iterator&	operator--()
+			{
 				if (_actual_node == _NIL) {
 					_actual_node = maximum();
 					return *this;
@@ -105,7 +107,8 @@ namespace ft
 				return *this;
 			}
 
-			RBT_iterator	operator--(int) {
+			RBT_iterator	operator--(int)
+			{
 				Himself tmp(*this);
 
 					if (_actual_node == _NIL) {
@@ -124,25 +127,48 @@ namespace ft
 				return *this;
 			 }
 
-			reference operator*() { return _actual_node->data; };
+			reference operator*() 
+			{
+				return _actual_node->data;
+			};
 			
-			const reference operator*() const { return _actual_node->data; };
+			const reference operator*() const 
+			{
+				return _actual_node->data;
+			};
 
-			pointer operator->() { return &(_actual_node->data); };
+			pointer operator->() 
+			{
+				return &(_actual_node->data);
+			};
 
-			const pointer operator->() const { return &(_actual_node->data); };
+			const pointer operator->() const 
+			{
+				return &(_actual_node->data);
+			};
 
-			node_ptr	get_node() const { return _actual_node; };
+			node_ptr	get_node() const 
+			{
+				return _actual_node;
+			};
 
-			node_ptr	get_nil() const { return _NIL; };
+			node_ptr	get_nil() const 
+			{
+				return _NIL;
+			};
 
-			node_ptr	get_root() const { return _root; };
+			node_ptr	get_root() const 
+			{
+				return _root;
+			};
 
-			bool operator==( const RBT_iterator& rhs ) {
+			bool operator==( const RBT_iterator& rhs )
+			{
 				return _actual_node == rhs._actual_node;
 			};
 
-			bool operator!=( const RBT_iterator& rhs ) {
+			bool operator!=( const RBT_iterator& rhs )
+			{
 				return _actual_node != rhs._actual_node;
 			};
 	};
