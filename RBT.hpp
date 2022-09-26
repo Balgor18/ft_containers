@@ -11,24 +11,24 @@
 namespace ft {
 
 	// Remove std::less<T>
-	template<class T, class Compare = std::less<T>, class Node = Node<T>, class Allocator = std::allocator<Node> >// MEMO remode std::less
+	template<class T, class Compare = std::less<T>, class Allocator = std::allocator<Node<T> > >// MEMO remode std::less
 	class Red_black_tree
 	{
 		public :
-			typedef Allocator								allocator_type;
-			typedef std::size_t								size_type;
-			typedef Compare									key_compare;
-			typedef ft::Node<T>*							node_ptr;
+			typedef Allocator											allocator_type;
+			typedef std::size_t											size_type;
+			typedef Compare												key_compare;
+			typedef ft::Node<T>*										node_ptr;
 
-			typedef typename Allocator::reference			reference;
-			typedef typename Allocator::const_reference		const_reference;
-			typedef typename Allocator::pointer				pointer;
-			typedef typename Allocator::const_pointer		const_pointer;
+			typedef typename Allocator::reference						reference;
+			typedef typename Allocator::const_reference					const_reference;
+			typedef typename Allocator::pointer							pointer;
+			typedef typename Allocator::const_pointer					const_pointer;
 
-			typedef ft::RBT_iterator<T>							iterator;
-			typedef ft::RBT_iterator<const T>					const_iterator;
-			typedef ft::reverse_iterator<iterator>				reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
+			typedef ft::RBT_iterator<T, ft::Node<T> >					iterator;
+			typedef ft::RBT_iterator<const T, const ft::Node<T> >		const_iterator;
+			typedef ft::reverse_iterator<iterator>						reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 
 			class value_compare
 			{
@@ -51,7 +51,7 @@ namespace ft {
 			size_type		_size;
 			Compare			_cmp;
 
-			void	_print(Node *node, std::stringstream &buffer, bool isTail, std::string prefix)
+			void	_print(node_ptr	node, std::stringstream &buffer, bool isTail, std::string prefix)
 			{
 				if (node->child_right != this->_NIL)
 					this->_print(node->child_right, buffer, false, std::string(prefix).append(isTail ? "│   " : "    "));
@@ -83,7 +83,7 @@ namespace ft {
 				}
 			}
 
-			void	_invert(Node *lhs, Node *rhs) {
+			void	_invert(node_ptr	lhs, node_ptr	rhs) {
 				if (lhs->parent == _NIL)
 					_root = rhs;
 				else if (lhs == lhs->parent->child_left)
@@ -208,28 +208,12 @@ namespace ft {
 
 			iterator	end()
 			{
-				node_ptr	tmp = _root;
-				
-				while (tmp != _NIL)
-				{
-					if (tmp->child_right == _NIL)
-						break ;
-					tmp = tmp->child_right;
-				}
-				return iterator(_root, _NIL, tmp);
+				return iterator(_root, _NIL, _NIL);
 			}
 
 			const_iterator	end() const
 			{
-				node_ptr	tmp = _root;
-				
-				while (tmp != _NIL)
-				{
-					if (tmp->child_right == _NIL)
-						break ;
-					tmp = tmp->child_right;
-				}
-				return const_iterator(_root, _NIL, tmp);
+				return const_iterator(_root, _NIL, _NIL);
 			}
 
 			reverse_iterator	rbegin()
@@ -491,16 +475,14 @@ namespace ft {
 				return end();
 			}
 
-			T	equal_range(const T& key)
+			pair<iterator, iterator>	equal_range(const T& key)
 			{
-				// return ft::make_pair(lower_bound(key), upper_bound(key));// FIXME probably modif this
-				return T(lower_bound(key), upper_bound(key));
+				return ft::make_pair(lower_bound(key), upper_bound(key));
 			}
 
-			T	equal_range( const T& key ) const
+			pair<const_iterator, const_iterator>	equal_range( const T& key ) const
 			{
-				return T(lower_bound(key), upper_bound(key));
-				// return ft::make_pair(lower_bound(key), upper_bound(key));// FIXME probably modif this
+				return ft::make_pair(lower_bound(key), upper_bound(key));
 			}
 
 			iterator lower_bound( const T& x )
@@ -566,55 +548,44 @@ namespace ft {
 
 	// https://stackoverflow.com/questions/70490594/trouble-implementing-const-iterator-in-c
 
-	// FIXME error with const
-	template<class T, class Compare, class Node, class Allocator>
-	bool operator==( const Red_black_tree<T, Compare, Node, Allocator>& lhs,
-					const Red_black_tree<T, Compare, Node, Allocator>& rhs )
+	template<class T, class Compare, class Allocator>
+	bool operator==(Red_black_tree<T, Compare, Allocator>& lhs,
+					Red_black_tree<T, Compare, Allocator>& rhs )
 	{
-		// lhs.begin();
-		if (lhs.size() != rhs.size())
-			return false;
-
-		// VERIF content with equal
-
-		// lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());// FIXME Bruh need to change this
-		// equal(lhs.begin())
-		return true;
-		// return (lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
+		return (lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 	};
 
-	// FIXME error with const
-	template<class T, class Compare, class Node, class Allocator>
-	bool operator!=( const Red_black_tree<T, Compare, Node, Allocator>& lhs,
-					const Red_black_tree<T, Compare, Node, Allocator>& rhs )
+	template<class T, class Compare, class Allocator>
+	bool operator!=( Red_black_tree<T, Compare, Allocator>& lhs,
+					Red_black_tree<T, Compare, Allocator>& rhs )
 	{
 		return (!(lhs == rhs));
 	};
 
-	template<class T, class Compare, class Node, class Allocator>
-	bool operator<( const Red_black_tree<T, Compare, Node, Allocator>& lhs,
-					const Red_black_tree<T, Compare, Node, Allocator>& rhs )
+	template<class T, class Compare, class Allocator>
+	bool operator<( Red_black_tree<T, Compare, Allocator>& lhs,
+					Red_black_tree<T, Compare, Allocator>& rhs )
 	{
-		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));// FIXME Modif this
+		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 	};
 
-	template<class T, class Compare, class Node, class Allocator>
-	bool operator<=( const Red_black_tree<T, Compare, Node, Allocator>& lhs,
-					const Red_black_tree<T, Compare, Node, Allocator>& rhs )
+	template<class T, class Compare, class Allocator>
+	bool operator<=( Red_black_tree<T, Compare, Allocator>& lhs,
+					Red_black_tree<T, Compare, Allocator>& rhs )
 	{
 		return !(lhs < rhs);
 	};
 
-	template<class T, class Compare, class Node, class Allocator>
-	bool operator>( const Red_black_tree<T, Compare, Node, Allocator>& lhs,
-					const Red_black_tree<T, Compare, Node, Allocator>& rhs )
+	template<class T, class Compare, class Allocator>
+	bool operator>( Red_black_tree<T, Compare, Allocator>& lhs,
+					Red_black_tree<T, Compare, Allocator>& rhs )
 	{
-		return lhs < rhs;
+		return !(lhs < rhs);
 	};
 
-	template<class T, class Compare, class Node, class Allocator>
-	bool operator>=( const Red_black_tree<T, Compare, Node, Allocator>& lhs,
-					const Red_black_tree<T, Compare, Node, Allocator>& rhs )
+	template<class T, class Compare, class Allocator>
+	bool operator>=( Red_black_tree<T, Compare, Allocator>& lhs,
+					Red_black_tree<T, Compare, Allocator>& rhs )
 	{
 		return !(lhs < rhs);
 	};

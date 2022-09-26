@@ -3,20 +3,19 @@
 
 # include "RBT.hpp"
 # include "Node.hpp"
-# include "iterator.hpp"
 
 namespace ft
 {
-	template <class T>
-	class RBT_iterator
-	{
-		typedef typename ft::Iterator<ft::bidirectional_iterator_tag, T>::value_type			value_type;
-		typedef typename ft::Iterator<ft::bidirectional_iterator_tag, T>::iterator_category		iterator_type;
-		typedef typename ft::Iterator<ft::bidirectional_iterator_tag, T>::difference_type		difference_type;
-		typedef typename ft::Iterator<ft::bidirectional_iterator_tag, T>::reference				reference;
-		typedef typename ft::Iterator<ft::bidirectional_iterator_tag, T>::pointer				pointer;
-		typedef RBT_iterator<T>											Himself;
-		typedef Node<T>*												node_ptr;
+
+	template <class T, class Node>
+	class RBT_iterator {
+		typedef Node*						node_ptr;
+		typedef RBT_iterator<T, Node>		Himself;
+		typedef T							value_type;
+		typedef T&							reference;
+		typedef const T&					const_reference;
+		typedef T*							pointer;
+		typedef const T*					const_pointer;
 		protected :
 			node_ptr	_root;
 			node_ptr	_NIL;
@@ -66,7 +65,7 @@ namespace ft
 				}
 			}
 
-				node_ptr	maximum() {
+			node_ptr	maximum() {
 					node_ptr	tmp = _root;
 
 					while (tmp->child_right != _NIL)
@@ -77,11 +76,16 @@ namespace ft
 		public :
 			RBT_iterator(void) : _root(NULL), _NIL(NULL), _actual_node(NULL) {}
 
-			RBT_iterator(node_ptr &root, node_ptr &nil, node_ptr &actual) : _root(root), _NIL(nil), _actual_node(actual){}
+			RBT_iterator(node_ptr const root, node_ptr const nil, node_ptr const actual) : _root(root), _NIL(nil), _actual_node(actual){}
 
 			RBT_iterator(RBT_iterator const &cpy) : _root(cpy._root), _NIL(cpy._NIL), _actual_node(cpy._actual_node) { }
 
 			~RBT_iterator() {}
+
+			operator RBT_iterator< const T, const Node>() const
+			{
+				return RBT_iterator< const T, const Node>(_root, _NIL, _actual_node);
+			}
 
 			RBT_iterator&	operator++()
 			{
@@ -119,7 +123,7 @@ namespace ft
 				return tmp;
 			}
 
-			RBT_iterator &operator=(const RBT_iterator<T>& rhs)
+			RBT_iterator &operator=(const RBT_iterator<T, Node>& rhs)
 			{
 				_actual_node = rhs.get_node();
 				_NIL = rhs.get_nil();
@@ -132,7 +136,7 @@ namespace ft
 				return _actual_node->data;
 			};
 			
-			const reference operator*() const 
+			const_reference operator*() const 
 			{
 				return _actual_node->data;
 			};
@@ -142,7 +146,7 @@ namespace ft
 				return &(_actual_node->data);
 			};
 
-			const pointer operator->() const 
+			const_pointer operator->() const 
 			{
 				return &(_actual_node->data);
 			};

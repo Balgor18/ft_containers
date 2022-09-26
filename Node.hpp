@@ -28,7 +28,7 @@ namespace ft {
 			Node(const Node &cpy) : parent(cpy.parent), child_left(cpy.child_left), child_right(cpy.child_right), data(cpy.key, cpy.value), color(cpy.color) {}
 
 			// Overload operator = 
-			Node<T>&	operator=(const Node<T>&&rhs)
+			Node<T>&	operator=(const Node<T>&rhs)
 			{
 				if (this == &rhs)
 					return (*this);

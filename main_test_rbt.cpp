@@ -126,7 +126,7 @@ int	main()
 	test20.insert(6);
 	test20.insert(7);
 	test20.insert(8);
-	test20.insert(10);
+	test20.insert(9);
 	test20.print();
 
 	if (test10 == test20)
@@ -134,16 +134,41 @@ int	main()
 	else
 		std::cout << "Pas egaux" << std::endl;
 
-	// if (test10 != test20)
-	// 	std::cout << "Pas egaux" << std::endl;
-	// else
-	// 	std::cout << "Egaux" << std::endl;
+	if (test10 != test20)
+		std::cout << "Pas egaux" << std::endl;
+	else
+		std::cout << "Egaux" << std::endl;
 
-	// if (test10 < test20)
-	// 	std::cout << "test10 plus petit de test20" << std::endl;
-	// else
-	// 	std::cout << "test20 plus petit de test10 ou plus grand" << std::endl;
+	if (test10 < test20)
+		std::cout << "test10 plus petit de test20" << std::endl;
+	else
+		std::cout << "test20 plus petit de test10 ou plus grand" << std::endl;
 
+	if (test10 > test20)
+		std::cout << "test10 plus grand de test20" << std::endl;
+	else
+		std::cout << "test20 plus grand de test10 ou plus grand" << std::endl;
+
+	if (test10 <= test20)
+		std::cout << "test10 plus petit ou egal test20" << std::endl;
+	else
+		std::cout << "test10 plus petit ou egal de test20" << std::endl;
+
+	if (test10 >= test20)
+		std::cout << "test10 plus grand de test20" << std::endl;
+	else
+		std::cout << "test20 plus grand de test10 ou plus grand" << std::endl;
+	
+	test10.equal_range(2);
+
+	ft::Red_black_tree<int> myset;
+	 for (int i=1; i<=4; i++) myset.insert(i*10);
+
+	ft::pair<ft::Red_black_tree<int>::const_iterator, ft::Red_black_tree<int>::const_iterator>	ret;
+	ret = myset.equal_range(30);
+
+	std::cout << "the lower bound points to: " << *ret.first << '\n';
+	std::cout << "the upper bound points to: " << *ret.second << '\n';
 	// std::set<int>::iterator it;
 
 	// for (it = real.begin(); it != real.end(); it++)

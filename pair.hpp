@@ -9,30 +9,32 @@ namespace ft {
 			typedef T1 type_first;
 			typedef T2 type_second;
 
-			type_first	_first;
-			type_second	_second;
 		public:
-			pair() : _first(), _second() {};
+			type_first	first;
+			type_second	second;
+
+			pair() : first(), second() {};
 	
 			template<class T, class U>
-			pair(const pair< T, U >& pair) : _first(pair._first), _second(pair._second) { };
+			pair(const pair< T, U >& pair) : first(pair.first), second(pair.second) { };
 
 			~pair() {};
 
-			pair(const type_first& first, const type_second& second) : _first(first), _second(second) {};
+			pair(const type_first& first, const type_second& second) : first(first), second(second) {};
 
 			pair& operator= (const pair& rhs)
 			{
-				if (this == rhs)
+				if (this == &rhs)
 					return *this;
-				_first = rhs._first;
-				_second = rhs._second;
+				first = rhs.first;
+				second = rhs.second;
+				return *this;
 			}
 			
 			void swap (pair& pr)
 			{
-				std::swap(pr._first, _first);
-				std::swap(pr._second, _second);
+				std::swap(pr.first, first);
+				std::swap(pr.second, second);
 			}
 	};
 
