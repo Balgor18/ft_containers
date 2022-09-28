@@ -140,7 +140,7 @@ namespace ft {
 			};
 
 			//copy constructor
-			Red_black_tree(Red_black_tree& cpy) : _NIL(cpy._NIL), _root(cpy._root), _alloc(cpy._alloc), _size(cpy._size) {};
+			Red_black_tree(const Red_black_tree& cpy) : _NIL(cpy._NIL), _root(cpy._root), _alloc(cpy._alloc), _size(cpy._size) {};
 
 			//overload operator=
 			Red_black_tree<T, Compare>&	operator=(const Red_black_tree<T, Compare>&rhs)
@@ -310,6 +310,11 @@ namespace ft {
 							break ;
 						}
 					}
+					if (tmp->data == new_elem->data)
+					{
+						_clear(new_elem);
+						return tmp->data;
+					}
 				}
 				new_elem->set_parent(tmp);
 				// TODO Balance RBT here (Probably)
@@ -318,6 +323,7 @@ namespace ft {
 
 			iterator	insert(iterator hint, const T& val)
 			{
+				(void)hint;
 				return iterator(insert(val), _NIL, _root);
 			}
 
@@ -393,8 +399,8 @@ namespace ft {
 
 			size_type	erase(const T& key)
 			{
-				node_ptr	color_node = key.get_node(); 
-				node_ptr	param_node = key.get_node();
+				node_ptr	color_node = find(key).get_node(); 
+				node_ptr	param_node = find(key).get_node();
 				node_ptr	left;
 				node_ptr	right;
 
@@ -544,6 +550,15 @@ namespace ft {
 				return value_compare(key_compare());
 			}
 
+			node_ptr	get_nil() const
+			{
+				return _NIL;
+			}
+
+			node_ptr	get_root() const
+			{
+				return _root;
+			}
 	};
 
 	// https://stackoverflow.com/questions/70490594/trouble-implementing-const-iterator-in-c

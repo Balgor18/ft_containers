@@ -3,19 +3,25 @@
 
 # include "RBT.hpp"
 # include "Node.hpp"
+# include "iterator.hpp"
 
 namespace ft
 {
 
 	template <class T, class Node>
 	class RBT_iterator {
-		typedef Node*						node_ptr;
-		typedef RBT_iterator<T, Node>		Himself;
-		typedef T							value_type;
-		typedef T&							reference;
-		typedef const T&					const_reference;
-		typedef T*							pointer;
-		typedef const T*					const_pointer;
+		
+		public :
+			typedef typename ft::Iterator<ft::bidirectional_iterator_tag, T>::value_type			value_type;
+			typedef typename ft::Iterator<ft::bidirectional_iterator_tag, T>::iterator_category		iterator_category;
+			typedef typename ft::Iterator<ft::bidirectional_iterator_tag, T>::difference_type		difference_type;
+			typedef typename ft::Iterator<ft::bidirectional_iterator_tag, T>::reference				reference;
+			typedef typename ft::Iterator<ft::bidirectional_iterator_tag, T>::pointer				pointer;
+			typedef typename ft::Iterator<ft::bidirectional_iterator_tag, const T>::reference		const_reference;
+			typedef typename ft::Iterator<ft::bidirectional_iterator_tag, const T>:: pointer		const_pointer;
+			typedef Node*						node_ptr;
+			typedef RBT_iterator<T, Node>		Himself;
+
 		protected :
 			node_ptr	_root;
 			node_ptr	_NIL;
