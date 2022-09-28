@@ -25,7 +25,7 @@ namespace ft {
 			Node(const T &data) : parent(NULL), child_left(NULL), child_right(NULL), data(data), color(RED) {}
 
 			// Copy constructor
-			Node(const Node &cpy) : parent(cpy.parent), child_left(cpy.child_left), child_right(cpy.child_right), data(cpy.key, cpy.value), color(cpy.color) {}
+			Node(const Node &cpy) : parent(cpy.parent), child_left(cpy.child_left), child_right(cpy.child_right), data(cpy.data), color(cpy.color) {}
 
 			// Overload operator = 
 			Node<T>&	operator=(const Node<T>&rhs)
