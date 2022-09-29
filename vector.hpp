@@ -39,7 +39,6 @@ template <class T, class Allocator = std::allocator<T> >
 
 		public :
 			explicit vector(const Allocator& alloc= Allocator()) : _alloc(alloc), _size(0), _capacity(0), _ptr(NULL) {
-
 			};
 
 			explicit vector(size_type n, const T& value = T(), const Allocator& alloc= Allocator()) : _alloc(alloc), _size(n), _capacity(n){
@@ -54,7 +53,9 @@ template <class T, class Allocator = std::allocator<T> >
 				assign(first, last);
 			};
 
-			vector(const vector<T,Allocator>& x) : _alloc(x._alloc){
+			vector(const vector<T,Allocator>& x) : _alloc(x._alloc), _size(x._size), _capacity(0), _ptr(NULL){
+				if (x._size == 0)
+					return ;
 				_ptr = _alloc.allocate(x._size);
 				for (size_type i = 0; i < x._size; i++)
 					_alloc.construct(_ptr + i, *(x._ptr + i));
@@ -64,7 +65,8 @@ template <class T, class Allocator = std::allocator<T> >
 
 			~vector() {
 				clear();
-				_alloc.deallocate(_ptr, _capacity);
+				if (_capacity > 0)
+					_alloc.deallocate(_ptr, _capacity);
 			};
 
 			vector<T,Allocator>& operator=(const vector<T,Allocator>& rhs) {

@@ -39,6 +39,7 @@ namespace ft {
 				value_type& top() {
 					return c.back();
 				}
+
 				const value_type& top() const {
 					return c.back();
 				}
