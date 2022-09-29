@@ -377,8 +377,7 @@ namespace ft {
 					left->child_left->parent = left;
 					left->color = param_node->color;
 				}
-				// if (original_node.get_color() == black)
-				// 	_deleteFixup(x);
+				// TODO rebalanced TREE
 				_alloc.destroy(param_node);
 				_alloc.deallocate(param_node, 1);
 				_size--;
