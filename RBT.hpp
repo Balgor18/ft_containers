@@ -65,11 +65,11 @@ namespace ft {
 
 			void	_clear(node_ptr actual)
 			{
+				
 				if (actual->child_left != _NIL)
 					_clear(actual->child_left);
-				else if (actual->child_right != _NIL)
+				if (actual->child_right != _NIL)
 					_clear(actual->child_right);
-
 				if (actual != _NIL)
 				{
 					node_ptr	tmp = actual->parent;
@@ -83,7 +83,7 @@ namespace ft {
 				}
 			}
 
-			void	_invert(node_ptr	lhs, node_ptr	rhs) {
+			void	_invert(node_ptr lhs, node_ptr rhs) {
 				if (lhs->parent == _NIL)
 					_root = rhs;
 				else if (lhs == lhs->parent->child_left)
@@ -108,6 +108,168 @@ namespace ft {
 					node = node->child_left;
 				return node;
 			}
+
+			// https://www.programiz.com/dsa/red-black-tree
+
+			void	_left_rotate(node_ptr x)
+			{
+				node_ptr y = x->child_right;
+				
+				x->child_right = y->child_left;
+				if (y->child_left != _NIL)
+				{
+					y->child_left->parent = x;
+				}
+				y->parent = x->parent;
+				if (x->parent == _NIL)
+				{
+					_root = y;
+				}
+				else if (x == x->parent->child_left)
+				{
+					x->parent->child_left = y;
+				}
+				else
+				{
+					x->parent->child_right = y;
+				}
+				y->child_left = x;
+				x->parent = y;
+			}
+
+			void	_right_rotate(node_ptr x)
+			{
+				node_ptr y = x->child_left;
+
+				x->child_left = y->child_right;
+				if (y->child_right != _NIL)
+				{
+					y->child_right->parent = x;
+				}
+				y->parent = x->parent;
+				if (x->parent == _NIL)
+				{
+					_root = y;
+				}
+				else if (x == x->parent->child_right)
+				{
+					x->parent->child_right = y;
+				}
+				else
+				{
+					x->parent->child_left = y;
+				}
+				y->child_right = x;
+				x->parent = y;
+			}
+
+			void	_fix_insert(node_ptr z)
+			{
+				node_ptr	y;
+
+				while (z->parent->color == RED) {
+					if (z->parent == z->parent->parent->child_right) {
+						y = z->parent->parent->child_left;
+						if (y->color == RED) {
+							y->color = BLACK;
+							z->parent->color = BLACK;
+							z->parent->parent->color = RED;
+							z = z->parent->parent;
+						}
+						else {
+							if (z == z->parent->child_left) {
+								z = z->parent;
+								_right_rotate(z);
+							}
+							z->parent->color = BLACK;
+							z->parent->parent->color = RED;
+							_left_rotate(z->parent->parent);
+						}
+					}
+					else {
+						y = z->parent->parent->child_right;
+						if (y->color == RED) {
+							y->color = BLACK;
+							z->parent->color = BLACK;
+							z->parent->parent->color = RED;
+							z = z->parent->parent;
+						}
+						else {
+							if (z == z->parent->child_right) {
+								z = z->parent;
+								_left_rotate(z);
+							}
+							z->parent->color = BLACK;
+							z->parent->parent->color = RED;
+							_right_rotate(z->parent->parent);
+						}
+					}
+					if (z == _root)
+						break;
+				}
+				_root->color = BLACK;
+			};
+
+			void	_fix_delete( node_ptr	x )
+			{
+				node_ptr	tmp;
+
+				while (x != _root && x->color == BLACK) {
+					if (x == x->parent->child_left) {
+						tmp = x->parent->child_right;
+						if (tmp->color == RED) {
+							tmp->color = BLACK;
+							x->parent->color = RED;
+							_left_rotate(x->parent);
+							tmp = x->parent->child_right;
+						}
+						if (tmp->child_left->color == BLACK && tmp->child_right->color == BLACK) {
+							tmp->color = RED;
+							x = x->parent;
+						}
+						else {
+							if (tmp->child_right->color == BLACK) {
+								tmp->child_left->color = BLACK;
+								tmp->color = RED;
+								_right_rotate(tmp);
+								tmp = x->parent->child_right;
+							}
+							tmp->color = x->parent->color;
+							x->parent->color = BLACK;
+							tmp->child_right->color = BLACK;
+							_left_rotate(x->parent);
+							x = _root;
+						}
+					}
+					else if (x == x->parent->child_right) {
+						tmp = x->parent->child_left;
+						if (tmp->color == RED) {
+							tmp->color = BLACK;
+							x->parent->color = RED;
+							_right_rotate(x->parent);
+							tmp = x->parent->child_left;
+						}
+						if (tmp->child_right->color == BLACK && tmp->child_left->color == BLACK) {
+							tmp->color = RED;
+							x = x->parent;
+						}
+						else {
+							if (tmp->child_left->color == BLACK) {
+								tmp->child_right->color = BLACK;
+								tmp->color = RED;
+								_left_rotate(tmp);
+								tmp = x->parent->child_left;
+							}
+							tmp->color = x->parent->color;
+							x->parent->color = BLACK;
+							tmp->child_left->color = BLACK;
+							_right_rotate(x->parent);
+							x = _root;
+						}
+					}
+				}
+				x->color = BLACK;
+			};
 
 		public :
 			Red_black_tree(const Allocator& alloc= Allocator(), const Compare& cmp = Compare()) : _alloc(alloc), _cmp(cmp)
@@ -317,6 +479,7 @@ namespace ft {
 					}
 				}
 				new_elem->set_parent(tmp);
+				_fix_insert(new_elem);
 				// TODO Balance RBT here (Probably)
 				return new_elem->data;
 			}
@@ -347,37 +510,38 @@ namespace ft {
 			{
 				node_ptr	color_node = pos.get_node();; 
 				node_ptr	param_node = pos.get_node();
-				node_ptr	left;
-				node_ptr	right;
+				node_ptr	tmp;
 				if (param_node == _NIL) {
 					return ;
 				}
 				if (param_node->child_left == _NIL) {
-					right = param_node->child_right;
+					tmp = param_node->child_right;
 					_invert(param_node, param_node->child_right);
 				}
 				else if (param_node->child_right == _NIL) {
-					left = param_node->child_left;
+					tmp = param_node->child_left;
 					_invert(param_node, param_node->child_left);
 				}
 				else {
-					left = min(param_node->child_right);
-					color_node = left;
-					right = left->child_right;
-					if (left->parent == param_node) {
-						left->parent = left;
+					tmp = min(param_node->child_right);
+					color_node = tmp;
+					tmp = tmp->child_right;
+					if (tmp->parent == param_node) {
+						tmp->parent = tmp;
 					}
 					else {
-						_invert(left, left->child_right);
-						left->child_right = param_node->child_right;
-						left->child_right->parent = left;
+						if (tmp != tmp->child_right)
+							_invert(tmp, tmp->child_right);
+						tmp->child_right = param_node->child_right;
+						tmp->child_right->parent = tmp;
 					}
-					_invert(param_node, left);
-					left->child_left = param_node->child_left;
-					left->child_left->parent = left;
-					left->color = param_node->color;
+					_invert(param_node, tmp);
+					tmp->child_left = param_node->child_left;
+					tmp->child_left->parent = tmp;
+					tmp->color = param_node->color;
 				}
-				// TODO rebalanced TREE
+				if (color_node->color == BLACK)
+					_fix_delete(tmp);
 				_alloc.destroy(param_node);
 				_alloc.deallocate(param_node, 1);
 				_size--;
@@ -400,37 +564,40 @@ namespace ft {
 			{
 				node_ptr	color_node = find(key).get_node(); 
 				node_ptr	param_node = find(key).get_node();
-				node_ptr	left;
-				node_ptr	right;
+				node_ptr	tmp;
 
+				print();
 				if (param_node == _NIL) {
 					return 0;
 				}
 				if (param_node->child_left == _NIL) {
-					right = param_node->child_right;
+					tmp = param_node->child_right;
 					_invert(param_node, param_node->child_right);
 				}
 				else if (param_node->child_right == _NIL) {
-					left = param_node->child_left;
+					tmp = param_node->child_left;
 					_invert(param_node, param_node->child_left);
 				}
 				else {
-					left = min(param_node->child_right);
-					color_node = left;
-					right = left->child_right;
-					if (left->parent == param_node) {
-						left->parent = left;
+					tmp = min(param_node->child_right);
+					color_node = tmp;
+					tmp = tmp->child_right;
+					if (tmp->parent == param_node) {
+						tmp->parent = tmp;
 					}
 					else {
-						_invert(left, left->child_right);
-						left->child_right = param_node->child_right;
-						left->child_right->parent = left;
+						_invert(tmp, tmp->child_right);
+						tmp->child_right = param_node->child_right;
+						tmp->child_right->parent = tmp;
 					}
-					_invert(param_node, left);
-					left->child_left = param_node->child_left;
-					left->child_left->parent = left;
-					left->color = param_node->color;
+					_invert(param_node, tmp);
+					tmp->child_left = param_node->child_left;
+					tmp->child_left->parent = tmp;
+					tmp->color = param_node->color;
 				}
+				if (color_node->color == BLACK)
+					_fix_delete(tmp);
+				print();
 				_alloc.destroy(param_node);
 				_alloc.deallocate(param_node, 1);
 				_size--;

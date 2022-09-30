@@ -10,21 +10,17 @@ void	print(ft::set<T>& lst)
 
 int main ()
 {
-	int myints[]={12,75,10,32,20,25};
-	ft::set<int> first (myints,myints+3);     // 10,12,75
-	ft::set<int> second (myints+3,myints+6);  // 20,25,32
+	ft::set<int> myints;
+	std::cout << "0. size: " << myints.size() << '\n';
 
-	ft::swap(first,second);
+	for (int i=0; i<10; ++i) myints.insert(i);
+	std::cout << "1. size: " << myints.size() << '\n';
 
-	std::cout << "first contains:";
-	for (ft::set<int>::iterator it=first.begin(); it!=first.end(); ++it)
-		std::cout << ' ' << *it;
-	std::cout << '\n';
+	myints.insert (100);
+	std::cout << "2. size: " << myints.size() << '\n';
 
-	std::cout << "second contains:";
-	for (ft::set<int>::iterator it=second.begin(); it!=second.end(); ++it)
-		std::cout << ' ' << *it;
-	std::cout << '\n';
+	myints.erase(5);
+	std::cout << "3. size: " << myints.size() << '\n';
 
 	return 0;
 }

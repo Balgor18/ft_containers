@@ -30,8 +30,8 @@ namespace ft {
 
 		private :
 			Red_black_tree<value_type>		_RBT;
-			allocator_type									_alloc;
-			value_compare									_cmp;
+			allocator_type					_alloc;
+			value_compare					_cmp;
 		public :
 
 			explicit set(const Compare& comp = Compare(), const Alloc& alloc = Alloc()) : _RBT(), _alloc(alloc), _cmp(comp){};
@@ -45,7 +45,11 @@ namespace ft {
 				insert(x.begin(), x.end());
 			};
 
-			~set() {};
+			~set()
+			{
+				// clear();
+				// exit(2);
+			};
 
 			set<T,Compare,Alloc>& operator= (const set<T,Compare,Alloc>& cpy)
 			{
@@ -120,14 +124,6 @@ namespace ft {
 				return _RBT.max_size();
 			};
 
-			// pair<iterator,bool> insert(const value_type& x) {
-			// 	iterator f = find(x);
-			// 	iterator it = iterator(rbt.insert(x), rbt.get_nil(), rbt.get_root());
-			// 	if (f.get_node() != rbt.get_nil())
-			// 		return ft::make_pair(it, 0);
-			// 	return ft::make_pair(it, 1);
-			// };
-
 			pair<iterator,bool> insert (const value_type& val)
 			{
 				_RBT.insert(val);
@@ -148,9 +144,6 @@ namespace ft {
 			template <class InputIterator>
 			void insert(InputIterator first, InputIterator last)
 			{
-				// for (; first != last; first++) {
-				// 	insert(*first);
-				// }
 				return _RBT.insert(first, last);
 			};
 
@@ -166,14 +159,6 @@ namespace ft {
 
 			void erase(iterator first, iterator last)
 			{
-				// iterator tmp;
-
-				// while (first != last)
-				// {
-				// 	tmp = first;
-				// 	first++;
-				// 	erase(tmp);
-				// }
 				return _RBT.erase(first, last);
 			};
 
