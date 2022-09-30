@@ -49,7 +49,7 @@ namespace ft {
 			node_ptr		_root;
 			allocator_type	_alloc;
 			size_type		_size;
-			Compare			_cmp;
+			key_compare		_cmp;
 
 			void	_print(node_ptr	node, std::stringstream &buffer, bool isTail, std::string prefix)
 			{
@@ -346,12 +346,8 @@ namespace ft {
 			{
 				node_ptr	tmp = _root;
 				
-				while (tmp != _NIL)
-				{
-					if (tmp->child_left == _NIL)
-						break ;
+				while (tmp->child_left != _NIL)
 					tmp = tmp->child_left;
-				}
 				return iterator(_root, _NIL, tmp);
 			}
 
@@ -359,12 +355,8 @@ namespace ft {
 			{
 				node_ptr	tmp = _root;
 				
-				while (tmp != _NIL)
-				{
-					if (tmp->child_left == _NIL)
-						break ;
+				while (tmp->child_left != _NIL)
 					tmp = tmp->child_left;
-				}
 				return const_iterator(_root, _NIL, tmp);
 			}
 
@@ -562,44 +554,43 @@ namespace ft {
 
 			size_type	erase(const T& key)
 			{
-				node_ptr	color_node = find(key).get_node(); 
-				node_ptr	param_node = find(key).get_node();
-				node_ptr	tmp;
-
-				print();
-				if (param_node == _NIL) {
+				iterator it = find(key);
+				node_ptr z = it.get_node();
+				node_ptr y = z;
+				node_ptr x;
+				bool color_original = y->color;
+				if (z == _NIL) {
 					return 0;
 				}
-				if (param_node->child_left == _NIL) {
-					tmp = param_node->child_right;
-					_invert(param_node, param_node->child_right);
+				if (z->child_left == _NIL) {
+					x = z->child_right;
+					_invert(z, z->child_right);
 				}
-				else if (param_node->child_right == _NIL) {
-					tmp = param_node->child_left;
-					_invert(param_node, param_node->child_left);
+				else if (z->child_right == _NIL) {
+					x = z->child_left;
+					_invert(z, z->child_left);
 				}
 				else {
-					tmp = min(param_node->child_right);
-					color_node = tmp;
-					tmp = tmp->child_right;
-					if (tmp->parent == param_node) {
-						tmp->parent = tmp;
+					y = min(z->child_right);
+					color_original = y->color;
+					x = y->child_right;
+					if (y->parent == z) {
+						x->parent = y;
 					}
 					else {
-						_invert(tmp, tmp->child_right);
-						tmp->child_right = param_node->child_right;
-						tmp->child_right->parent = tmp;
+						_invert(y, y->child_right);
+						y->child_right = z->child_right;
+						y->child_right->parent = y;
 					}
-					_invert(param_node, tmp);
-					tmp->child_left = param_node->child_left;
-					tmp->child_left->parent = tmp;
-					tmp->color = param_node->color;
+					_invert(z, y);
+					y->child_left = z->child_left;
+					y->child_left->parent = y;
+					y->color = z->color;
 				}
-				if (color_node->color == BLACK)
-					_fix_delete(tmp);
-				print();
-				_alloc.destroy(param_node);
-				_alloc.deallocate(param_node, 1);
+				if (color_original == BLACK)
+					_fix_delete(x);
+				_alloc.destroy(z);
+				_alloc.deallocate(z, 1);
 				_size--;
 				return 1;
 			}
@@ -657,52 +648,60 @@ namespace ft {
 				return ft::make_pair(lower_bound(key), upper_bound(key));
 			}
 
-			iterator lower_bound( const T& x )
+			iterator lower_bound( const T& key )
 			{
-				iterator it = begin();
-				iterator ite = end();
+				iterator first = begin();
+				iterator last = end();
 
-				for (; it != ite; it++)
+				while (first != last)
 				{
-					if (_cmp(*it, x));
-					else
+					if (!_cmp(*first, key))
 						break;
+					first++;
 				}
-				return it;
+				return first;
 			}
 
 			const_iterator lower_bound( const T& key ) const
 			{
-				const_iterator it = begin();
-				const_iterator ite = end();
+				const_iterator first = begin();
+				const_iterator last = end();
 
-				for (; it != ite; it++)
+				while (first != last)
 				{
-					if (_cmp(*it, key));
-					else
+					if (!_cmp(*first, key))
 						break;
+					first++;
 				}
-				return it;
+				return first;
 			}
 
-			iterator upper_bound( const T& x )
+			iterator upper_bound( const T& key )
 			{
-				iterator	ite = end();
-				iterator	it = lower_bound(x);
+				iterator first = begin();
+				iterator last = end();
 
-				if (it != ite && !_cmp(x,*it) && !_cmp(*it, x))
-					return (++it);
-				return (it);
+				while (first != last)
+				{
+					if (_cmp(key, *first))
+						break;
+					first++;
+				}
+				return first;
 			}
 
 			const_iterator upper_bound( const T& key ) const
 			{
-				const_iterator	ite = end();
-				const_iterator	it = lower_bound(key);
+				const_iterator first = begin();
+				const_iterator last = end();
 
-				if (it != ite && !_cmp(key,*it) && !_cmp(*it, key))
-					return (++it);
-				return (it);
+				while (first != last)
+				{
+					if (_cmp(key, *first))
+						break;
+					first++;
+				}
+				return first;
 			}
 
 			// ================= Observers =================
