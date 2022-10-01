@@ -6,8 +6,9 @@
 #include <algorithm>
 #include <set>
 #include "pair.hpp"
-#include "map.hpp"
+#include "Map.hpp"
 #include <iomanip>
+
 /*
 ** This is a minimal set of ANSI/VT100 color codes
 */
@@ -40,7 +41,6 @@
 # define _ICYAN			"\x1b[46m"
 # define _IWHITE		"\x1b[47m"
 
-
 template <class Key, class T>
 void	print(ft::map<Key, T>& lst)
 {
@@ -50,17 +50,25 @@ void	print(ft::map<Key, T>& lst)
 
 int main ()
 {
-	ft::map<char,int> mymap;
+  ft::map<char,int> mymap;
+  char c;
 
-	mymap['a']=10;
-	mymap['b']=20;
-	mymap['c']=30;
+  mymap ['a']=101;
+  std::cout << "assigned 'a'\n";
+  mymap ['c']=202;
+  std::cout << "assiged 'c'\n";
+  mymap ['f']=303;
+  std::cout << "assigned 'f'\n";
 
-	while (!mymap.empty())
-	{
-		std::cout << mymap.begin()->first << " => " << mymap.begin()->second << '\n';
-		mymap.erase(mymap.begin());
-	}
+	std::cout << "end of assignations\n";
+  for (c='a'; c<'h'; c++)
+  {
+    std::cout << c;
+    if (mymap.count(c)>0)
+      std::cout << " is an element of mymap.\n";
+    else 
+      std::cout << " is not an element of mymap.\n";
+  }
 
-	return 0;
+  return 0;
 }

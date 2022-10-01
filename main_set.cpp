@@ -1,26 +1,105 @@
 #include <set>
 #include "set.hpp"
+#include <list>
 
-template <class T>
-void	print(ft::set<T>& lst)
+#ifndef TESTED_NAMESPACE
+# define TESTED_NAMESPACE ft
+#endif
+
+#define T1 int
+typedef TESTED_NAMESPACE::set<T1>::iterator ft_iterator;
+typedef TESTED_NAMESPACE::set<T1>::const_iterator ft_const_iterator;
+
+static int iter = 0;
+
+#define _pair TESTED_NAMESPACE::pair
+
+template <typename T>
+std::string	printPair(const T &iterator, bool nl = true, std::ostream &o = std::cout)
 {
-	for (typename ft::set<T>::iterator it = lst.begin(); it != lst.end(); it++)
-		std::cout << it->first << " => " << it->second << '\n';
+	o << "value: " << *iterator;
+	if (nl)
+		o << std::endl;
+	return ("");
 }
 
-int main ()
+template <typename T_SET>
+void	printSize(T_SET const &st, bool print_content = 1)
 {
-	ft::set<int> myints;
-	std::cout << "0. size: " << myints.size() << '\n';
+	std::cout << "size: " << st.size() << std::endl;
+	std::cout << "max_size: " << st.max_size() << std::endl;
+	if (print_content)
+	{
+		typename T_SET::const_iterator it = st.begin(), ite = st.end();
+		std::cout << std::endl << "Content is:" << std::endl;
+		for (; it != ite; ++it)
+			std::cout << "- " << printPair(it, false) << std::endl;
+	}
+	std::cout << "###############################################" << std::endl;
+}
 
-	for (int i=0; i<10; ++i) myints.insert(i);
-	std::cout << "1. size: " << myints.size() << '\n';
+template <typename T>
+void	printReverse(TESTED_NAMESPACE::set<T> &st)
+{
+	typename TESTED_NAMESPACE::set<T>::iterator it = st.end(), ite = st.begin();
 
-	myints.insert (100);
-	std::cout << "2. size: " << myints.size() << '\n';
+	std::cout << "printReverse:" << std::endl;
+	while (it-- != ite)
+		std::cout << "-> " << printPair(it, false) << std::endl;
+	std::cout << "_______________________________________________" << std::endl;
+}
 
-	myints.erase(5);
-	std::cout << "3. size: " << myints.size() << '\n';
 
-	return 0;
+template <typename SET>
+void	ft_bound(SET &st, const T1 &param)
+{
+	ft_iterator ite = st.end(), it[2];
+	_pair<ft_iterator, ft_iterator> ft_range;
+
+	std::cout << "\t-- [" << iter++ << "] --" << std::endl;
+	std::cout << "with key [" << param << "]:" << std::endl;
+	it[0] = st.lower_bound(param); it[1] = st.upper_bound(param);
+	ft_range = st.equal_range(param);
+	std::cout << "lower_bound: " << (it[0] == ite ? "end()" : printPair(it[0], false)) << std::endl;
+	std::cout << "upper_bound: " << (it[1] == ite ? "end()" : printPair(it[1], false)) << std::endl;
+	std::cout << "equal_range: " << (ft_range.first == it[0] && ft_range.second == it[1]) << std::endl;
+}
+
+template <typename SET>
+void	ft_const_bound(const SET &st, const T1 &param)
+{
+	ft_const_iterator ite = st.end(), it[2];
+	_pair<ft_const_iterator, ft_const_iterator> ft_range;
+
+	std::cout << "\t-- [" << iter++ << "] (const) --" << std::endl;
+	std::cout << "with key [" << param << "]:" << std::endl;
+	it[0] = st.lower_bound(param); it[1] = st.upper_bound(param);
+	ft_range = st.equal_range(param);
+	std::cout << "lower_bound: " << (it[0] == ite ? "end()" : printPair(it[0], false)) << std::endl;
+	std::cout << "upper_bound: " << (it[1] == ite ? "end()" : printPair(it[1], false)) << std::endl;
+	std::cout << "equal_range: " << (ft_range.first == it[0] && ft_range.second == it[1]) << std::endl;
+}
+
+int		main(void)
+{
+	std::list<T1> lst;
+	unsigned int lst_size = 10;
+	for (unsigned int i = 0; i < lst_size; ++i)
+		lst.push_back((i + 1) * 3);
+	TESTED_NAMESPACE::set<T1> st(lst.begin(), lst.end());
+	printSize(st);
+
+	ft_const_bound(st, -10);
+	ft_const_bound(st, 1);
+	ft_const_bound(st, 5);
+	ft_const_bound(st, 10);
+	ft_const_bound(st, 50);
+
+	printSize(st);
+
+	ft_bound(st, 5);
+	ft_bound(st, 7);
+
+	printSize(st);
+	return (0);
 }

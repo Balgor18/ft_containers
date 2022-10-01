@@ -37,18 +37,19 @@ namespace ft {
 			explicit set(const Compare& comp = Compare(), const Alloc& alloc = Alloc()) : _RBT(), _alloc(alloc), _cmp(comp){};
 
 			template <class InputIterator>
-			set(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Alloc& alloc = Alloc()) : _RBT(), _alloc(alloc), _cmp(comp){
+			set(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Alloc& alloc = Alloc()) : _RBT(), _alloc(alloc), _cmp(comp)
+			{
 				insert(first, last);
 			};
 
-			set(const set<T,Compare,Alloc>& x) : _RBT(x._RBT), _alloc(x._alloc), _cmp(x._cmp){
-				insert(x.begin(), x.end());
+			set(const set<T,Compare,Alloc>& cpy) : _RBT(value_compare(cpy._cmp)), _alloc(Alloc()), _cmp(Compare())
+			{
+				insert(cpy.begin(), cpy.end());
 			};
 
 			~set()
 			{
-				// clear();
-				// exit(2);
+
 			};
 
 			set<T,Compare,Alloc>& operator= (const set<T,Compare,Alloc>& cpy)
@@ -121,7 +122,7 @@ namespace ft {
 			
 			size_type max_size() const 
 			{
-				return _RBT.max_size();
+				return _alloc.max_size();
 			};
 
 			pair<iterator,bool> insert (const value_type& val)

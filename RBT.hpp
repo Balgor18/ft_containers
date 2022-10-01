@@ -51,14 +51,14 @@ namespace ft {
 			size_type		_size;
 			key_compare		_cmp;
 
-			void	_print(node_ptr	node, std::stringstream &buffer, bool isTail, std::string prefix)
+			void	_print(node_ptr	node, std::stringstream &buffer, bool isTail, std::string prefix) const
 			{
 				if (node->child_right != this->_NIL)
 					this->_print(node->child_right, buffer, false, std::string(prefix).append(isTail ? "│   " : "    "));
 				buffer << prefix << (isTail ? "└── " : "┌── ");
 				if (node->color == RED)
 					buffer << "\033[31m";
-				buffer << node->data << "\033[0m" << std::endl;
+				buffer << node->data.first << "\033[0m" << std::endl;
 				if (node->child_left != this->_NIL)
 					this->_print(node->child_left, buffer, true, std::string(prefix).append(isTail ? "    " : "│   "));
 			}
@@ -324,7 +324,7 @@ namespace ft {
 				_alloc.deallocate(_NIL, 1);
 			}
 
-			void	print(void)
+			void	print(void) const
 			{
 				std::stringstream	buffer;
 
@@ -500,42 +500,43 @@ namespace ft {
 
 			void	erase(iterator pos)
 			{
-				node_ptr	color_node = pos.get_node();; 
-				node_ptr	param_node = pos.get_node();
-				node_ptr	tmp;
-				if (param_node == _NIL) {
+				node_ptr z = pos.get_node();
+				node_ptr y = z;
+				node_ptr x;
+				bool color_original = y->color;
+				if (z == _NIL)
+				{
 					return ;
 				}
-				if (param_node->child_left == _NIL) {
-					tmp = param_node->child_right;
-					_invert(param_node, param_node->child_right);
+				if (z->child_left == _NIL) {
+					x = z->child_right;
+					_invert(z, z->child_right);
 				}
-				else if (param_node->child_right == _NIL) {
-					tmp = param_node->child_left;
-					_invert(param_node, param_node->child_left);
+				else if (z->child_right == _NIL) {
+					x = z->child_left;
+					_invert(z, z->child_left);
 				}
 				else {
-					tmp = min(param_node->child_right);
-					color_node = tmp;
-					tmp = tmp->child_right;
-					if (tmp->parent == param_node) {
-						tmp->parent = tmp;
+					y = min(z->child_right);
+					color_original = y->color;
+					x = y->child_right;
+					if (y->parent == z) {
+						x->parent = y;
 					}
 					else {
-						if (tmp != tmp->child_right)
-							_invert(tmp, tmp->child_right);
-						tmp->child_right = param_node->child_right;
-						tmp->child_right->parent = tmp;
+						_invert(y, y->child_right);
+						y->child_right = z->child_right;
+						y->child_right->parent = y;
 					}
-					_invert(param_node, tmp);
-					tmp->child_left = param_node->child_left;
-					tmp->child_left->parent = tmp;
-					tmp->color = param_node->color;
+					_invert(z, y);
+					y->child_left = z->child_left;
+					y->child_left->parent = y;
+					y->color = z->color;
 				}
-				if (color_node->color == BLACK)
-					_fix_delete(tmp);
-				_alloc.destroy(param_node);
-				_alloc.deallocate(param_node, 1);
+				if (color_original == BLACK)
+					_fix_delete(x);
+				_alloc.destroy(z);
+				_alloc.deallocate(z, 1);
 				_size--;
 				return ;
 			}
@@ -602,38 +603,44 @@ namespace ft {
 				return 1;
 			}
 
-			iterator	find(const T& x)
+			iterator	find(const T& key)
 			{
-				node_ptr	tmp = _root;
+				node_ptr tmp = _root;
 
-				if (tmp == _NIL)
-					return end();
-				while (tmp != _NIL)
+				if (tmp != _NIL)
 				{
-					if (!_cmp(tmp->data, x) && !_cmp(x, tmp->data))
-						return iterator(_root, _NIL, tmp);
-					else if (_cmp(x, tmp->data))
-						tmp = tmp->child_left;
-					else
-						tmp = tmp->child_right;
+					while (tmp != _NIL)
+					{
+						if (!_cmp(tmp->data, key) && !_cmp(key, tmp->data))
+							return iterator(_root, _NIL, tmp);
+						else if (_cmp(key, tmp->data)) {
+							tmp = tmp->child_left;
+						}
+						else {
+							tmp = tmp->child_right;
+						}
+					}
 				}
 				return end();
 			}
 
-			const_iterator	find(const T& x) const
+			const_iterator	find(const T& key) const
 			{
-				node_ptr	tmp = _root;
+				node_ptr tmp = _root;
 
-				if (tmp == _NIL)
-					return end();
-				while (tmp != _NIL)
+				if (tmp != _NIL)
 				{
-					if (!_cmp(tmp->data, x) && !_cmp(x, tmp->data))
-						return const_iterator(_root, _NIL, tmp);
-					else if (_cmp(x, tmp->data))
-						tmp = tmp->child_left;
-					else
-						tmp = tmp->child_right;
+					while (tmp != _NIL)
+					{
+						if (!_cmp(tmp->data, key) && !_cmp(key, tmp->data))
+							return const_iterator(_root, _NIL, tmp);
+						else if (_cmp(key, tmp->data)) {
+							tmp = tmp->child_left;
+						}
+						else {
+							tmp = tmp->child_right;
+						}
+					}
 				}
 				return end();
 			}
