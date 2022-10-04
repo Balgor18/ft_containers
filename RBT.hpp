@@ -11,7 +11,7 @@
 namespace ft {
 
 	// Remove std::less<T>
-	template<class T, class Compare = std::less<T>, class Allocator = std::allocator<Node<T> > >// MEMO remode std::less
+	template<class T, class Compare, class Allocator = std::allocator<Node<T> > >
 	class Red_black_tree
 	{
 		public :
@@ -29,20 +29,6 @@ namespace ft {
 			typedef ft::RBT_iterator<const T, const ft::Node<T> >		const_iterator;
 			typedef ft::reverse_iterator<iterator>						reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
-
-			class value_compare
-			{
-
-				friend class Red_black_tree;
-				protected:
-					Compare comp;
-					value_compare (Compare c) : comp(c) {}
-				public:
-					bool operator() (const T& x, const T& y) const
-					{
-						return comp(x.first, y.first);
-					}
-			};
 
 		private :
 			node_ptr		_NIL;
@@ -272,8 +258,7 @@ namespace ft {
 			};
 
 		public :
-			Red_black_tree(const Allocator& alloc= Allocator(), const Compare& cmp = Compare()) : _alloc(alloc), _cmp(cmp)
-			{
+			Red_black_tree( const Compare& cmp = Compare(), const Allocator& alloc = Allocator() ) : _alloc(alloc), _size(0), _cmp(cmp) {
 				_NIL = _alloc.allocate(1);
 				_alloc.construct(_NIL, T());
 				_NIL->set_color(BLACK);
@@ -281,7 +266,6 @@ namespace ft {
 				_NIL->set_child_right(_NIL);
 				_NIL->set_parent(_NIL);
 				_root = _NIL;
-				_size = 0;
 			};
 
 			Red_black_tree(T pair, const Allocator& alloc= Allocator(), const Compare& cmp = Compare()) : _alloc(alloc), _cmp(cmp)
@@ -437,6 +421,11 @@ namespace ft {
 				tmp = _root;
 				while (tmp != _NIL)
 				{
+					if (!_cmp(tmp->data, new_elem->data) && !_cmp(new_elem->data, tmp->data))
+					{
+						_clear(new_elem);
+						return tmp->data;
+					}
 					if (tmp->data < new_elem->data)
 					{
 						if (tmp->child_right != _NIL)
@@ -464,15 +453,9 @@ namespace ft {
 							break ;
 						}
 					}
-					if (tmp->data == new_elem->data)
-					{
-						_clear(new_elem);
-						return tmp->data;
-					}
 				}
 				new_elem->set_parent(tmp);
 				_fix_insert(new_elem);
-				// TODO Balance RBT here (Probably)
 				return new_elem->data;
 			}
 
@@ -717,11 +700,6 @@ namespace ft {
 				return key_compare();
 			}
 
-			value_compare value_comp() const
-			{
-				return value_compare(key_compare());
-			}
-
 			node_ptr	get_nil() const
 			{
 				return _NIL;
@@ -739,7 +717,9 @@ namespace ft {
 	bool operator==(Red_black_tree<T, Compare, Allocator>& lhs,
 					Red_black_tree<T, Compare, Allocator>& rhs )
 	{
-		return (lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
+		if (lhs.size() != rhs.size())
+			return false;
+		return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
 	};
 
 	template<class T, class Compare, class Allocator>

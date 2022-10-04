@@ -29,38 +29,39 @@ namespace ft {
 			typedef ft::reverse_iterator<iterator>								reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>						const_reverse_iterator;
 
-			class value_compare
-			{
-
+			class value_compare : public std::binary_function<value_type,value_type,bool> {
+				
 				friend class map;
+				
 				protected:
-					Compare	comp;
-					value_compare (Compare c) : comp(c) {}
+				
+					Compare comp;
+					value_compare(Compare c) : comp(c) {}
+				
 				public:
-					typedef bool result_type;
-					typedef value_type first_argument_type;
-					typedef value_type second_argument_type;
-					bool operator() (const value_type& x, const value_type& y) const
-					{
+				
+					bool operator()(const value_type& x, const value_type& y) const {
 						return comp(x.first, y.first);
 					}
+
+					value_compare &		operator=(value_compare const &) { return *this; };
 			};
 
 		private :
-			Red_black_tree<value_type>	_RBT;
+			Red_black_tree<value_type, value_compare>	_RBT;
 			allocator_type				_alloc;
 			key_compare					_cmp;
 
 		public :
 			// construct/copy/destroy:
-			explicit map(const Compare& comp = Compare(), const Allocator& alloc = Allocator()) : _RBT(), _alloc(alloc), _cmp(comp){};
+			explicit map(const Compare& comp = Compare(), const Allocator& alloc = Allocator()) : _RBT(value_compare(comp)), _alloc(alloc), _cmp(comp){};
 
 			template <class InputIterator>
-			map(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Allocator& alloc = Allocator()) : _RBT(), _alloc(alloc), _cmp(comp) {
+			map(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Allocator& alloc = Allocator()) : _RBT(value_compare(comp)), _alloc(alloc), _cmp(comp) {
 				_RBT.insert(first, last);
 			};
 
-			map(const map<Key,T,Compare,Allocator>& cpy) : _RBT(cpy._RBT), _alloc(cpy._alloc), _cmp(cpy._cmp) {
+			map(const map<Key,T,Compare,Allocator>& cpy) : _RBT(value_compare(cpy._cmp)), _alloc(cpy._alloc), _cmp(cpy._cmp) {
 				_RBT.insert(cpy.begin(), cpy.end());
 			};
 
@@ -139,13 +140,14 @@ namespace ft {
 				return _RBT.max_size();
 			}
 
-			mapped_type& operator[] (const key_type& k) {
+			mapped_type& operator[](const key_type& k) {
 				return (*((insert(ft::make_pair(k, mapped_type()))).first)).second;
-				};
+			};
 
 			pair<iterator,bool> insert (const value_type& val)
 			{
 				_RBT.insert(val);
+				// _RBT.print();
 				iterator it = _RBT.find(val);
 				if (it.get_node() != _RBT.get_nil())
 					return ft::make_pair(it, 0);

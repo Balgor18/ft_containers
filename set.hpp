@@ -29,7 +29,7 @@ namespace ft {
 			typedef ft::reverse_iterator<const_iterator>								const_reverse_iterator;
 
 		private :
-			Red_black_tree<value_type>		_RBT;
+			Red_black_tree<value_type, value_compare>		_RBT;
 			allocator_type					_alloc;
 			value_compare					_cmp;
 		public :
