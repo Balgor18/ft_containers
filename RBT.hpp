@@ -404,7 +404,9 @@ namespace ft {
 			{
 				node_ptr	tmp;
 				node_ptr	new_elem;
-
+				iterator	it = find(pair);
+				if (it.get_node() != _NIL)
+					return it.get_node()->data;
 				new_elem = _alloc.allocate(1);
 				_alloc.construct(new_elem, pair);
 				new_elem->set_parent(_NIL);

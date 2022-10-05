@@ -140,18 +140,18 @@ namespace ft {
 				return _RBT.max_size();
 			}
 
-			mapped_type& operator[](const key_type& k) {
+			mapped_type& operator[](const key_type& k)
+			{
 				return (*((insert(ft::make_pair(k, mapped_type()))).first)).second;
 			};
 
 			pair<iterator,bool> insert (const value_type& val)
 			{
-				_RBT.insert(val);
-				// _RBT.print();
 				iterator it = _RBT.find(val);
 				if (it.get_node() != _RBT.get_nil())
 					return ft::make_pair(it, 0);
-				return ft::make_pair(it, 1);
+				_RBT.insert(val);
+				return ft::make_pair(_RBT.find(val), 1);
 			}
 
 			iterator insert (iterator position, const value_type& val)
