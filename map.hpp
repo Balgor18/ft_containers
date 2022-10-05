@@ -135,7 +135,7 @@ namespace ft {
 				return _RBT.size();
 			}
 
-			size_type	max_size()
+			size_type	max_size() const
 			{
 				return _RBT.max_size();
 			}
