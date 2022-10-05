@@ -88,9 +88,11 @@ int main ()
 
 	while(tmp != bar.end())
 	{
+
 		std::cout << tmp->first << " => " << tmp->second << '\n';
 		tmp++;
 	}
+	// exit(2);
 	tmp--;
 
 	while(tmp2 != foo.end())
@@ -98,6 +100,7 @@ int main ()
 		std::cout << tmp2->first << " => " << tmp2->second << '\n';
 		tmp2++;
 	}
+	exit(3);
 	tmp2--;
 
 	swap(other, foo); //tmp2 iterates through other

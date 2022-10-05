@@ -179,7 +179,21 @@ namespace ft
 
 			bool operator!=( const RBT_iterator& rhs )
 			{
-				return _actual_node != rhs._actual_node;
+				std::cout << "-----------------------" << std::endl;
+				std::cout << "actual == rhs actual   " << (_actual_node == rhs._actual_node) << std::endl;
+				std::cout << "rhs nil != rhs actual  " << (rhs._NIL == rhs._actual_node) << std::endl;
+				std::cout << "nil != actual node     " << (_NIL != _actual_node) << std::endl;
+				std::cout << "                       " << (rhs._NIL == rhs._actual_node && _NIL == _actual_node) << std::endl;
+				std::cout << "si 0 alors 1 && 1 || 0 ou 1 && 0 || 1" << std::endl;
+				std::cout << "DOIT change en 0 || 1 && 1" << std::endl;
+				if (_actual_node == rhs._actual_node || (rhs._NIL == rhs._actual_node && _NIL == _actual_node))
+					return 0;
+				return 1;
+				// if (_actual_node == rhs._actual_node && (rhs._NIL != rhs._actual_node || _NIL != _actual_node))
+				// 	return 0;
+				// else
+				// 	return 1;
+				return (_actual_node != rhs._actual_node);
 			};
 	};
 }
