@@ -14,11 +14,11 @@ namespace ft {
 	class Node
 	{
 		public :
+			T		data;
 			Node	*parent;
+			bool	color;
 			Node	*child_left;
 			Node	*child_right;
-			T		data;
-			bool	color;
 
 			// Default constructor
 			Node () : parent(NULL), child_left(NULL), child_right(NULL), data(), color(RED) {}

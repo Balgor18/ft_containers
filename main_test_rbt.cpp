@@ -197,5 +197,9 @@ int	main()
 
 	std::cout << "std::map " <<  sizeof(std::map<int, std::string>) << std::endl;// 48
 
+	std::cout << "ft::node " <<  sizeof(ft::Node<int>) << std::endl;// 32
+
+	std::cout << "std::node " <<  sizeof(std::_Rb_tree_node<int>) << std::endl;// 32
+	ft::Node<int> test;
 	return 0;
 }

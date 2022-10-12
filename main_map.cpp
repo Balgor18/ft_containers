@@ -42,159 +42,117 @@
 # define _ICYAN			"\x1b[46m"
 # define _IWHITE		"\x1b[47m"
 
-#define TESTED_NAMESPACE ft
-#define _pair TESTED_NAMESPACE::pair
-
-template <typename T>
-class foo {
-	public:
-		typedef T	value_type;
-
-		foo(void) : value(), _verbose(false) { };
-		foo(value_type src, const bool verbose = false) : value(src), _verbose(verbose) { };
-		foo(foo const &src, const bool verbose = false) : value(src.value), _verbose(verbose) { };
-		~foo(void) { if (this->_verbose) std::cout << "~foo::foo()" << std::endl; };
-		void m(void) { std::cout << "foo::m called [" << this->value << "]" << std::endl; };
-		void m(void) const { std::cout << "foo::m const called [" << this->value << "]" << std::endl; };
-		foo &operator=(value_type src) { this->value = src; return *this; };
-		foo &operator=(foo const &src) {
-			if (this->_verbose || src._verbose)
-				std::cout << "foo::operator=(foo) CALLED" << std::endl;
-			this->value = src.value;
-			return *this;
-		};
-		value_type	getValue(void) const { return this->value; };
-		void		switchVerbose(void) { this->_verbose = !(this->_verbose); };
-
-		operator value_type(void) const {
-			return value_type(this->value);
-		}
-	private:
-		value_type	value;
-		bool		_verbose;
-};
-
-template <typename T>
-std::ostream	&operator<<(std::ostream &o, foo<T> const &bar) {
-	o << bar.getValue();
-	return o;
-}
-// --- End of class foo
-
-template <typename T>
-T	inc(T it, int n)
+template <class Key, class T>
+void	print(ft::map<Key, T>& lst)
 {
-	while (n-- > 0)
-		++it;
-	return (it);
+	for (typename ft::map<Key, T>::iterator it = lst.begin(); it != lst.end(); it++)
+		std::cout << it->first << " => " << it->second << '\n';
 }
 
-template <typename T>
-T	dec(T it, int n)
+int main ()
 {
-	while (n-- > 0)
-		--it;
-	return (it);
-}
+  ft::map<char,int> foo,bar;
+
+  foo['x']=100;
+  foo['y']=200;
+
+  bar['a']=11;
+  bar['b']=22;
+  bar['c']=33;
 
 
-template <typename T>
-std::string	printPair(const T &iterator, bool nl = true, std::ostream &o = std::cout)
-{
-	o << "key: " << iterator->first << " | value: " << iterator->second;
-	if (nl)
-		o << std::endl;
-	return ("");
-}
+  ft::map<char, int>::const_iterator tmp = foo.begin(); //tmp iterates through foo
+  ft::map<char, int>::const_iterator tmp2 = bar.begin(); //tmp2 iterates through bar
 
-template <typename T_MAP>
-void	printSize(T_MAP const &mp, bool print_content = 1)
-{
-	std::cout << "size: " << mp.size() << std::endl;
-	std::cout << "max_size: " << mp.max_size() << std::endl;
-	if (print_content)
+  swap(bar, foo); //tmp iterates through bar
+				//tmp2 iterates through foo
+
+
+  ft::map<char, int>	other;
+
+  other['1'] = 73;
+  other['2'] = 173;
+  other['3'] = 763;
+  other['4'] = 73854;
+  other['5'] = 74683;
+  other['6'] = 753;
+
+  ft::map<char, int>::const_iterator tmp3 = other.begin(); // tmp3 iterates through other
+
+  std::cout << "foo contains:\n";
+  for (ft::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
+    std::cout << it->first << " => " << it->second << '\n';
+
+  std::cout << "bar contains:\n";
+  for (ft::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
+    std::cout << it->first << " => " << it->second << '\n';
+
+	while(tmp != bar.end())
 	{
-		typename T_MAP::const_iterator it = mp.begin(), ite = mp.end();
-		std::cout << std::endl << "Content is:" << std::endl;
-		for (; it != ite; ++it)
-			std::cout << "- " << printPair(it, false) << std::endl;
+		std::cout << tmp->first << " => " << tmp->second << '\n';
+		tmp++;
 	}
-	std::cout << "###############################################" << std::endl;
-}
+	tmp--;
 
-template <typename T1, typename T2>
-void	printReverse(TESTED_NAMESPACE::map<T1, T2> &mp)
-{
-	typename TESTED_NAMESPACE::map<T1, T2>::iterator it = mp.end(), ite = mp.begin();
-
-	std::cout << "printReverse:" << std::endl;
-	while (it != ite) {
-		it--;
-		std::cout << "-> " << printPair(it, false) << std::endl;
+	 ft::map<char, int>::const_iterator test_something = foo.end();
+	while(tmp2 != foo.end())
+	{
+		std::cout << tmp2->first << " => " << tmp2->second << '\n';
+		tmp2++;
 	}
-	std::cout << "_______________________________________________" << std::endl;
-}
+	tmp2--;
 
-#define T1 int
-#define T2 foo<int>
-typedef TESTED_NAMESPACE::map<T1, T2>::value_type T3;
-typedef TESTED_NAMESPACE::map<T1, T2>::iterator ft_iterator;
-typedef TESTED_NAMESPACE::map<T1, T2>::const_iterator ft_const_iterator;
+	swap(other, foo); //tmp2 iterates through other
+					//tmp3 iterates throught foo
+	print(other);
+	print(foo);
+	print(bar);
+	while(tmp != bar.begin())
+	{
+		std::cout << tmp->first << " => " << tmp->second << '\n';
+		tmp--;
+	}
+	std::cout << tmp->first << " => " << tmp->second << '\n';
 
-static int iter = 0;
+	while(tmp2 != other.begin())
+	{
+		std::cout << tmp2->first << " => " << tmp2->second << '\n';
+		tmp2--;
+	}
+	std::cout << tmp2->first << " => " << tmp2->second << '\n';
 
-template <typename MAP>
-void	ft_bound(MAP &mp, const T1 &param)
-{
-	ft_iterator ite = mp.end(), it[2];
-	_pair<ft_iterator, ft_iterator> ft_range;
+	while(tmp3 != foo.end())
+	{
+		std::cout << tmp3->first << " => " << tmp3->second << '\n';
+		tmp3++;
+	}
+	tmp3--;
 
-	std::cout << "\t-- [" << iter++ << "] --" << std::endl;
-	std::cout << "with key [" << param << "]:" << std::endl;
-	it[0] = mp.lower_bound(param); it[1] = mp.upper_bound(param);
-	ft_range = mp.equal_range(param);
-	std::cout << "lower_bound: " << (it[0] == ite ? "end()" : printPair(it[0], false)) << std::endl;
-	std::cout << "upper_bound: " << (it[1] == ite ? "end()" : printPair(it[1], false)) << std::endl;
-	std::cout << "equal_range: " << (ft_range.first == it[0] && ft_range.second == it[1]) << std::endl;
-}
+	swap(bar, foo);
+	swap(foo, bar);
+	swap(bar, foo); //tmp3 iterates through bar
+				//tmp iterates through foo
 
-template <typename MAP>
-void	ft_const_bound(const MAP &mp, const T1 &param)
-{
-	ft_const_iterator ite = mp.end(), it[2];
-	_pair<ft_const_iterator, ft_const_iterator> ft_range;
+	print(other);
+	print(foo);
+	print(bar);
 
-	std::cout << "\t-- [" << iter++ << "] (const) --" << std::endl;
-	std::cout << "with key [" << param << "]:" << std::endl;
-	it[0] = mp.lower_bound(param); it[1] = mp.upper_bound(param);
-	ft_range = mp.equal_range(param);
-	std::cout << "lower_bound: " << (it[0] == ite ? "end()" : printPair(it[0], false)) << std::endl;
-	std::cout << "upper_bound: " << (it[1] == ite ? "end()" : printPair(it[1], false)) << std::endl;
-	std::cout << "equal_range: " << (ft_range.first == it[0] && ft_range.second == it[1]) << std::endl;
-}
+	while(tmp != foo.end())
+	{
+		std::cout << tmp->first << " => " << tmp->second << '\n';
+		tmp++;
+	}
 
-int		main(void)
-{
-	std::list<T3> lst;
-	unsigned int lst_size = 10;
-	for (unsigned int i = 0; i < lst_size; ++i)
-		lst.push_back(T3(i + 1, (i + 1) * 3));
-	TESTED_NAMESPACE::map<T1, T2> mp(lst.begin(), lst.end());
-	printSize(mp);
+	while(tmp2 != other.end())
+	{
+		std::cout << tmp2->first << " => " << tmp2->second << '\n';
+		tmp2++;
+	}
 
-	ft_const_bound(mp, -10);
-	ft_const_bound(mp, 1);
-	ft_const_bound(mp, 5);
-	ft_const_bound(mp, 10);
-	ft_const_bound(mp, 50);
-
-	printSize(mp);
-
-	mp.lower_bound(3)->second = 404;
-	mp.upper_bound(7)->second = 842;
-	ft_bound(mp, 5);
-	ft_bound(mp, 7);
-
-	printSize(mp);
-	return (0);
+	while(tmp3 != bar.begin())
+	{
+		std::cout << tmp3->first << " => " << tmp3->second << '\n';
+		tmp3--;
+	}
+	std::cout << tmp3->first << " => " << tmp3->second << '\n';
 }

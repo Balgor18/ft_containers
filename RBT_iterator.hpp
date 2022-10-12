@@ -30,6 +30,16 @@ namespace ft
 			// Example https://www.cs.odu.edu/~zeil/cs361/latest/Public/treetraversal/index.html
 			void	Increment()
 			{
+				node_ptr tmp = _actual_node;
+				while (tmp)
+				{
+					if (tmp->color == BLACK && tmp->data == T())
+					{
+						_NIL = tmp;
+						break;
+					}
+					tmp = tmp->child_left;
+				}
 				if (_actual_node->child_right != _NIL) {
 					_actual_node = _actual_node->child_right;
 					while (_actual_node->child_left != _NIL) {
@@ -52,6 +62,17 @@ namespace ft
 
 			void	Decrement()
 			{
+				// if (_actual_node)
+				// node_ptr tmp = _actual_node;
+				// while (tmp)
+				// {
+				// 	if (tmp->color == BLACK && tmp->data == T())
+				// 	{
+				// 		_NIL = tmp;
+				// 		break;
+				// 	}
+				// 	tmp = tmp->child_left;
+				// }
 				if (_actual_node->parent->parent == _actual_node && _actual_node->color == RED)
 					_actual_node = _actual_node->child_right;
 				if (_actual_node->child_left != _NIL) {
@@ -72,12 +93,23 @@ namespace ft
 			}
 
 			node_ptr	maximum() {
-					node_ptr	tmp = _root;
+				
+				node_ptr new_nil = _actual_node;
+				while (new_nil)
+				{
+					if (new_nil->color == BLACK && new_nil->data == T())
+					{
+						_NIL = new_nil;
+						break;
+					}
+					new_nil = new_nil->child_left;
+				}
+				node_ptr	tmp = _root;
 
-					while (tmp->child_right != _NIL)
-						tmp = tmp->child_right;
-					return tmp;
-				};
+				while (tmp->child_right != _NIL)
+					tmp = tmp->child_right;
+				return tmp;
+			};
 
 		public :
 			RBT_iterator(void) : _root(NULL), _NIL(NULL), _actual_node(NULL) {}
@@ -179,24 +211,9 @@ namespace ft
 
 			bool operator!=( const RBT_iterator& rhs )
 			{
-				// std::cout << "-----------------------" << std::endl;
-				// std::cout << "actual == rhs actual   " << (_actual_node == rhs._actual_node) << std::endl;
-				// std::cout << "rhs nil != rhs actual  " << (rhs._NIL == rhs._actual_node) << std::endl;
-				// std::cout << "nil != actual node     " << (_NIL != _actual_node) << std::endl;
-				// std::cout << "                       " << (rhs._NIL == rhs._actual_node && _NIL == _actual_node) << std::endl;
-				// std::cout << "si 0 alors 1 && 1 || 0 ou 1 && 0 || 1" << std::endl;
-				// std::cout << "DOIT change en 0 || 1 && 1" << std::endl;
 				if (_actual_node == rhs._actual_node || _actual_node == _NIL)
 					return 0;
 				return 1;
-				// if (_actual_node == rhs._actual_node || (rhs._NIL == rhs._actual_node && _NIL == _actual_node))
-				// 	return 0;
-				// return 1;
-				// if (_actual_node == rhs._actual_node && (rhs._NIL != rhs._actual_node || _NIL != _actual_node))
-				// 	return 0;
-				// else
-				// 	return 1;
-				return (_actual_node != rhs._actual_node);
 			};
 	};
 }
