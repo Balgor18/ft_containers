@@ -44,7 +44,7 @@ namespace ft {
 						return comp(x.first, y.first);
 					}
 
-					value_compare &		operator=(value_compare const &) { return *this; };
+					// value_compare &		operator=(value_compare const &) { return *this; };
 			};
 
 		private :
@@ -125,7 +125,7 @@ namespace ft {
 				return _RBT.rend();
 			}
 
-			bool	empty()
+			bool	empty() const
 			{
 				return _RBT.empty();
 			}

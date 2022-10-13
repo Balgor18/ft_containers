@@ -21,11 +21,11 @@ namespace ft {
 			Node	*child_right;
 
 			// Default constructor
-			Node () : parent(NULL), child_left(NULL), child_right(NULL), data(), color(RED) {}
-			Node(const T &data) : parent(NULL), child_left(NULL), child_right(NULL), data(data), color(RED) {}
+			Node () : data(), parent(NULL), color(RED), child_left(NULL), child_right(NULL) {}
+			Node(const T &data) : data(data), parent(NULL), color(RED), child_left(NULL), child_right(NULL) {}
 
 			// Copy constructor
-			Node(const Node &cpy) : parent(cpy.parent), child_left(cpy.child_left), child_right(cpy.child_right), data(cpy.data), color(cpy.color) {}
+			Node(const Node &cpy) : data(cpy.data), parent(cpy.parent), color(cpy.color), child_left(cpy.child_left), child_right(cpy.child_right) {}
 
 			// Overload operator = 
 			Node<T>&	operator=(const Node<T>&rhs)
