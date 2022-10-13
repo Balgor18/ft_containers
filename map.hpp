@@ -44,7 +44,6 @@ namespace ft {
 						return comp(x.first, y.first);
 					}
 
-					// value_compare &		operator=(value_compare const &) { return *this; };
 			};
 
 		private :
@@ -185,6 +184,8 @@ namespace ft {
 
 			void swap (map& other)
 			{
+				if (&other == this)
+					return ;
 				_RBT.swap(other._RBT);
 				std::swap(_alloc, other._alloc);
 				std::swap(_cmp, other._cmp);
@@ -282,6 +283,12 @@ namespace ft {
 	template <class Key, class T, class Compare, class Alloc>
 	bool operator<=(const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs) {
 		return (!(rhs < lhs));
+	};
+
+	template <class Key, class T, class Compare, class Alloc>
+	void	swap(map<Key,T,Compare,Alloc>& lhs,map<Key,T,Compare,Alloc>& rhs)
+	{
+		lhs.swap(rhs);
 	};
 }
 

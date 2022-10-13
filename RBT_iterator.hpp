@@ -23,23 +23,12 @@ namespace ft
 			typedef RBT_iterator<T, Node>		Himself;
 
 		protected :
-			node_ptr	_root;
 			node_ptr	_NIL;
 			node_ptr	_actual_node;
 		private:
 			// Example https://www.cs.odu.edu/~zeil/cs361/latest/Public/treetraversal/index.html
 			void	Increment()
 			{
-				node_ptr tmp = _actual_node;
-				while (tmp)
-				{
-					if (tmp->color == BLACK && tmp->data == T())
-					{
-						_NIL = tmp;
-						break;
-					}
-					tmp = tmp->child_left;
-				}
 				if (_actual_node->child_right != _NIL) {
 					_actual_node = _actual_node->child_right;
 					while (_actual_node->child_left != _NIL) {
@@ -62,19 +51,9 @@ namespace ft
 
 			void	Decrement()
 			{
-				// if (_actual_node)
-				// node_ptr tmp = _actual_node;
-				// while (tmp)
-				// {
-				// 	if (tmp->color == BLACK && tmp->data == T())
-				// 	{
-				// 		_NIL = tmp;
-				// 		break;
-				// 	}
-				// 	tmp = tmp->child_left;
-				// }
-				if (_actual_node->parent->parent == _actual_node && _actual_node->color == RED)
-					_actual_node = _actual_node->child_right;
+				// if (_actual_node->parent->parent == _actual_node && _actual_node->color == RED)
+				// 	_actual_node = _actual_node->child_right;
+
 				if (_actual_node->child_left != _NIL) {
 					_actual_node = _actual_node->child_left;
 					while (_actual_node->child_right != _NIL) {
@@ -92,37 +71,24 @@ namespace ft
 				}
 			}
 
-			node_ptr	maximum() {
-				
-				node_ptr new_nil = _actual_node;
-				while (new_nil)
-				{
-					if (new_nil->color == BLACK && new_nil->data == T())
-					{
-						_NIL = new_nil;
-						break;
-					}
-					new_nil = new_nil->child_left;
-				}
-				node_ptr	tmp = _root;
-
-				while (tmp->child_right != _NIL)
-					tmp = tmp->child_right;
+			node_ptr	maximum() {// XXX
+				node_ptr	tmp = _NIL->child_right;// DBG
+				// tmp--;
 				return tmp;
 			};
 
 		public :
-			RBT_iterator(void) : _root(NULL), _NIL(NULL), _actual_node(NULL) {}
+			RBT_iterator(void) : _NIL(NULL), _actual_node(NULL) {}
 
-			RBT_iterator(node_ptr const root, node_ptr const nil, node_ptr const actual) : _root(root), _NIL(nil), _actual_node(actual){}
+			RBT_iterator(node_ptr const nil, node_ptr const actual) : _NIL(nil), _actual_node(actual){}
 
-			RBT_iterator(RBT_iterator const &cpy) : _root(cpy._root), _NIL(cpy._NIL), _actual_node(cpy._actual_node) { }
+			RBT_iterator(RBT_iterator const &cpy) : _NIL(cpy._NIL), _actual_node(cpy._actual_node) { }
 
 			~RBT_iterator() {}
 
 			operator RBT_iterator< const T, const Node>() const
 			{
-				return RBT_iterator< const T, const Node>(_root, _NIL, _actual_node);
+				return RBT_iterator< const T, const Node>(_NIL, _actual_node);
 			}
 
 			RBT_iterator&	operator++()
@@ -154,7 +120,7 @@ namespace ft
 				Himself tmp(*this);
 
 					if (_actual_node == _NIL) {
-					_actual_node = maximum();
+						_actual_node = maximum();
 					return tmp;
 				}
 				Decrement();
@@ -165,7 +131,6 @@ namespace ft
 			{
 				_actual_node = rhs.get_node();
 				_NIL = rhs.get_nil();
-				_root = rhs.get_root();
 				return *this;
 			 }
 
@@ -199,11 +164,6 @@ namespace ft
 				return _NIL;
 			};
 
-			node_ptr	get_root() const 
-			{
-				return _root;
-			};
-
 			bool operator==( const RBT_iterator& rhs )
 			{
 				return _actual_node == rhs._actual_node;
@@ -211,7 +171,7 @@ namespace ft
 
 			bool operator!=( const RBT_iterator& rhs )
 			{
-				if (_actual_node == rhs._actual_node || _actual_node == _NIL)
+				if (_actual_node == rhs._actual_node)
 					return 0;
 				return 1;
 			};

@@ -51,15 +51,22 @@ namespace ft {
 
 			void	_clear(node_ptr actual)
 			{
-				
+				// print();
+				if (_size == 0)
+					return ;
 				if (actual->child_left != _NIL)
 					_clear(actual->child_left);
 				if (actual->child_right != _NIL)
 					_clear(actual->child_right);
 				if (actual != _NIL)
 				{
-					node_ptr	tmp = actual->parent;
-
+					node_ptr	tmp;
+					if (actual && actual->parent)
+						tmp = actual->parent;
+					else
+						tmp = actual;
+					// if (tmp == _NIL)
+					// 	return ;
 					if (tmp->child_right == actual)
 						tmp->child_right = _NIL;
 					else
@@ -194,6 +201,8 @@ namespace ft {
 						break;
 				}
 				_root->color = BLACK;
+				_NIL->child_left = begin().get_node();//TODOChange this
+				_NIL->child_right = _max();//TODOChange this 
 			};
 
 			void	_fix_delete( node_ptr	x )
@@ -257,14 +266,22 @@ namespace ft {
 				x->color = BLACK;
 			};
 
+			node_ptr	_max() //TODO change this
+			{
+				node_ptr tmp = _root;
+
+				while (tmp->child_right != _NIL)
+					tmp = tmp->child_right;
+				return tmp;
+			}
 		public :
 			Red_black_tree( const Compare& cmp = Compare(), const Allocator& alloc = Allocator() ) : _alloc(alloc), _size(0), _cmp(cmp) {
 				_NIL = _alloc.allocate(1);
 				_alloc.construct(_NIL, T());
 				_NIL->set_color(BLACK);
-				_NIL->set_child_left(_NIL);
-				_NIL->set_child_right(_NIL);
-				_NIL->set_parent(_NIL);
+				_NIL->set_child_left(NULL);
+				_NIL->set_child_right(NULL);
+				_NIL->set_parent(NULL);
 				_root = _NIL;
 			};
 
@@ -273,9 +290,9 @@ namespace ft {
 				_NIL = _alloc.allocate(1);
 				_alloc.construct(_NIL, T());
 				_NIL->set_color(BLACK);
-				_NIL->set_child_left(_NIL);
-				_NIL->set_child_right(_NIL);
-				_NIL->set_parent(_NIL);
+				_NIL->set_child_left(NULL);
+				_NIL->set_child_right(NULL);
+				_NIL->set_parent(NULL);
 				_root = _alloc.allocate(1);
 				_alloc.construct(_root, pair);
 				_root->set_color(BLACK);
@@ -303,6 +320,7 @@ namespace ft {
 			// Destructor
 			~Red_black_tree(void)
 			{
+				// print();
 				clear();
 				_alloc.destroy(_NIL);
 				_alloc.deallocate(_NIL, 1);
@@ -326,32 +344,36 @@ namespace ft {
 			}
 
 			// ================= Iterator =================
-			iterator	begin()
+			iterator	begin()// XXX
 			{
 				node_ptr	tmp = _root;
-				
+
+				if (tmp == _NIL)
+					return iterator(_NIL, _NIL);
 				while (tmp->child_left != _NIL)
 					tmp = tmp->child_left;
-				return iterator(_root, _NIL, tmp);
+				return iterator(_NIL, tmp);
 			}
 
 			const_iterator	begin() const
 			{
 				node_ptr	tmp = _root;
-				
+
+				if (tmp == _NIL)
+					return const_iterator(_NIL, _NIL);
 				while (tmp->child_left != _NIL)
 					tmp = tmp->child_left;
-				return const_iterator(_root, _NIL, tmp);
+				return const_iterator(_NIL, tmp);
 			}
 
 			iterator	end()
 			{
-				return iterator(_root, _NIL, _NIL);
+				return iterator(_NIL, _NIL);
 			}
 
 			const_iterator	end() const
 			{
-				return const_iterator(_root, _NIL, _NIL);
+				return const_iterator(_NIL, _NIL);
 			}
 
 			reverse_iterator	rbegin()
@@ -476,7 +498,7 @@ namespace ft {
 			}
 
 			void	swap(Red_black_tree &other)
-			{
+			{ 
 				std::swap(_root, other._root);
 				std::swap(_NIL, other._NIL);
 				std::swap(_size, other._size);
@@ -489,10 +511,14 @@ namespace ft {
 				node_ptr y = z;
 				node_ptr x;
 				bool color_original = y->color;
+				
 				if (z == _NIL)
 				{
 					return ;
 				}
+				// if (z == _root && _size == 1){
+				// 	_root = _NIL;
+				// }
 				if (z->child_left == _NIL) {
 					x = z->child_right;
 					_invert(z, z->child_right);
@@ -597,7 +623,7 @@ namespace ft {
 					while (tmp != _NIL)
 					{
 						if (!_cmp(tmp->data, key) && !_cmp(key, tmp->data))
-							return iterator(_root, _NIL, tmp);
+							return iterator(_NIL, tmp);
 						else if (_cmp(key, tmp->data)) {
 							tmp = tmp->child_left;
 						}
@@ -618,7 +644,7 @@ namespace ft {
 					while (tmp != _NIL)
 					{
 						if (!_cmp(tmp->data, key) && !_cmp(key, tmp->data))
-							return const_iterator(_root, _NIL, tmp);
+							return const_iterator(_NIL, tmp);
 						else if (_cmp(key, tmp->data)) {
 							tmp = tmp->child_left;
 						}
