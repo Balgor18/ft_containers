@@ -65,8 +65,6 @@ namespace ft {
 						tmp = actual->parent;
 					else
 						tmp = actual;
-					// if (tmp == _NIL)
-					// 	return ;
 					if (tmp->child_right == actual)
 						tmp->child_right = _NIL;
 					else
@@ -201,11 +199,11 @@ namespace ft {
 						break;
 				}
 				_root->color = BLACK;
-				_NIL->child_left = begin().get_node();//TODOChange this
-				_NIL->child_right = _max();//TODOChange this 
+				// _NIL->child_left = _min();// DO Change this
+				_NIL->child_right = _max();// DO Change this
 			};
 
-			void	_fix_delete( node_ptr	x )
+			void	_fix_delete( node_ptr x)
 			{
 				node_ptr	tmp;
 
@@ -264,16 +262,28 @@ namespace ft {
 					}
 				}
 				x->color = BLACK;
+				// _NIL->child_left = _min();// DO Change this
+				_NIL->child_right = _max();// DO Change this
 			};
 
-			node_ptr	_max() //TODO change this
+			node_ptr	_max() //DO change this
 			{
 				node_ptr tmp = _root;
 
 				while (tmp->child_right != _NIL)
 					tmp = tmp->child_right;
 				return tmp;
-			}
+			};
+
+			// node_ptr	_min() //DO change this
+			// {
+			// 	node_ptr tmp = _root;
+
+			// 	while (tmp->child_left != _NIL)
+			// 		tmp = tmp->child_left;
+			// 	return tmp;
+			// };
+
 		public :
 			Red_black_tree( const Compare& cmp = Compare(), const Allocator& alloc = Allocator() ) : _alloc(alloc), _size(0), _cmp(cmp) {
 				_NIL = _alloc.allocate(1);
@@ -344,7 +354,35 @@ namespace ft {
 			}
 
 			// ================= Iterator =================
-			iterator	begin()// XXX
+
+			// 	iterator	begin()
+			// {
+
+			// 	// if (tmp == _NIL)
+			// 	// 	return iterator(_NIL, _NIL);
+			// 	if (_root == _NIL)
+			// 		return iterator(_NIL, _NIL);
+			// 	// node_ptr	tmp = _root;
+			// 	// while (tmp->child_left != _NIL)
+			// 	// 	tmp = tmp->child_left;
+			// 	return iterator(_NIL, _NIL->child_left);
+			// }
+
+			// const_iterator	begin() const
+			// {
+			// 	// node_ptr	tmp = _root;
+
+			// 	// if (tmp == _NIL)
+			// 	// 	return const_iterator(_NIL, _NIL);
+			// 	// while (tmp->child_left != _NIL)
+			// 	// 	tmp = tmp->child_left;
+			// 	// return const_iterator(_NIL, tmp);
+			// 	if (_root == _NIL)
+			// 		return const_iterator(_NIL, _NIL);
+			// 	return const_iterator(_NIL, _NIL->child_left);
+			// }
+
+			iterator	begin()
 			{
 				node_ptr	tmp = _root;
 
@@ -450,7 +488,7 @@ namespace ft {
 						_clear(new_elem);
 						return tmp->data;
 					}
-					if (tmp->data < new_elem->data)
+					if (_cmp(tmp->data, new_elem->data))
 					{
 						if (tmp->child_right != _NIL)
 						{
@@ -464,7 +502,7 @@ namespace ft {
 						}
 					}
 
-					if (tmp->data > new_elem->data)
+					if (_cmp(new_elem->data, tmp->data))
 					{
 						if (tmp->child_left != _NIL)
 						{
@@ -516,9 +554,6 @@ namespace ft {
 				{
 					return ;
 				}
-				// if (z == _root && _size == 1){
-				// 	_root = _NIL;
-				// }
 				if (z->child_left == _NIL) {
 					x = z->child_right;
 					_invert(z, z->child_right);
@@ -633,6 +668,17 @@ namespace ft {
 					}
 				}
 				return end();
+				// node_ptr		node;
+
+				// node = _root;
+				// while (node != _NIL)
+				// 	if (_cmp(key, node->data))
+				// 		node = node->child_left;
+				// 	else if (_cmp(node->data, key))
+				// 		node = node->child_right;
+				// 	else
+				// 		break ;
+				// return iterator(_NIL, node);
 			}
 
 			const_iterator	find(const T& key) const

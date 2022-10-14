@@ -51,9 +51,6 @@ namespace ft
 
 			void	Decrement()
 			{
-				// if (_actual_node->parent->parent == _actual_node && _actual_node->color == RED)
-				// 	_actual_node = _actual_node->child_right;
-
 				if (_actual_node->child_left != _NIL) {
 					_actual_node = _actual_node->child_left;
 					while (_actual_node->child_right != _NIL) {
@@ -71,10 +68,8 @@ namespace ft
 				}
 			}
 
-			node_ptr	maximum() {// XXX
-				node_ptr	tmp = _NIL->child_right;// DBG
-				// tmp--;
-				return tmp;
+			node_ptr	maximum() {
+				return _NIL->child_right;
 			};
 
 		public :

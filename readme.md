@@ -2,6 +2,8 @@ https://www.lirmm.fr/~ducour/Doc-objets/ISO+IEC+14882-1998.pdf
 https://fr.acervolima.com/std-allocator-en-c-avec-des-exemples/#:~:text=allocator%20est%20l%27allocateur%20de,pour%20au%20moins%20n%20%C3%A9l%C3%A9ments
 https://h-deb.clg.qc.ca/Sujeimage.pngts/Divers--cplusplus/SFINAE.html
 
+http://tvaira.free.fr/bts-sn/poo-c++/cours-poo-c++/cours-c++-conteneurs.pdf
+
 http://chenweixiang.github.io/docs/The_C++_Programming_Language_4th_Edition_Bjarne_Stroustrup.pdf
 https://code.woboq.org/gcc/libstdc++-v3/include/bits/stl_iterator.h.html
 
