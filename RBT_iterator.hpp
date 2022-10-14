@@ -129,17 +129,17 @@ namespace ft
 				return *this;
 			 }
 
-			reference operator*() 
+			reference operator*()
 			{
 				return _actual_node->data;
 			};
-			
+
 			const_reference operator*() const 
 			{
 				return _actual_node->data;
 			};
 
-			pointer operator->() 
+			pointer operator->()
 			{
 				return &(_actual_node->data);
 			};

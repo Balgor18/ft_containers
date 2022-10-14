@@ -145,8 +145,6 @@ namespace ft {
 			};
 
 			pair<iterator,bool> insert (const value_type& val)
-			// La cle est dans child_left de 42 dont 0x419f50
-			// Mais find return end VOILA LERREUR
 			{
 				iterator it = _RBT.find(val);
 				if (it.get_node() != _RBT.get_nil())
