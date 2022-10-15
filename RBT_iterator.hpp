@@ -18,15 +18,15 @@ namespace ft
 			typedef typename ft::Iterator<ft::bidirectional_iterator_tag, T>::reference				reference;
 			typedef typename ft::Iterator<ft::bidirectional_iterator_tag, T>::pointer				pointer;
 			typedef typename ft::Iterator<ft::bidirectional_iterator_tag, const T>::reference		const_reference;
-			typedef typename ft::Iterator<ft::bidirectional_iterator_tag, const T>:: pointer		const_pointer;
-			typedef Node*						node_ptr;
-			typedef RBT_iterator<T, Node>		Himself;
+			typedef typename ft::Iterator<ft::bidirectional_iterator_tag, const T>::pointer			const_pointer;
+			typedef Node*										node_ptr;
+			typedef RBT_iterator<T, Node>						Himself;
 
 		protected :
 			node_ptr	_NIL;
 			node_ptr	_actual_node;
 		private:
-			// Example https://www.cs.odu.edu/~zeil/cs361/latest/Public/treetraversal/index.html
+
 			void	Increment()
 			{
 				if (_actual_node->child_right != _NIL) {
@@ -68,20 +68,30 @@ namespace ft
 				}
 			}
 
-			node_ptr	maximum() {
+			node_ptr	maximum()
+			{
 				return _NIL->child_right;
 			};
 
 		public :
 			RBT_iterator(void) : _NIL(NULL), _actual_node(NULL) {}
 
-			RBT_iterator(node_ptr const nil, node_ptr const actual) : _NIL(nil), _actual_node(actual){}
+			RBT_iterator(node_ptr nil, node_ptr actual) : _NIL(nil), _actual_node(actual){}
 
-			RBT_iterator(RBT_iterator const &cpy) : _NIL(cpy._NIL), _actual_node(cpy._actual_node) { }
+			RBT_iterator(const RBT_iterator &other) : _NIL(other._NIL), _actual_node(other._actual_node) {};
 
 			~RBT_iterator() {}
 
-			operator RBT_iterator< const T, const Node>() const
+			RBT_iterator &operator=(const RBT_iterator<T, Node>& rhs)
+			{
+				if (rhs != *this)
+					return *this;
+				_actual_node = rhs.get_node();
+				_NIL = rhs.get_nil();
+				return *this;
+			}
+
+			operator RBT_iterator< const T, const Node>() const 
 			{
 				return RBT_iterator< const T, const Node>(_NIL, _actual_node);
 			}
@@ -122,49 +132,42 @@ namespace ft
 				return tmp;
 			}
 
-			RBT_iterator &operator=(const RBT_iterator<T, Node>& rhs)
-			{
-				_actual_node = rhs.get_node();
-				_NIL = rhs.get_nil();
-				return *this;
-			 }
+			// reference operator*()
+			// {
+			// 	return _actual_node->data;
+			// };
 
-			reference operator*()
+			const_reference operator*() const
 			{
 				return _actual_node->data;
 			};
 
-			const_reference operator*() const 
-			{
-				return _actual_node->data;
-			};
+			// pointer operator->()
+			// {
+			// 	return &(_actual_node->data);
+			// };
 
-			pointer operator->()
-			{
-				return &(_actual_node->data);
-			};
-
-			const_pointer operator->() const 
+			const_pointer operator->() const
 			{
 				return &(_actual_node->data);
 			};
 
-			node_ptr	get_node() const 
+			node_ptr	get_node() const
 			{
 				return _actual_node;
 			};
 
-			node_ptr	get_nil() const 
+			node_ptr	get_nil() const
 			{
 				return _NIL;
 			};
 
-			bool operator==( const RBT_iterator& rhs )
+			bool operator==( const RBT_iterator& rhs ) const
 			{
 				return _actual_node == rhs._actual_node;
 			};
 
-			bool operator!=( const RBT_iterator& rhs )
+			bool operator!=( const RBT_iterator& rhs ) const
 			{
 				if (_actual_node == rhs._actual_node)
 					return 0;

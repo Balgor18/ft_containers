@@ -12,26 +12,26 @@ namespace ft {
 	template < class T, class Compare = std::less<T>, class Alloc = std::allocator<T> >
 	class set{
 		public:
-			typedef T										value_type;
-			typedef Compare									key_compare;
-			typedef Compare									value_compare;
-			typedef Alloc									allocator_type;
-			typedef typename Alloc::reference				reference;
-			typedef typename Alloc::const_reference			const_reference;
-			typedef typename Alloc::size_type				size_type;
-			typedef typename Alloc::difference_type			difference_type;
-			typedef typename Alloc::pointer					pointer;
-			typedef typename Alloc::const_pointer			const_pointer;
+			typedef T																			value_type;
+			typedef Compare																		key_compare;
+			typedef Compare																		value_compare;
+			typedef Alloc																		allocator_type;
+			typedef typename Alloc::reference													reference;
+			typedef typename Alloc::const_reference												const_reference;
+			typedef typename Alloc::size_type													size_type;
+			typedef typename Alloc::difference_type												difference_type;
+			typedef typename Alloc::pointer														pointer;
+			typedef typename Alloc::const_pointer												const_pointer;
 			
-			typedef ft::RBT_iterator<value_type, ft::Node<value_type> >					iterator;
-			typedef ft::RBT_iterator<const value_type, const ft::Node<value_type> >		const_iterator;
-			typedef ft::reverse_iterator<iterator>										reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator>								const_reverse_iterator;
+			typedef RBT_iterator<value_type, Node<value_type> >									iterator;
+			typedef RBT_iterator<const value_type, const Node<value_type> >						const_iterator;
+			typedef reverse_iterator<const_iterator>											const_reverse_iterator;
+			typedef reverse_iterator<iterator>													reverse_iterator;
 
 		private :
 			Red_black_tree<value_type, value_compare>		_RBT;
-			allocator_type					_alloc;
-			value_compare					_cmp;
+			allocator_type									_alloc;
+			value_compare									_cmp;
 		public :
 
 			explicit set(const Compare& comp = Compare(), const Alloc& alloc = Alloc()) : _RBT(), _alloc(alloc), _cmp(comp){};
@@ -39,12 +39,12 @@ namespace ft {
 			template <class InputIterator>
 			set(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Alloc& alloc = Alloc()) : _RBT(), _alloc(alloc), _cmp(comp)
 			{
-				insert(first, last);
+				_RBT.insert(first, last);
 			};
 
 			set(const set<T,Compare,Alloc>& cpy) : _RBT(value_compare(cpy._cmp)), _alloc(Alloc()), _cmp(Compare())
 			{
-				insert(cpy.begin(), cpy.end());
+				_RBT.insert(cpy.begin(), cpy.end());
 			};
 
 			~set()
@@ -108,7 +108,6 @@ namespace ft {
 			{
 				return _RBT.rend();
 			};
-
 
 			bool empty() const 
 			{

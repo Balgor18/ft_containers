@@ -55,7 +55,6 @@ namespace ft{
 };
 
 namespace ft{
-	// class RandomAccessIterator
 	template<typename T>
 	class random_access_iterator {
 		public:
