@@ -23,15 +23,16 @@ namespace ft {
 			typedef typename Alloc::pointer														pointer;
 			typedef typename Alloc::const_pointer												const_pointer;
 			
-			typedef RBT_iterator<value_type, Node<value_type> >									iterator;
-			typedef RBT_iterator<const value_type, const Node<value_type> >						const_iterator;
+			// typedef RBT_iterator<value_type, Node<value_type> >									iterator;
+			typedef RBT_iterator<const value_type, const Node<const value_type> >						const_iterator;
+			typedef const_iterator																iterator;
 			typedef reverse_iterator<const_iterator>											const_reverse_iterator;
 			typedef reverse_iterator<iterator>													reverse_iterator;
 
 		private :
-			Red_black_tree<value_type, value_compare>		_RBT;
-			allocator_type									_alloc;
-			value_compare									_cmp;
+			Red_black_tree<const value_type,  value_compare>		_RBT;
+			allocator_type											_alloc;
+			value_compare											_cmp;
 		public :
 
 			explicit set(const Compare& comp = Compare(), const Alloc& alloc = Alloc()) : _RBT(), _alloc(alloc), _cmp(comp){};
@@ -142,7 +143,7 @@ namespace ft {
 			};
 
 			template <class InputIterator>
-			void insert(InputIterator first, InputIterator last)
+			void insert(InputIterator first, InputIterator const last)
 			{
 				return _RBT.insert(first, last);
 			};
@@ -157,7 +158,7 @@ namespace ft {
 				return _RBT.erase(x);
 			};
 
-			void erase(iterator first, iterator last)
+			void erase(iterator first, iterator const last)
 			{
 				return _RBT.erase(first, last);
 			};

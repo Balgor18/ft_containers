@@ -82,15 +82,6 @@ namespace ft
 
 			~RBT_iterator() {}
 
-			RBT_iterator &operator=(const RBT_iterator<T, Node>& rhs)
-			{
-				if (rhs != *this)
-					return *this;
-				_actual_node = rhs.get_node();
-				_NIL = rhs.get_nil();
-				return *this;
-			}
-
 			operator RBT_iterator< const T, const Node>() const 
 			{
 				return RBT_iterator< const T, const Node>(_NIL, _actual_node);
@@ -132,20 +123,20 @@ namespace ft
 				return tmp;
 			}
 
-			// reference operator*()
-			// {
-			// 	return _actual_node->data;
-			// };
+			reference operator*()
+			{
+				return _actual_node->data;
+			};
 
 			const_reference operator*() const
 			{
 				return _actual_node->data;
 			};
 
-			// pointer operator->()
-			// {
-			// 	return &(_actual_node->data);
-			// };
+			pointer operator->()
+			{
+				return &(_actual_node->data);
+			};
 
 			const_pointer operator->() const
 			{
@@ -162,12 +153,12 @@ namespace ft
 				return _NIL;
 			};
 
-			bool operator==( const RBT_iterator& rhs ) const
+			bool operator==( const RBT_iterator& rhs )
 			{
 				return _actual_node == rhs._actual_node;
 			};
 
-			bool operator!=( const RBT_iterator& rhs ) const
+			bool operator!=( const RBT_iterator& rhs )
 			{
 				if (_actual_node == rhs._actual_node)
 					return 0;

@@ -18,17 +18,17 @@ namespace ft {
 			typedef Allocator											allocator_type;
 			typedef std::size_t											size_type;
 			typedef Compare												key_compare;
-			typedef ft::Node<T>*										node_ptr;
+			typedef Node<T>*											node_ptr;
 
 			typedef typename Allocator::reference						reference;
 			typedef typename Allocator::const_reference					const_reference;
 			typedef typename Allocator::pointer							pointer;
 			typedef typename Allocator::const_pointer					const_pointer;
 
-			typedef ft::RBT_iterator<T, ft::Node<T> >					iterator;
-			typedef ft::RBT_iterator<const T, const ft::Node<T> >		const_iterator;
-			typedef ft::reverse_iterator<iterator>						reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
+			typedef RBT_iterator<T, Node<T> >							iterator;
+			typedef RBT_iterator<const T, const Node<T> >				const_iterator;
+			typedef reverse_iterator<const_iterator>					const_reverse_iterator;
+			typedef reverse_iterator<iterator>							reverse_iterator;
 
 		private :
 			node_ptr		_NIL;
@@ -489,7 +489,7 @@ namespace ft {
 			}
 
 			template<typename input_iterator>
-			void	insert(input_iterator first, input_iterator last)
+			void	insert(input_iterator first, input_iterator const last)
 			{
 				for (; first != last; first++) {
 					insert(*first);
@@ -504,7 +504,7 @@ namespace ft {
 				std::swap(_cmp, other._cmp);;
 			}
 
-			void	erase(iterator pos)
+			void	erase(iterator const pos)
 			{
 				node_ptr z = pos.get_node();
 				node_ptr y = z;
@@ -548,7 +548,7 @@ namespace ft {
 				return ;
 			}
 
-			void	erase(iterator first, iterator last)
+			void	erase(iterator first, iterator const last)
 			{
 				iterator	tmp;
 
