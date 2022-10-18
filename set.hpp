@@ -5,7 +5,7 @@
 # include "pair.hpp"
 # include "Node.hpp"
 # include "RBT.hpp"
-// # include "RBT_iterator.hpp"
+# include <set>
 
 namespace ft {
 
@@ -22,10 +22,10 @@ namespace ft {
 			typedef typename Alloc::difference_type												difference_type;
 			typedef typename Alloc::pointer														pointer;
 			typedef typename Alloc::const_pointer												const_pointer;
-			
-			// typedef RBT_iterator<value_type, Node<value_type> >									iterator;
+
+			typedef RBT_iterator<value_type, Node<value_type> >									iterator;
 			typedef RBT_iterator<const value_type, const Node<const value_type> >						const_iterator;
-			typedef const_iterator																iterator;
+			// typedef const_iterator																iterator;
 			typedef reverse_iterator<const_iterator>											const_reverse_iterator;
 			typedef reverse_iterator<iterator>													reverse_iterator;
 

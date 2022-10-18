@@ -1,9 +1,6 @@
 #ifndef IS_INTEGRAL_HPP
 #define IS_INTEGRAL_HPP
 
-# include <iostream>
-// # include <type_traits>
-
 namespace ft{
 
 	template<class T, T v>

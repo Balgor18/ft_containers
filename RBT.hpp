@@ -10,7 +10,6 @@
 
 namespace ft {
 
-	// Remove std::less<T>
 	template<class T, class Compare, class Allocator = std::allocator<Node<T> > >
 	class Red_black_tree
 	{
@@ -734,8 +733,6 @@ namespace ft {
 				return _root;
 			}
 	};
-
-	// https://stackoverflow.com/questions/70490594/trouble-implementing-const-iterator-in-c
 
 	template<class T, class Compare, class Allocator>
 	bool operator==(Red_black_tree<T, Compare, Allocator>& lhs,

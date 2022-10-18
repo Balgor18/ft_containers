@@ -35,3 +35,5 @@ https://www.cs.odu.edu/~zeil/cs361/latest/Public/treetraversal/index.html
 
 https://en.cppreference.com/w/cpp/container/set
 https://cplusplus.com/reference/set/set/
+
+// https://stackoverflow.com/questions/70490594/trouble-implementing-const-iterator-in-c

@@ -10,12 +10,12 @@ struct Y {
 	};
 
 template <class T>
-void f(T) { // version générale
+void f(T) {
 	cout << "f(T)" << endl;
 }
 
 template <class T>
-void f(typename T::type) { // version plus « pointue »
+void f(typename T::type) {
 	cout << "f(T::type)" << endl;
 }
 
