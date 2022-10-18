@@ -23,14 +23,13 @@ namespace ft {
 			typedef typename Alloc::pointer														pointer;
 			typedef typename Alloc::const_pointer												const_pointer;
 
-			typedef RBT_iterator<value_type, Node<value_type> >									iterator;
-			typedef RBT_iterator<const value_type, const Node<const value_type> >						const_iterator;
-			// typedef const_iterator																iterator;
+			typedef RBT_iterator<const value_type, const Node<const value_type> >				const_iterator;
+			typedef const_iterator																iterator;
 			typedef reverse_iterator<const_iterator>											const_reverse_iterator;
 			typedef reverse_iterator<iterator>													reverse_iterator;
 
 		private :
-			Red_black_tree<const value_type,  value_compare>		_RBT;
+			Red_black_tree<const value_type, value_compare>				_RBT;
 			allocator_type											_alloc;
 			value_compare											_cmp;
 		public :
@@ -160,7 +159,14 @@ namespace ft {
 
 			void erase(iterator first, iterator const last)
 			{
-				return _RBT.erase(first, last);
+				iterator	tmp;
+
+				while (first != last)
+				{
+					tmp = first;
+					first++;
+					erase(tmp);
+				}
 			};
 
 			void swap(set<T,Compare,Alloc>& other) {

@@ -98,8 +98,6 @@ namespace ft {
 				return node;
 			}
 
-			// https://www.programiz.com/dsa/red-black-tree
-
 			void	_left_rotate(node_ptr x)
 			{
 				node_ptr y = x->child_right;
@@ -317,7 +315,6 @@ namespace ft {
 			// Destructor
 			~Red_black_tree(void)
 			{
-				// print();
 				clear();
 				_alloc.destroy(_NIL);
 				_alloc.deallocate(_NIL, 1);

@@ -48,8 +48,8 @@ namespace ft {
 
 		private :
 			Red_black_tree<value_type, value_compare>	_RBT;
-			allocator_type				_alloc;
-			key_compare					_cmp;
+			allocator_type								_alloc;
+			key_compare									_cmp;
 
 		public :
 			// construct/copy/destroy:

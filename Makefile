@@ -10,6 +10,10 @@ SRCS_MAP	=	main_map.cpp
 OBJS_MAP	=	$(SRCS_MAP:%.cpp=%.o)
 DEPS_MAP	=	$(OBJS_MAP:%.o=%.d)
 
+SRCS_SET	=	main_set.cpp
+OBJS_SET	=	$(SRCS_SET:%.cpp=%.o)
+DEPS_SET	=	$(OBJS_SET:%.o=%.d)
+
 CXX			=	clang++
 CXXFLAGS	=	-Wall -Wextra -Werror -MMD -MP -Wshadow -g3
 
@@ -26,10 +30,13 @@ vector	:	$(SRCS_VECTOR)
 map	:	$(SRCS_MAP)
 	${CXX} ${CXXFLAGS} -o $@ ${SRCS_MAP}
 
+set	:	$(SRCS_SET)
+	${CXX} ${CXXFLAGS} -o $@ ${SRCS_SET}
+
 clean	:
 	rm -rf *.d
 
 fclean	:	clean
-	rm -rf stack vector map
+	rm -rf stack vector map set
 
 re		:	fclean all
