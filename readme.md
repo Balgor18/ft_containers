@@ -1,3 +1,19 @@
+# ft_containers - @42Born2Code
+
+ft_containers is a project for discover the containers in C++.
+
+## What is ft_containers ?
+
+ft_containers is an individual project at 42.
+The aim of this project is to recreate containers in C++.
+
+This is the list of the containers i have reacreate :
+- stack
+- vector
+- map
+- set
+
+<!-- 
 https://www.lirmm.fr/~ducour/Doc-objets/ISO+IEC+14882-1998.pdf
 https://fr.acervolima.com/std-allocator-en-c-avec-des-exemples/#:~:text=allocator%20est%20l%27allocateur%20de,pour%20au%20moins%20n%20%C3%A9l%C3%A9ments
 
@@ -38,4 +54,4 @@ https://cplusplus.com/reference/set/set/
 
 https://stackoverflow.com/questions/70490594/trouble-implementing-const-iterator-in-c
 
-https://www.programiz.com/dsa/red-black-tree
+https://www.programiz.com/dsa/red-black-tree -->
